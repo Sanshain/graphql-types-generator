@@ -10,16 +10,13 @@ import * as typescriptPlugin from '@graphql-codegen/typescript';
 
 const __dirname = path.resolve(path.dirname(''));
 
-// let gqlDe = fs.readFileSync('./sources/queries.js', {encoding:'utf8', flag:'r'});
-// let gqls = gqlDe.matchAll(/gql`[^`]*?`/g);
+let gqlDe = fs.readFileSync('./sources/queries.js', {encoding:'utf8', flag:'r'});
+let gqls = gqlDe.matchAll(/gql`[^`]*?`/g);
 
 // :GraphQLSchema
-// const schema = buildSchema(`type A { name: String }`);
+const schema = buildSchema(`type A { name: String }`);
 
 // https://www.graphql-tools.com/docs/schema-loading/
-const schema = loadTypedefsSync('./sources/queries.js', {
-	loaders: [new GraphQLFileLoader()]
-});
 const outputFile = './sources/graphql-types.d.ts';
 const config = {
   documents: [],
