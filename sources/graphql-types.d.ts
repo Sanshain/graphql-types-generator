@@ -15,3 +15,13 @@ export type A = {
   __typename?: 'A';
   name?: Maybe<Scalars['String']>;
 };
+
+
+export type profileInfo = {
+	users: [ 
+		{
+			username: any,
+			firstName: any,
+		}
+	]
+}

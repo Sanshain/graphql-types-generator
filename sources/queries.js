@@ -5,7 +5,7 @@ import gql from "./graphql-tag";
  * dialog list initialization
  */
 export const get_DialogsInit = gql`
-	query {
+	query profileInfo {
 		users {
 			username,
 			firstName
