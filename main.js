@@ -11,7 +11,8 @@ import * as typescriptPlugin from '@graphql-codegen/typescript';
 const __dirname = path.resolve(path.dirname(''));
 
 let gqlDe = fs.readFileSync('./sources/queries.js', {encoding:'utf8', flag:'r'});
-let gqls = gqlDe.matchAll(/gql`[^`]*?`/g);
+let gqls = Array.from(gqlDe.matchAll(/gql`[^`]*?`/g), m => m[0]);
+
 
 // :GraphQLSchema
 const schema = buildSchema(`type A { name: String }`);
