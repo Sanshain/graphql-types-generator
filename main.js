@@ -55,16 +55,19 @@ for (const query of gqls) {
 				);
 
 				_gpaType[selection.name.value] = _gpaType;	
-				const offset = ' '.repeat(deep + 4);			
-				let values = null;
-				if (deep % 8 === 0){
-					values = `{\n${_lines}${' '.repeat(deep)}}[]`;
-				}
-				else{
-					values = `Array<{\n${_lines}${' '.repeat(deep)}}>`;
+				// const offset = ' '.repeat(deep + 4);			
+
+				let value = `{\n${_lines}${' '.repeat(deep)}}`;		
+				let values = null;				
+
+				if (selection.name.value.slice(-1) === 's')		{
+					if (deep % 8 === 0) values = `${value}[]`;
+					else{
+						values = `Array<${value}>`;
+					}
 				}
 				// let values = `[\n${offset}{\n${_lines}${offset}}\n${' '.repeat(deep)}]`;
-				lines += ' '.repeat(deep) + selection.name.value + `: ${values},\n`
+				lines += ' '.repeat(deep) + selection.name.value + `: ${values || value},\n`
 			}
 			else {
 

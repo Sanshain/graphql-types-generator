@@ -12,7 +12,7 @@ export type profileInfo = {
 };
 
 export type undefined = {
-    dialog: Array<{
+    dialog: {
         id: number,
         title: string,
         users: {
@@ -26,5 +26,5 @@ export type undefined = {
             value: any,
             files: any,
         }[],
-    }>,
+    },
 };
