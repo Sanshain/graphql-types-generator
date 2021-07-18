@@ -1,6 +1,7 @@
 // import gql from "graphql-tag";
 import gql from "./graphql-tag";
 
+
 /**
  * dialog list initialization
  */
