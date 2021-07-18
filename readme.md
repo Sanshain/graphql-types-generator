@@ -29,21 +29,23 @@ main();
 npm run init -s "examples/queries.js"
 ```
 
+# How it works?
+
 
 ### source: 
 
 ```js
 export const GET_DIALOGS_INIT = gql`
-	query profileInfo {
-		users {
-			username,
-			firstName
-		},
-		dialogs{
-			id,
-			title
-		}
-	}
+    query profileInfo {
+        users {
+            username,
+            firstName
+        },
+        dialogs{
+            id,
+            title
+        }
+    }
 `;
 ```
 
