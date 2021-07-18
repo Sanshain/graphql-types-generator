@@ -1,44 +1,30 @@
 
 
-export type SignInfo = {
-    tokenAuth: {
-        success: any,
-        errors: any,
-        unarchiving: any,
-        token: any,
-        user: {
+export type profileInfo = {
+    users: Array<{
+        username: any,
+        firstName: string,
+    }>,
+    dialogs: Array<{
+        id: number,
+        title: string,
+    }>,
+};
+
+export type undefined = {
+    dialog: {
+        id: number,
+        title: string,
+        users: {
             id: number,
-            username: any,
-        },
-    },
-};
-
-export type SignupInfo = {
-    register: {
-        success: any,
-        errors: any,
-        token: any,
-        refreshToken: any,
-    },
-};
-
-export type ResetAction = {
-    passwordReset: {
-        success: any,
-        errors: any,
-    },
-};
-
-export type VerifyInfo = {
-    verifyAccount: {
-        success: any,
-        errors: any,
-    },
-};
-
-export type SignoutAction = {
-    revokeToken: {
-        success: any,
-        errors: any,
+            name: string,
+            image: any,
+        }[],
+        messages: {
+            author: any,
+            time: string,
+            value: any,
+            files: any,
+        }[],
     },
 };

@@ -6,6 +6,30 @@
 The generally accepted method and considered correct is the generation of typescript types from graphql types. [graphql-code-generator](https://www.graphql-code-generator.com/) does something like this. But this does not get rid of writing the queries themselves. This alternative solution, which was born in the pet project, is based on the most common variable names of certain types (to some extent similar to the Hungarian notation). For example, fields including `title` or  `name` are almost always of the string type, fields starting with `is` are almost always' boolean`, ' id` is almost always a number, and so on
 
 
+## Programmatic usage: 
+
+
+```js
+//@ts-check
+
+const typesGenerate = require('./sources/main');
+
+async function main() {
+	await typesGenerate({
+		filename: './examples/mutations.js'
+	});	
+}
+
+main();
+```
+
+## Terminal usage:
+
+```bash
+npm run init -s "examples/queries.js"
+```
+
+
 ### source: 
 
 ```js
