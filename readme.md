@@ -5,6 +5,11 @@
 
 The generally accepted method and considered correct is the generation of typescript types from graphql types. [graphql-code-generator](https://www.graphql-code-generator.com/) does something like this. But this does not get rid of writing the queries themselves. This alternative solution, which was born in the pet project, is based on the most common variable names of certain types (to some extent similar to the Hungarian notation). For example, fields including `title` or  `name` are almost always of the string type, fields starting with `is` are almost always' boolean`, ' id` is almost always a number, and so on
 
+## Install:
+
+```
+npm i graphql-types-generator -D
+```
 
 ## Programmatic usage: 
 
