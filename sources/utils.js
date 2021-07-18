@@ -1,6 +1,8 @@
 //@ts-check
 
-import * as fs from 'fs';
+// import * as fs from 'fs';
+const fs = require('fs');
+
 
 const any = 'any';
 

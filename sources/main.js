@@ -1,22 +1,25 @@
 //@ts-check
-import { codegen } from '@graphql-codegen/core';
-import { loadSchemaSync, loadDocuments, loadTypedefsSync } from "@graphql-tools/load";
-import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
-import { buildSchema, printSchema as graphqlToString, parse, GraphQLSchema } from 'graphql';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as typescriptPlugin from '@graphql-codegen/typescript';
-import gql from "graphql-tag";
-import { type } from 'os';
+// import { codegen } from '@graphql-codegen/core';
+// import { loadSchemaSync, loadDocuments, loadTypedefsSync } from "@graphql-tools/load";
+// import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+// import { buildSchema, printSchema as graphqlToString, parse, GraphQLSchema } from 'graphql';
+// import * as fs from 'fs';
+// import * as path from 'path';
+const fs = require('fs');
+const path = require('path');
+// import * as typescriptPlugin from '@graphql-codegen/typescript';
+// import gql from "graphql-tag";
+// import { type } from 'os';
 
-import globby from 'globby';
-import { TypesGenerator } from './utils';
+// import globby from 'globby';
+// import { TypesGenerator } from './utils';
+const { TypesGenerator } = require('./utils');
 
 
-const __dirname = path.resolve(path.dirname(''));
+// const __dirname = path.resolve(path.dirname(''));
 
 let dir = './sources/';
-let filename = 'queries.js';
+// let filename = 'queries.js';
 
 export async function typesGenerate(options) {
 
@@ -42,15 +45,15 @@ export async function typesGenerate(options) {
 
 	const generator = new TypesGenerator(options)
 
-	let filenames = options.filename ? [options.filename] : await globby(options.files || []);
+	let filenames = options.filename ? [options.filename] : []; // await globby(options.files || []);
 	for (const filename of filenames) {
 		
-		codeTypes = generator.getTypes(dir + filename, codeTypes, graTypes);
+		codeTypes = generator.getTypes(options.dirname + filename, codeTypes, graTypes);
 	}
 	
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
 
-	fs.writeFile(path.join(__dirname, `${options.dirname || '.'}/${target}`), codeTypes, () => {
+	fs.writeFile(path.join(__dirname, target), codeTypes, () => {
 		console.log('Outputs generated!');
 	});
 	

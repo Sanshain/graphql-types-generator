@@ -2,8 +2,7 @@
   "name": "graphql",
   "version": "1.0.0",
   "description": "",
-  "main": "start.js",
-  "type": "module",
+  "main": "index.js",  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate": "graphql-codegen"
@@ -12,6 +11,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "rollup": "^2.53.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  },
+  "dependencies": {
     "@graphql-codegen/cli": "^1.21.7",
     "@graphql-codegen/core": "^1.17.10",
     "@graphql-codegen/typescript": "^1.23.0",
