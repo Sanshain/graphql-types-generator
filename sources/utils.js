@@ -1,13 +1,13 @@
 //@ts-check
 
-// import * as fs from 'fs';
+const gql = require('graphql-tag');
 const fs = require('fs');
 
 
 const any = 'any';
 
 
-export class TypesGenerator{
+class TypesGenerator{
 
 	rules = {
 		string: ['Name', 'Title', 'Date', 'Time'],
@@ -21,7 +21,7 @@ export class TypesGenerator{
 		this.rules = options.rules || this.rules;
 		
 		if (options.rules){
-			if (!keyValidator.every(k => k in Object.keys(this.rules))){
+			if (!keyValidator.every(k => k in this.rules)){
 				throw new Error('All base types are not defined (string, bool, number)');
 			}
 		}
@@ -47,8 +47,7 @@ export class TypesGenerator{
 			const typeName = definition.name?.value || 'undefined';
 			let selections = definition.selectionSet.selections;
 
-
-
+			
 			let gpaType = this.getType(selections, undefined);
 
 			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
@@ -122,4 +121,8 @@ export class TypesGenerator{
 
 	}
 
+}
+
+module.exports = {
+	TypesGenerator
 }

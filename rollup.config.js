@@ -2,13 +2,14 @@ import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
 
 export default {
-  input: './start.js',
+  input: './example.js',
 //   input: './sources/main.js',
   output: {	  
 	  name: 'typesGenerate',
-     file: 'main.js',
+     file: 'this.js',
    //   format: 'iife',
-     format: 'es',
+   //   format: 'es',
+     format: 'cjs',
   },
   plugins: [
     nodeResolve({

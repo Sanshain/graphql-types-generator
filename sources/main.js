@@ -11,7 +11,7 @@ const path = require('path');
 // import gql from "graphql-tag";
 // import { type } from 'os';
 
-// import globby from 'globby';
+const globby = require('globby');
 // import { TypesGenerator } from './utils';
 const { TypesGenerator } = require('./utils');
 
@@ -21,7 +21,9 @@ const { TypesGenerator } = require('./utils');
 let dir = './sources/';
 // let filename = 'queries.js';
 
-export async function typesGenerate(options) {
+
+/** @type {{ filename: any; files: any; target: any; }} */ 
+module.exports = async function typesGenerate(options) {
 
 	// let typeConds = {
 	// 	string: ['Name', 'Title', 'Date', 'Time'],
@@ -32,23 +34,28 @@ export async function typesGenerate(options) {
 	let graTypes = [];
 	let codeTypes = '';
 
-	options = options || {
-		filename: 'queries.js',
-		dirname: 'examples',
-		target: 'queries.d.ts',
-		rules: {
-			string: ['Name', 'Title', 'Date', 'Time'],
-			bool: ['is'],
-			number: ['Id']
-		}
-	};
+	options = Object.assign(
+		{
+			filename: 'queries.js',
+			files: [],
+			dirname: 'examples',
+			target: 'queries.d.ts',
+			rules: {
+				string: ['Name', 'Title', 'Date', 'Time'],
+				bool: ['is'],
+				number: ['Id']
+			}
+		}, 
+		options || {}
+	);
 
 	const generator = new TypesGenerator(options)
 
-	let filenames = options.filename ? [options.filename] : []; // await globby(options.files || []);
+	let filenames = options.filename ? [options.filename] : await globby(options.files || []);
 	for (const filename of filenames) {
 		
-		codeTypes = generator.getTypes(options.dirname + filename, codeTypes, graTypes);
+		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
+		codeTypes = generator.getTypes(filename, codeTypes, graTypes);
 	}
 	
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
