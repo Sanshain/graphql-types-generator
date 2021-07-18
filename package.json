@@ -1,14 +1,15 @@
 {
-  "name": "graphql",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",  
+  "name": "graphql-types-generator",
+  "version": "1.0.1",
+  "description": "Generates typescript types from raw graphql queries, based on the most common naming of variables of certain types",
+  "main": "./sources/main.js",  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate": "graphql-codegen"
+    "generate": "graphql-codegen",
+	 "init": "node main"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["graphql", "typescript"],
+  "author": "Sanshain",
   "license": "ISC",
   "devDependencies": {
     "rollup": "^2.53.2",

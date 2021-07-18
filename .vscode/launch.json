@@ -5,6 +5,16 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "cli test",
+			"program": "${workspaceFolder}/main.js",
+			"request": "launch",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"type": "pwa-node",
+			"args": ["-s", "./examples/queries.js"]
+		},
+		{
 			"type": "pwa-node",
 			"request": "launch",
 			"name": "Launch Program",
