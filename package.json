@@ -1,8 +1,9 @@
 {
   "name": "graphql-types-generator",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Generates typescript types from raw graphql queries, based on the most common naming of variables of certain types",
   "main": "./sources/main.js",  
+  "homepage": "https://github.com/Sanshain/graphql-types-generator",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate": "graphql-codegen",
