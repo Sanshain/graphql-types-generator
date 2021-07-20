@@ -60,8 +60,11 @@ module.exports = async function typesGenerate(options) {
 	
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
 
-	fs.writeFile(path.join(__dirname, target), codeTypes, () => {
-		console.log('Outputs generated!');
+	let targetFile = path.join(process.cwd(), target);		// path.resolve(path.dirname(''))
+
+	fs.writeFile(targetFile, codeTypes, () => {
+		
+		console.log(`Outputs generated to ${targetFile}!`);
 	});
 	
 }
