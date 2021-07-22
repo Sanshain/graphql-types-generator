@@ -45,8 +45,9 @@ class TypesGenerator{
 			let definition = gql(query).definitions.pop();
 
 			const typeName = definition.name?.value || 'undefined';
+			typeName === 'undefined' && console.warn(`typename is undefined in ${filename}`);
+			
 			let selections = definition.selectionSet.selections;
-
 			
 			let gpaType = this.getType(selections, undefined);
 
