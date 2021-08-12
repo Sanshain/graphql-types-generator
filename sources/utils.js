@@ -2,6 +2,7 @@
 
 const gql = require('graphql-tag');
 const fs = require('fs');
+const http = require('http');
 
 
 const any = 'any';
@@ -9,6 +10,17 @@ const any = 'any';
 
 class TypesGenerator{
 
+	serverTypes = null
+
+	/// for server approach 
+	patterns = {
+		ID: 'number',
+		DateTime: 'Date | string',
+		JSONString: 'File[] | object',
+		null: 'any',
+	}
+
+	/// for naming approach 
 	rules = {
 		string: ['Name', 'Title', 'Date', 'Time'],
 		bool: ['is'],
@@ -34,7 +46,16 @@ class TypesGenerator{
 	 * @param {*} graTypes - типы тайпскрипт в виде строк
 	 * @returns typescript code
 	 */
-	 getTypes(filename, codeTypes, graTypes) {
+	 async getTypes(filename, codeTypes, graTypes) {
+
+		if (this.serverTypes === null) {
+			try{
+				await this.getSchemaTypes();		
+			}			
+			catch(ex){
+				console.warn(`Warning: graphql server unavalible. Attention! Types will generates via fields naming\n`);
+			}
+		}
 
 		let gqlDe = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
@@ -77,10 +98,20 @@ class TypesGenerator{
 		
 			if (selection.selectionSet){
 					
-				let {_gpaType, lines: _lines} = this.getType(
-					selection.selectionSet.selections, deep
-					// selection.selectionSet.selections, deep + 4
-				);
+				let _lines = '', _gpaType = {}
+
+				let _type = (this.serverTypes || [])[selection.name?.value];
+							
+				if (_type && false){
+
+					_lines = this.getServerType(selection, _gpaType, _lines);
+				}
+				else{
+					({_gpaType, lines: _lines} = this.getType(
+						selection.selectionSet.selections, deep
+						// selection.selectionSet.selections, deep + 4
+					))
+				}
 
 				_gpaType[selection.name.value] = _gpaType;	
 				// const offset = ' '.repeat(deep + 4);			
@@ -102,6 +133,7 @@ class TypesGenerator{
 				const fieldName =  selection.name.value;
 
 				let gType = any;
+
 				if (this.rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)){
 					gType = 'number'
 				}
@@ -121,6 +153,121 @@ class TypesGenerator{
 		return {_gpaType, lines};
 
 	}
+
+	getServerType(selection, _gpaType, _lines) {
+
+		let fields = selection.selectionSet.selections.map(f => f.name.value);
+		let selectionType = this.serverTypes[selection.name?.value];
+		let isArray = Array.isArray(selectionType);
+		if (isArray)
+			_gpaType[selection.name.value] = [];
+
+		for (const field of fields) {
+			if (!isArray) {
+				// this.serverTypes[field.slice(0, -1)]
+				let fieldType = selectionType[field];
+				let tsType = this.patterns[fieldType] || fieldType.toLowerCase();
+				_gpaType[field] = tsType;
+				_lines += ' '.repeat(8) + `${field}:${tsType},\n`;
+			}
+			else {
+				let fieldType = selectionType[0][field];
+				let tsType = this.patterns[fieldType] || fieldType.toLowerCase();
+				_gpaType[selection.name.value][field] = tsType;
+				_lines += ' '.repeat(8) + `${field}:${tsType},\n`;
+			}
+
+		}
+		return _lines;
+	}
+
+	async getSchemaTypes(typeName){
+
+		let serverTypes = {}
+
+		let rawSchema = await this.typesRequest(this.queriesInfoQuery);	
+		rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
+		let rawTypes = rawSchema.find(t => t.name == 'Query').fields;
+		for (let key in rawTypes)
+		{
+			const rawType = rawTypes[key];			
+			let type = rawType.type.name || rawType.type.ofType?.name;	
+			type = type || (rawType.name.endsWith('s') 				
+				? rawTypes.find(t => t.name == rawType.name.slice(0, -1))?.type.name
+				: null
+			);
+
+			if (type){
+				let tsType = {}
+				for (const field of rawSchema.find(t => type == t.name).fields) 
+				{
+					tsType[field.name] = field.type.name || field.type.ofType.name;
+				}
+				serverTypes[rawType.name] = rawType.type.name 
+					? tsType
+					: [tsType]
+			}
+		}
+
+		// rawSchema.filter(t => ~Object.values(serverTypes).indexOf(t.name))
+		
+		console.log(rawSchema);
+
+		this.serverTypes = serverTypes;
+	}
+
+
+	typesRequest(queriesInfoQuery){
+		
+		return new Promise(function(resolve, reject) {
+			// Эта функция будет вызвана автоматически
+		 
+			let data = ''
+			const options = {		
+				hostname: '127.0.0.1',
+				port: 8000,
+				path: '/graphql',
+				method: 'POST',		
+				headers: {'Content-Type': 'application/json'}
+			}
+			
+			const request = http.request(options, (response) => {
+			
+				console.log(`statusCode: ${response.statusCode}`)
+				response.on('data', (d) => data += d.toString());					
+				response.on('end', () => resolve(JSON.parse(data)));	
+			})
+			
+			request.on('error', e => reject(e));	 
+			request.write(JSON.stringify({query: queriesInfoQuery || this.queriesInfoQuery}))
+			request.end()
+			// В ней можно делать любые асинхронные операции,
+			// А когда они завершатся — нужно вызвать одно из:
+			// resolve(результат) при успешном выполнении
+			// reject(ошибка) при ошибке
+		});
+
+	}
+
+	queriesInfoQuery = `
+		query Queries{
+			__schema {
+				types {
+					name,
+					fields {
+						name,        
+						description
+						type {
+							name,          
+							ofType {
+								name					  
+							}
+						}
+					}
+				}
+			}
+		}	
+	`
 
 }
 

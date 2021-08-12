@@ -55,7 +55,7 @@ module.exports = async function typesGenerate(options) {
 	for (const filename of filenames) {
 		
 		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
-		codeTypes = generator.getTypes(filename, codeTypes, graTypes);
+		codeTypes = await generator.getTypes(filename, codeTypes, graTypes);
 	}
 	
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
