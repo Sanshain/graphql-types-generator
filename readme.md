@@ -3,11 +3,11 @@
 
 # Why graphql-types-generator?
 
-Today, the solution for generating ts types for the client based on graphml types declared on the server is quite popular (in particular, such [such] (https://www.graphql-code-generator.com/). But at the front, we usually face the fact that we have to write complex queries for many types, and in this case we have to manually write complex types based on the basic ones. Sometimes this task becomes quite routine. **graphml-types-generator** is an alternative solution that generates exact types individually for each query, which completely avoids writing types manually on the front. 
+Solutions for auto generating ts types for the front side development based on graphql types declared on the server side is quite popular (in particular [this solution](https://www.graphql-code-generator.com/)). But in the front side development we usually face the fact that we have to write complex queries for many types, and in this case we have to manually write complex types based on the basic ones. Sometimes this task becomes a real routine. **graphml-types-generator** is an alternative solution that generates exact types individually for each query, which completely avoids writing types manually on the front. 
 
-Restriction: Type generation for migrations is not supported yet (in progress)
+**Restriction**: Type generation for migrations is not supported yet (in progress)
 
-Note: To work correctly, you need a running graphql server, otherwise the types will be generated based on the naming of the fields (as you will see a warning in the console)
+**Note**: To work correctly, you need a running graphql server, otherwise the types will be generated based on the naming of the fields in accordance with the corresponding options (as you will see a warning in the console)
 
 ## Installation
 
