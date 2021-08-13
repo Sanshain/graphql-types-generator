@@ -20,7 +20,7 @@ export const get_DialogsInit = gql`
 
 
 /**
- * just one dialog initial
+ * just one dialog initial 
  */
 export const get_DialogInit = gql`
 	query {
