@@ -3,7 +3,11 @@
 
 # Why graphql-types-generator?
 
-The generally accepted method and considered correct is the generation of typescript types from graphql types. [graphql-code-generator](https://www.graphql-code-generator.com/) does something like this. But this does not get rid of writing the queries themselves. This alternative solution, which was born in the pet project, is based on the most common variable names of certain types (to some extent similar to the Hungarian notation). For example, fields including `title` or  `name` are almost always of the string type, fields starting with `is` are almost always ` boolean`, `id` is almost always a number, and so on
+Today, the solution for generating ts types for the client based on graphml types declared on the server is quite popular (in particular, such [such] (https://www.graphql-code-generator.com/). But at the front, we usually face the fact that we have to write complex queries for many types, and in this case we have to manually write complex types based on the basic ones. Sometimes this task becomes quite routine. **graphml-types-generator** is an alternative solution that generates exact types individually for each query, which completely avoids writing types manually on the front. 
+
+Restriction: Type generation for migrations is not supported yet (in progress)
+
+Note: To work correctly, you need a running graphql server, otherwise the types will be generated based on the naming of the fields (as you will see a warning in the console)
 
 ## Installation
 
@@ -40,18 +44,16 @@ npm run init -s "examples/queries.js"
 ### source: 
 
 ```js
-export const GET_DIALOGS_INIT = gql`
-    query profileInfo {
-        users {
-            username,
-            firstName
-        },
-        dialogs{
-            id,
-            title
-        }
-    }
-`;
+export type profileInfo = {
+    users: Array<{
+        username:string,
+        firstName:string,
+    }>,
+    dialogs: Array<{
+        id:number,
+        title:string,
+    }>,
+};
 ```
 
 ### results: 
