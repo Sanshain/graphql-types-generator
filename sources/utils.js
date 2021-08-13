@@ -15,6 +15,7 @@ class TypesGenerator{
 	/// for server approach 
 	patterns = {
 		ID: 'number',
+		Int: 'number',
 		DateTime: 'Date | string',
 		JSONString: 'File[] | object',
 		null: 'any',
@@ -66,7 +67,7 @@ class TypesGenerator{
 			let definition = gql(query).definitions.pop();
 
 			const typeName = definition.name?.value || 'undefined';
-			typeName === 'undefined' && console.warn(`typename is undefined in ${filename}`);
+			typeName === 'undefined' && console.warn(`graphql-types-generator: type name is undefined in ${filename}`);
 			
 			let selections = definition.selectionSet.selections;
 			
@@ -102,9 +103,9 @@ class TypesGenerator{
 
 				let _type = (this.serverTypes || [])[selection.name?.value];
 							
-				if (_type && false){
+				if (_type){
 
-					_lines = this.getServerType(selection, _gpaType, _lines);
+					[_gpaType, _lines] = this.getServerType(selection, _gpaType, _lines);
 				}
 				else{
 					({_gpaType, lines: _lines} = this.getType(
@@ -154,31 +155,58 @@ class TypesGenerator{
 
 	}
 
-	getServerType(selection, _gpaType, _lines) {
+	getServerType(selection, _gpaType, _lines, _deep) {
+
+		_gpaType = _gpaType || {};
+		_lines = _lines || ''
+		_deep = _deep || 0;
 
 		let fields = selection.selectionSet.selections.map(f => f.name.value);
 		let selectionType = this.serverTypes[selection.name?.value];
 		let isArray = Array.isArray(selectionType);
-		if (isArray)
-			_gpaType[selection.name.value] = [];
+		if (isArray) _gpaType[selection.name.value] = {};		
+
+		const _typeFormat = (selectionType, field) => {
+			let _isArray = false;
+
+			let fieldType = selectionType[field];			
+			let tsType = this.patterns[fieldType] || fieldType.toLowerCase();	
+
+			if (!fieldType) {
+				let subType = this.serverTypes[field.slice(0, -1)] || this.serverTypes[field]
+				if (subType){
+					let _selection = selection.selectionSet.selections.find(f => f.name.value === field)
+					let _fields = _selection.selectionSet.selections;
+					this.getServerType(_selection)
+					this.getServerType(_selection, {}, '', _deep + 1)
+					let [subGqlType, subLine] = this.getServerType(_selection, {}, '', _deep + 1);
+					tsType = `{\n${subLine + ' '.repeat(8 + _deep * 4)}}`;
+					_isArray = true;
+				}
+				console.log(field);
+			}					
+			_gpaType[field] = tsType;
+			_lines += ' '.repeat(8 + _deep * 4) + `${field}:${_isArray ? tsType + '[]' : tsType},\n`;
+			return [_gpaType, _lines];
+		}
 
 		for (const field of fields) {
 			if (!isArray) {
 				// this.serverTypes[field.slice(0, -1)]
-				let fieldType = selectionType[field];
-				let tsType = this.patterns[fieldType] || fieldType.toLowerCase();
-				_gpaType[field] = tsType;
-				_lines += ' '.repeat(8) + `${field}:${tsType},\n`;
+				[_gpaType, _lines] = _typeFormat(selectionType, field);
 			}
 			else {
 				let fieldType = selectionType[0][field];
+				if (!fieldType){
+					console.log(field);
+				}				
 				let tsType = this.patterns[fieldType] || fieldType.toLowerCase();
 				_gpaType[selection.name.value][field] = tsType;
-				_lines += ' '.repeat(8) + `${field}:${tsType},\n`;
+				_lines += ' '.repeat(8 + _deep * 4) + `${field}:${tsType},\n`;
 			}
 
 		}
-		return _lines;
+		return [_gpaType, _lines];
 	}
 
 	async getSchemaTypes(typeName){
