@@ -73,7 +73,7 @@ export type profileInfo = {
 
 - [npm repo](https://www.npmjs.com/package/graphql-types-generator) of the graphql-types-generator
 - [github repo](https://github.com/dotansimha/graphql-code-generator) of graphql-code-generator
-- [documentation](https://www.graphql-code-generator.com/docs/getting-started/programmatic-usage) over programming usage of graphql-code-generator
+- [documentation](https://www.graphql-code-generator.com/docs/getting-started/programmatic-usage) over programming usage of graphql-code-generator as alternative
 
 PS: 
 
