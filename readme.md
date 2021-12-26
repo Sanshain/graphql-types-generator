@@ -15,7 +15,9 @@ npm i graphql-types-generator -D
 
 
 ```javascript
-
+// from forked repo:
+const typesGenerate = require('./sources/main');
+// or
 const typesGenerate = require('graphql-types-generator');
 
 async function main() {
