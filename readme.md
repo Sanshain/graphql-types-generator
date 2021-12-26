@@ -16,7 +16,7 @@ npm i graphql-types-generator -D
 
 ```javascript
 
-const typesGenerate = require('./sources/main');
+const typesGenerate = require('graphql-types-generator');
 
 async function main() {
 	await typesGenerate({
