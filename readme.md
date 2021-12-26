@@ -14,8 +14,7 @@ npm i graphql-types-generator -D
 ## Programmatic usage: 
 
 
-```js
-//@ts-check
+```javascript
 
 const typesGenerate = require('./sources/main');
 
