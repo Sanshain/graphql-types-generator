@@ -12,6 +12,7 @@ class TypesGenerator{
 
 	serverTypes = null;
 	verbose = true;
+	mutationArgs = '/* Mutation Arguments types:*/\n';
 
 	/// for server approach 
 	patterns = {
@@ -35,6 +36,9 @@ class TypesGenerator{
 		'Int': 'number',
 		'Date': 'string',
 		'DateTime': 'string',
+		'JSONString': 'any',
+		'Positive': 'number',
+		'Foreign': 'number',
 	}
 
 
@@ -63,7 +67,7 @@ class TypesGenerator{
 		if (this.serverTypes === null) {
 			try{
 				await this.getSchemaTypes();		
-			}			
+			}
 			catch(ex){
 				this.serverTypes = {}
 				console.warn(`Attention: graphql server unavalible! Types will be generated via field namings\n`);
@@ -187,12 +191,17 @@ class TypesGenerator{
 					// 	console.log(branchOfFields);			
 					// 	// ? [branchOfFields.slice().pop(), root[1][branchOfFields[0]]] 			
 					// }
-					let [rootName, types] = branchOfFields 						
-						? branchOfFields.reduce((acc, elem) => acc[elem], root[1])
-						: root;
-					gType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
-					if (!gType){
-						console.warn(`${fieldName} field has not found in type ${rootName}`);
+					try{
+						let [rootName, types] = branchOfFields 						
+							? [branchOfFields.slice().pop(), branchOfFields.reduce((acc, elem) => acc[elem], root[1])]
+							: root;
+						gType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
+						if (!gType){
+							console.warn(`${fieldName} field has not found in type ${rootName}`);
+						}
+					}
+					catch(e){
+						console.log(e);
 					}
 				}				
 
@@ -247,10 +256,25 @@ class TypesGenerator{
 
 	async getSchemaTypes(typeName){
 
-		let serverTypes = {}
+		let serverTypes = {}		
 
 		let rawSchema = await this.typesRequest(this.queriesInfoQuery);	
 		this.rawSchema = rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
+		let mutationTypes = rawSchema.find(t => t.name == 'Mutation').fields;
+
+		for (const mutation of mutationTypes) {
+			if (mutation.description.startsWith(':::')){
+				
+				let inputFields = mutation.description.substring(3).split('\n')
+					.filter(item => item.trim())
+					.map(item => item.trim().split(':'));
+				let typeDec = `export type ${mutation.name + 'Args'} = {\n    ` + inputFields
+					.map(([k, v]) => `${k}: ${this.typeMatches[('' + v).trim()] || (v || 'unknown').trim()}`)
+					.join(',\n    ') + '\n}'
+				this.mutationArgs += '\n' + typeDec + '\n';
+			}
+		}
+
 		let rawTypes = rawSchema.find(t => t.name == 'Query').fields;
 		for (let key in rawTypes)
 		{

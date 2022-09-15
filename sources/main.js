@@ -33,7 +33,7 @@ module.exports = async function typesGenerate(/** @type {{ filename: string; fil
 
 	let graTypes = [];
 	let codeTypes = '';
-
+	
 	options = Object.assign(
 		{
 			filename: 'queries.js',
@@ -64,7 +64,7 @@ module.exports = async function typesGenerate(/** @type {{ filename: string; fil
 
 	let targetFile = path.join(process.cwd(), target);		// path.resolve(path.dirname(''))
 
-	fs.writeFile(targetFile, codeTypes, () => {
+	fs.writeFile(targetFile, codeTypes || generator.mutationArgs, () => {
 		
 		console.log(`Outputs generated to ${targetFile}!`);
 	});
