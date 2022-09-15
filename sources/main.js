@@ -22,8 +22,8 @@ let dir = './sources/';
 // let filename = 'queries.js';
 
 
-/** @type {{ filename: any; files: any; target: any; }} */ 
-module.exports = async function typesGenerate(options) {
+/** @type {{ filename: string; files: any; target: string; }} */ 
+module.exports = async function typesGenerate(/** @type {{ filename: string; files: string[]; target: string; }} */ options) {
 
 	// let typeConds = {
 	// 	string: ['Name', 'Title', 'Date', 'Time'],
@@ -40,12 +40,13 @@ module.exports = async function typesGenerate(options) {
 			files: [],
 			dirname: 'examples',
 			target: 'queries.d.ts',
+			useServerTypes: true,
 			rules: {
 				string: ['Name', 'Title', 'Date', 'Time'],
 				bool: ['is'],
 				number: ['Id']
 			}
-		}, 
+		},
 		options || {}
 	);
 
@@ -55,7 +56,8 @@ module.exports = async function typesGenerate(options) {
 	for (const filename of filenames) {
 		
 		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
-		codeTypes = await generator.getTypes(filename, codeTypes, graTypes);
+		let typesFromFile = await generator.getTypes(filename, codeTypes, graTypes);
+		codeTypes = typesFromFile;
 	}
 	
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';

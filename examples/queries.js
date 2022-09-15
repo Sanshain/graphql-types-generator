@@ -2,6 +2,19 @@
 import gql from "./graphql-tag";
 
 
+export const postCreate = gql`
+    mutation postCreate {
+        postCreate(files: $files, value: $value){
+            post{
+                id,
+                time,
+                value,
+                files
+            }
+        }
+    }
+`;
+
 /**
  * dialog list initialization
  */
@@ -23,7 +36,7 @@ export const get_DialogsInit = gql`
  * just one dialog initial 
  */
 export const get_DialogInit = gql`
-	query {
+	query get_DialogInit {
 		dialog(id: $id){
 			id,
 			title,

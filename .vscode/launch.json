@@ -6,13 +6,14 @@
 	"configurations": [
 		{
 			"name": "cli test",
-			"program": "${workspaceFolder}/main.js",
+			"program": "${workspaceFolder}/example.js",
+			// "program": "${workspaceFolder}/main.js",
 			"request": "launch",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
 			"type": "pwa-node",
-			"args": ["-s", "./examples/queries.js"]
+			// "args": ["-s", "./examples/queries.js"]
 		},
 		{
 			"type": "pwa-node",

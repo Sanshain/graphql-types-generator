@@ -10,7 +10,8 @@ const any = 'any';
 
 class TypesGenerator{
 
-	serverTypes = null
+	serverTypes = null;
+	verbose = true;
 
 	/// for server approach 
 	patterns = {
@@ -24,13 +25,24 @@ class TypesGenerator{
 	rules = {
 		string: ['Name', 'Title', 'Date', 'Time'],
 		bool: ['is'],
-		number: ['Id']
+		number: ['Id', 'Count', 'Sum']
 	}	
+
+	typeMatches = {
+		'String': 'string',
+		'Boolean': 'boolean',
+		'ID': 'number',
+		'Int': 'number',
+		'Date': 'string',
+		'DateTime': 'string',
+	}
+
 
 	constructor(options){
 		
 		let keyValidator = Object.keys(this.rules);
 		this.rules = options.rules || this.rules;
+		this.options = options;
 		
 		if (options.rules){
 			if (!keyValidator.every(k => k in this.rules)){
@@ -47,30 +59,61 @@ class TypesGenerator{
 	 * @returns typescript code
 	 */
 	 async getTypes(filename, codeTypes, graTypes) {
-
+		
 		if (this.serverTypes === null) {
 			try{
 				await this.getSchemaTypes();		
 			}			
 			catch(ex){
-				console.warn(`Warning: graphql server unavalible. Attention! Types will generates via fields naming\n`);
+				this.serverTypes = {}
+				console.warn(`Attention: graphql server unavalible! Types will be generated via field namings\n`);
 			}
 		}
 
 		let gqlDe = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 
+		console.log(gqls.length);		
+
 		for (const query of gqls) {
 
-			// @ts-ignore
-			let definition = gql(query).definitions.pop();
+			try{
+				// @ts-ignore
+				var definition = gql(query).definitions.pop();
+			}
+			catch(ex){
+				console.warn('Detected wrong gql syntax. Check comments');
+				continue;
+			}
+
+			console.log('-');
 
 			const typeName = definition.name?.value || 'undefined';
-			typeName === 'undefined' && console.warn(`typename is undefined in ${filename}`);
+			typeName === 'undefined' && console.warn(`Warning: detected undefined query name in ${filename}`);
+
+			typeName && console.log(typeName);
+
+			// let serverType = Object.entries(this.serverTypes).find(([k, v]) => k == typeName)
+			// if (serverType){
+			// 	let selfType = serverType.pop()
+			// 	selfType = Array.isArray(selfType) ? selfType[0] : selfType
+			// 	// let typeString = `\n\nexport type ${typeName} = ` + JSON.stringify(selfType)
+			// 	// 	.replace(/"/g, '').replace(/\:/g, ': ')  // .replace(/,/g, ', ')
+			// 	// 	.replace(/,/g, ',\n    ').replace(/\{/g, '{\n    ').replace(/\}/g, '\n}')
+			// 	// 	.replace(/null,/g, 'object[],')
+			// 	// 	.replace(/(ID|Int)/g, 'number')
+			// 	// 	.replace(/(Date|DateTime|String),/g, 'string,')
+			// 	// 	.replace(/Boolean/g, 'boolean');
+
+			// 	// codeTypes += typeString;
+			// 	// graTypes.push(selfType);
+			// 	continue
+			// }
 			
 			let selections = definition.selectionSet.selections;
 			
-			let gpaType = this.getType(selections, undefined);
+			let serverType = Object.entries(this.serverTypes).find(([k, v]) => k == typeName)
+			let gpaType = this.getType(selections, undefined, serverType);
 
 			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
 
@@ -85,9 +128,11 @@ class TypesGenerator{
 	 * genarate code from graphql node
 	 * @param {[*]} selections - selections array
 	 * @param {number} deep count
+	 * @param {[string, {string: string}]} root - root type name
+	 * 
 	 * @returns type object and code
 	 */
-	getType(selections, deep) {
+	getType(selections, deep, root, branchOfFields) {
 
 		let _gpaType = {};	
 		let lines = ''
@@ -100,15 +145,18 @@ class TypesGenerator{
 					
 				let _lines = '', _gpaType = {}
 
+				// this.rawSchema.reduce((acc, el) => ((acc[el.name] = el.fields), acc), {})
 				let _type = (this.serverTypes || [])[selection.name?.value];
-							
+
 				if (_type && false){
 
 					_lines = this.getServerType(selection, _gpaType, _lines);
 				}
 				else{
 					({_gpaType, lines: _lines} = this.getType(
-						selection.selectionSet.selections, deep
+						selection.selectionSet.selections, 
+						deep, 
+						root, (deep >= 8) ? [...branchOfFields || [], selection.name.value] : undefined
 						// selection.selectionSet.selections, deep + 4
 					))
 				}
@@ -131,22 +179,38 @@ class TypesGenerator{
 			else {
 
 				const fieldName =  selection.name.value;
-
 				let gType = any;
 
-				if (this.rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)){
-					gType = 'number'
-				}
-				if (this.rules.string.some(m => fieldName.startsWith(m.toLowerCase()) || fieldName.endsWith(m))){
-					gType = 'string'
-				}
-				else if(this.rules.bool.some(m => selection.name.value.startsWith(m))){
-					gType = 'boolean'
+				// server type apply:
+				if (this.options.useServerTypes && deep >= 8 && root){					
+					// if (deep > 8){
+					// 	console.log(branchOfFields);			
+					// 	// ? [branchOfFields.slice().pop(), root[1][branchOfFields[0]]] 			
+					// }
+					let [rootName, types] = branchOfFields 						
+						? branchOfFields.reduce((acc, elem) => acc[elem], root[1])
+						: root;
+					gType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
+					if (!gType){
+						console.warn(`${fieldName} field has not found in type ${rootName}`);
+					}
+				}				
+
+				if (!gType || gType === any){
+					if (this.rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)){
+						gType = 'number'
+					}
+					if (this.rules.string.some(m => fieldName.startsWith(m.toLowerCase()) || fieldName.endsWith(m))){
+						gType = 'string'
+					}
+					else if(this.rules.bool.some(m => selection.name.value.startsWith(m))){
+						gType = 'boolean'
+					}
 				}
 
-				_gpaType[selection.name.value] = gType;
+				_gpaType[selection.name.value] = gType || any;
 
-				lines += ' '.repeat(deep) + selection.name.value + `: ${gType},\n`
+				lines += ' '.repeat(deep) + selection.name.value + `: ${gType || any},\n`
 			}
 		}
 
@@ -186,7 +250,7 @@ class TypesGenerator{
 		let serverTypes = {}
 
 		let rawSchema = await this.typesRequest(this.queriesInfoQuery);	
-		rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
+		this.rawSchema = rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
 		let rawTypes = rawSchema.find(t => t.name == 'Query').fields;
 		for (let key in rawTypes)
 		{
@@ -194,16 +258,29 @@ class TypesGenerator{
 			let type = rawType.type.name || rawType.type.ofType?.name;	
 			type = type || (rawType.name.endsWith('s') 				
 				? rawTypes.find(t => t.name == rawType.name.slice(0, -1))?.type.name
-				: null
-			);
+				: 'any[]'
+			);			
 
 			if (type){
 				let tsType = {}
 				for (const field of rawSchema.find(t => type == t.name).fields) 
 				{
 					tsType[field.name] = field.type.name || field.type.ofType.name;
+					if (!~['Int', 'String', 'Boolean', 'ID', 'DateTime', 'Date'].indexOf(tsType[field.name])){
+						const subType = rawSchema.find(w => w.name == tsType[field.name]);
+						if (subType && subType.fields && subType.fields.length) {
+							tsType[field.name] = {}
+							for (const subField of subType.fields) {
+								tsType[field.name][subField.name] = subField.type.name || subField.type.ofType.name;
+							}
+						}
+
+					}
+					tsType[field.name] = tsType[field.name] || 'object[]';
+					// tsType[type] = field.type.name || field.type.ofType.name;
 				}
-				serverTypes[rawType.name] = rawType.type.name 
+				// serverTypes[rawType.name] = rawType.type.name 
+				serverTypes[type] = rawType.type.name 
 					? tsType
 					: [tsType]
 			}
@@ -211,12 +288,15 @@ class TypesGenerator{
 
 		// rawSchema.filter(t => ~Object.values(serverTypes).indexOf(t.name))
 		
-		console.log(rawSchema);
+		this.verbose && console.log(rawSchema);
 
 		this.serverTypes = serverTypes;
 	}
 
 
+	/**
+	 * @param {string} queriesInfoQuery
+	 */
 	typesRequest(queriesInfoQuery){
 		
 		return new Promise(function(resolve, reject) {
