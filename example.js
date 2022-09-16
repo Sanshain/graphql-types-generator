@@ -9,12 +9,14 @@ async function main() {
 		// filename: './examples/mutations.js',
 		// filename: './examples/queries.js',
 		filename: '',
+		separateFileForArgumentsTypes: 'arguments.d.ts',
 		files: [
 			'./examples/real/queries.js',
 			'./examples/real/autoqueries.js',
 			'./examples/real/mutations/auth.ts',
 		],
 		target: './queries.d.ts',
+		// 
 	});	
 }
 

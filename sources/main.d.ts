@@ -4,7 +4,8 @@ declare type Options = {
 	files?: Array<string>, 
 	dirname? : string,
 	target?: string,
-	rules?: object
+	rules?: object,
+	separateFileForArgumentsTypes?: string
 }
 
 declare function typesGenerate(options: Options): void;

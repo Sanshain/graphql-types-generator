@@ -30,6 +30,37 @@ export type ProfileInfo = {
     },
 };
 
+export type DialogInfo = {
+    dialog: {
+        id: number,
+        title: string,
+        founder: {
+            id: number,
+        },
+        users: {
+            id: number,
+            name: string,
+            image: any,
+        }[],
+        messages: {
+            id: number,
+            author: any,
+            time: string,
+            value: any,
+            files: any,
+            replyTo: {
+                id: number,
+                time: string,
+                value: any,
+                files: any,
+                author: any,
+            },
+            likesCount: any,
+            rated: any,
+        }[],
+    },
+};
+
 export type paginatedUsers = {
     paginatedUsers: Array<{
         username: any,

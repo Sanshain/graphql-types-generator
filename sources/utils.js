@@ -12,7 +12,7 @@ class TypesGenerator{
 
 	serverTypes = null;
 	verbose = true;
-	mutationArgs = '/* Mutation Arguments types:*/\n';
+	mutationArgs = '\n\n/* Mutation Arguments types:*/\n';
 
 	/// for server approach 
 	patterns = {

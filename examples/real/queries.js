@@ -54,7 +54,7 @@ export const get_DialogInit = gql`
 			founder {
 				id
 			},			
-			`user`s{
+			users{
 				id,			
 				name,
 				image,     

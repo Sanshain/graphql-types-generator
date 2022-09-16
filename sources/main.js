@@ -23,8 +23,10 @@ let dir = './sources/';
 
 
 /** @type {{ filename: string; files: any; target: string; }} */ 
-module.exports = async function typesGenerate(/** @type {{ filename: string; files: string[]; target: string; }} */ options) {
-
+module.exports = async function typesGenerate(
+	/** @type {{ filename: string; files: string[]; target: string; separateFileForArgumentsTypes?: string}} */ options,
+	) {
+		
 	// let typeConds = {
 	// 	string: ['Name', 'Title', 'Date', 'Time'],
 	// 	bool: ['is'],
@@ -41,6 +43,7 @@ module.exports = async function typesGenerate(/** @type {{ filename: string; fil
 			dirname: 'examples',
 			target: 'queries.d.ts',
 			useServerTypes: true,
+			separateFileForArgumentsTypes: '',
 			rules: {
 				string: ['Name', 'Title', 'Date', 'Time'],
 				bool: ['is'],
@@ -63,11 +66,21 @@ module.exports = async function typesGenerate(/** @type {{ filename: string; fil
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
 
 	let targetFile = path.join(process.cwd(), target);		// path.resolve(path.dirname(''))
+	
 
-	fs.writeFile(targetFile, codeTypes || generator.mutationArgs, () => {
+	if (options.separateFileForArgumentsTypes){
 		
-		console.log(`Outputs generated to ${targetFile}!`);
-	});
+		fs.writeFile(targetFile, codeTypes, () => console.log(`Queries types generated to ${targetFile}!`));		
+
+		const argsTargetFile = path.join(process.cwd(), options.separateFileForArgumentsTypes);
+		fs.writeFile(
+			argsTargetFile, generator.mutationArgs, () => console.log(`Arguments types generated to ${argsTargetFile}!`)
+		);		
+	}
+	else fs.writeFile(
+		targetFile, codeTypes + generator.mutationArgs, () => console.log(`Outputs generated to ${targetFile}!`)
+	);	
+
 	
 }
 
