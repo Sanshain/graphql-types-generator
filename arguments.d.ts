@@ -25,8 +25,8 @@ export type userSettingsMutationArgs = {
 
 
 export type ArgTypes = {
-    postCreate: postCreateArgs,
-    likeApply: likeApplyArgs,
-    friendshipApply: friendshipApplyArgs,
-    userSettingsMutation: userSettingsMutationArgs,
+    PostMutation: postCreateArgs,
+    LikeMutation: likeApplyArgs,
+    FriendshipMutation: friendshipApplyArgs,
+    SettingsMutationPayload: userSettingsMutationArgs,
 }

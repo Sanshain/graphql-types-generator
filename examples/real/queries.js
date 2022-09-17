@@ -87,8 +87,8 @@ export const get_DialogInit = gql`
  * @using
  * filter:"{'exclude' : {'id__in': [1,2,5]}, 'icontains': 'Bob1', 'only_friends': 1}"
  */
-export const GET_PaginatedUsers = gql`
-	query paginatedUsers {
+export const getPaginatedUsers = gql`
+	query PaginatedUsers {
 		paginatedUsers(filter:$filter)
 		{
 			username,

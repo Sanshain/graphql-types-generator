@@ -79,7 +79,8 @@ module.exports = async function typesGenerate(
 	// 									"`\n    ${'mutation'|'query'} ${T} {\n        ${Q}${string}\`"
 
 
-	generator.mutationArgs += `\n\n\n${generator.argTypes}`
+	// generator.mutationArgs += `\n\n\n${generator.argTypesCode}`
+	generator.mutationArgs += `\n\n${generator.getArgumentMatchesType()}`
 
 	if (options.separateFileForArgumentsTypes){
 		

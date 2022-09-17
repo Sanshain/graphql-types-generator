@@ -11,8 +11,12 @@ const any = 'any';
 class TypesGenerator{
 
 	serverTypes = null;
-	argTypes = '';
-	verbose = true;
+	
+	argTypesCode = '';	
+	argMatches = {}
+	argTypes = [];
+
+	verbose = false;
 	mutationArgs = '\n\n/* Mutation Arguments types:*/\n';
 
 	/// for server approach 
@@ -87,7 +91,7 @@ class TypesGenerator{
 		let gqlDe = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 
-		console.log(gqls.length);		
+		console.log(`# ${gqls.length} types detected:`);		
 
 		for (const query of gqls) {
 
@@ -100,10 +104,10 @@ class TypesGenerator{
 				continue;
 			}
 
-			console.log('-');
+			// console.log('-');
 
 			const typeName = definition.name?.value || 'undefined';
-			typeName === 'undefined' && console.warn(`Warning: detected undefined query name in ${filename}`);
+			typeName === 'undefined' && console.warn(`---> Warning: detected undefined query name in ${filename}`);
 
 			typeName && console.log(typeName);
 
@@ -130,17 +134,31 @@ class TypesGenerator{
 			
 			let gpaType = this.getType(selections, undefined, serverType);
 			if (this.options.attachTypeName){
-				gpaType.lines = `\n    __typename: ${typeName},\n\n` + gpaType.lines
+				gpaType.lines = `\n    __typename: "${typeName}",\n\n` + gpaType.lines
+								
+				let argTypes = selections.map(s => s.name.value).filter(x => this.argTypes.includes(x));
+				if (argTypes.length){
+					this.argMatches[typeName] =  argTypes.map(t => t + 'Args').join(' & ');
+				}
 			}
-
 			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
 
 			codeTypes += typeString;
 			graTypes.push(gpaType);
 		}
+
 		return codeTypes;
 	}
 
+	getArgumentMatchesType() {
+		
+		this.argTypesCode = Object.entries(this.argMatches).reduce(
+			(accType, [typeName, argTypes]) => accType += (`    ${typeName}: ${argTypes},\n`), 
+			'export type ArgTypes = {\n'
+		) + '}'
+
+		return this.argTypesCode;
+	} 
 
 	/**
 	 * genarate code from graphql node
@@ -292,10 +310,7 @@ class TypesGenerator{
 			}
 		}
 
-		this.argTypes += argTypes.reduce(
-			(accType, typeName) => accType += (`    ${typeName}: ${typeName}Args,\n`), 
-			'export type ArgTypes = {\n'
-		) + '}'
+		this.argTypes = argTypes
 
 
 		let rawTypes = rawSchema.find(t => t.name == 'Query').fields;

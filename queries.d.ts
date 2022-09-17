@@ -2,7 +2,7 @@
 
 export type ProfileInfo = {
 
-    __typename: ProfileInfo,
+    __typename: "ProfileInfo",
 
     users: Array<{
         id: number,
@@ -35,7 +35,7 @@ export type ProfileInfo = {
 
 export type DialogInfo = {
 
-    __typename: DialogInfo,
+    __typename: "DialogInfo",
 
     dialog: {
         id: number,
@@ -67,9 +67,9 @@ export type DialogInfo = {
     },
 };
 
-export type paginatedUsers = {
+export type PaginatedUsers = {
 
-    __typename: paginatedUsers,
+    __typename: "PaginatedUsers",
 
     paginatedUsers: Array<{
         username: any,
@@ -77,9 +77,9 @@ export type paginatedUsers = {
     }>,
 };
 
-export type postCreate = {
+export type PostMutation = {
 
-    __typename: postCreate,
+    __typename: "PostMutation",
 
     postCreate: {
         post: {
@@ -91,18 +91,48 @@ export type postCreate = {
     },
 };
 
-export type likeApply = {
+export type LikeMutation = {
 
-    __typename: likeApply,
+    __typename: "LikeMutation",
 
     likeApply: {
         increased: any,
     },
 };
 
+export type FriendshipMutation = {
+
+    __typename: "FriendshipMutation",
+
+    friendshipApply: {
+        added: any,
+    },
+};
+
+export type SettingsMutationPayload = {
+
+    __typename: "SettingsMutationPayload",
+
+    userSettingsMutation: {
+        profile: {
+            id: number,
+            username: any,
+            firstName: string,
+            lastName: string,
+            dateJoined: string,
+            placeId: number,
+        },
+        errors: any,
+        settings: {
+            firstName: string,
+        }[],
+        clientMutationId: number,
+    },
+};
+
 export type UserNode = {
 
-    __typename: UserNode,
+    __typename: "UserNode",
 
     me: {
         id: number,
@@ -124,9 +154,29 @@ export type UserNode = {
     },
 };
 
+export type UserType = {
+
+    __typename: "UserType",
+
+    user: {
+        id: number,
+        lastLogin: string,
+        username: string,
+        firstName: string,
+        lastName: string,
+        dateJoined: string,
+        avatar: string,
+        sex: boolean,
+        placeId: number,
+        name: string,
+        image: string,
+        friendshipState: number,
+    },
+};
+
 export type PostType = {
 
-    __typename: PostType,
+    __typename: "PostType",
 
     posts: Array<{
         id: number,
@@ -138,30 +188,9 @@ export type PostType = {
     }>,
 };
 
-export type UserType = {
-
-    __typename: UserType,
-
-    user: {
-        id: number,
-        lastLogin: string,
-        username: string,
-        firstName: string,
-        lastName: string,
-        isStaff: boolean,
-        dateJoined: string,
-        avatar: string,
-        sex: boolean,
-        placeId: number,
-        name: string,
-        image: string,
-        isFriend: boolean,
-    },
-};
-
 export type DialogType = {
 
-    __typename: DialogType,
+    __typename: "DialogType",
 
     dialog: {
         id: number,
@@ -177,7 +206,7 @@ export type DialogType = {
 
 export type SignInfo = {
 
-    __typename: SignInfo,
+    __typename: "SignInfo",
 
     tokenAuth: {
         success: any,
@@ -193,7 +222,7 @@ export type SignInfo = {
 
 export type SignUpInfo = {
 
-    __typename: SignUpInfo,
+    __typename: "SignUpInfo",
 
     register: {
         success: any,
@@ -204,7 +233,7 @@ export type SignUpInfo = {
 
 export type PassResetInfo = {
 
-    __typename: PassResetInfo,
+    __typename: "PassResetInfo",
 
     passwordReset: {
         success: any,
@@ -214,7 +243,7 @@ export type PassResetInfo = {
 
 export type AccountVerifyingInfo = {
 
-    __typename: AccountVerifyingInfo,
+    __typename: "AccountVerifyingInfo",
 
     verifyAccount: {
         success: any,
@@ -224,7 +253,7 @@ export type AccountVerifyingInfo = {
 
 export type SignOutInfo = {
 
-    __typename: SignOutInfo,
+    __typename: "SignOutInfo",
 
     revokeToken: {
         success: any,
@@ -234,7 +263,7 @@ export type SignOutInfo = {
 
 export type undefined = {
 
-    __typename: undefined,
+    __typename: "undefined",
 
     tokenAuth: {
         success: any,

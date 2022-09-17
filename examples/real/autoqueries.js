@@ -1,8 +1,8 @@
 import gql from "./graphql-tag";
 
 export const postCreate = gql`
-    mutation postCreate {
-        postCreate(value: $value, files: $files){
+    mutation PostMutation {
+        postCreate(files: $files, value: $value){
             post{
                 id,
                 time,
@@ -14,9 +14,37 @@ export const postCreate = gql`
 `;
 
 export const likeApply = gql`
-    mutation likeApply {
+    mutation LikeMutation {
         likeApply(postId: $postId){
             increased
+        }
+    }
+`;
+
+export const friendshipApply = gql`
+    mutation FriendshipMutation {
+        friendshipApply(userId: $userId){
+            added
+        }
+    }
+`;
+
+export const userSettingsMutation = gql`
+    mutation SettingsMutationPayload {
+        userSettingsMutation(birthday: $birthday, sex: $sex, placeId: $placeId, placeTypeId: $placeTypeId){
+            profile{
+                id,
+                username,
+                firstName,
+                lastName,
+                dateJoined,
+                placeId
+            },
+            errors,
+            settings{
+                firstName
+            },
+            clientMutationId
         }
     }
 `;
@@ -44,6 +72,25 @@ export const userNode = gql`
     }
 `;
 
+export const userType = gql`
+    query UserType {
+        user (id: $id) {
+            id,
+            lastLogin,
+            username,
+            firstName,
+            lastName,
+            dateJoined,
+            avatar,
+            sex,
+            placeId,
+            name,
+            image,
+            friendshipState
+        }
+    }
+`;
+
 export const postType = gql`
     query PostType {
         posts (user: $user) {
@@ -53,26 +100,6 @@ export const postType = gql`
             files,
             likesCount,
             rated
-        }
-    }
-`;
-
-export const userType = gql`
-    query UserType {
-        user (id: $id) {
-            id,
-            lastLogin,
-            username,
-            firstName,
-            lastName,
-            isStaff,
-            dateJoined,
-            avatar,
-            sex,
-            placeId,
-            name,
-            image,
-            isFriend
         }
     }
 `;
