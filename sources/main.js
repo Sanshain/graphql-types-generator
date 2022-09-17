@@ -42,7 +42,14 @@ module.exports = async function typesGenerate(
 			files: [],
 			dirname: 'examples',
 			target: 'queries.d.ts',
+			/**
+			 * use server types (for server generated queries)
+			 */
 			useServerTypes: true,
+			/**
+			 * attach `__typename` field for each query type
+			 */
+			attachTypeName: true,
 			separateFileForArgumentsTypes: '',
 			rules: {
 				string: ['Name', 'Title', 'Date', 'Time'],
@@ -67,6 +74,12 @@ module.exports = async function typesGenerate(
 
 	let targetFile = path.join(process.cwd(), target);		// path.resolve(path.dirname(''))
 	
+
+	// generator.mutationArgs += 	"\n\nexport type QueryString<T extends string, Q extends string> = " +
+	// 									"`\n    ${'mutation'|'query'} ${T} {\n        ${Q}${string}\`"
+
+
+	generator.mutationArgs += `\n\n\n${generator.argTypes}`
 
 	if (options.separateFileForArgumentsTypes){
 		

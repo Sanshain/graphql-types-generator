@@ -1,6 +1,9 @@
 
 
 export type ProfileInfo = {
+
+    __typename: ProfileInfo,
+
     users: Array<{
         id: number,
         username: any,
@@ -31,6 +34,9 @@ export type ProfileInfo = {
 };
 
 export type DialogInfo = {
+
+    __typename: DialogInfo,
+
     dialog: {
         id: number,
         title: string,
@@ -62,6 +68,9 @@ export type DialogInfo = {
 };
 
 export type paginatedUsers = {
+
+    __typename: paginatedUsers,
+
     paginatedUsers: Array<{
         username: any,
         firstName: string,
@@ -69,6 +78,9 @@ export type paginatedUsers = {
 };
 
 export type postCreate = {
+
+    __typename: postCreate,
+
     postCreate: {
         post: {
             id: number,
@@ -80,12 +92,18 @@ export type postCreate = {
 };
 
 export type likeApply = {
+
+    __typename: likeApply,
+
     likeApply: {
         increased: any,
     },
 };
 
 export type UserNode = {
+
+    __typename: UserNode,
+
     me: {
         id: number,
         lastLogin: string,
@@ -107,6 +125,9 @@ export type UserNode = {
 };
 
 export type PostType = {
+
+    __typename: PostType,
+
     posts: Array<{
         id: number,
         time: string,
@@ -118,6 +139,9 @@ export type PostType = {
 };
 
 export type UserType = {
+
+    __typename: UserType,
+
     user: {
         id: number,
         lastLogin: string,
@@ -136,6 +160,9 @@ export type UserType = {
 };
 
 export type DialogType = {
+
+    __typename: DialogType,
+
     dialog: {
         id: number,
         avatar: string,
@@ -149,6 +176,9 @@ export type DialogType = {
 };
 
 export type SignInfo = {
+
+    __typename: SignInfo,
+
     tokenAuth: {
         success: any,
         errors: any,
@@ -162,6 +192,9 @@ export type SignInfo = {
 };
 
 export type SignUpInfo = {
+
+    __typename: SignUpInfo,
+
     register: {
         success: any,
         errors: any,
@@ -170,6 +203,9 @@ export type SignUpInfo = {
 };
 
 export type PassResetInfo = {
+
+    __typename: PassResetInfo,
+
     passwordReset: {
         success: any,
         errors: any,
@@ -177,6 +213,9 @@ export type PassResetInfo = {
 };
 
 export type AccountVerifyingInfo = {
+
+    __typename: AccountVerifyingInfo,
+
     verifyAccount: {
         success: any,
         errors: any,
@@ -184,6 +223,9 @@ export type AccountVerifyingInfo = {
 };
 
 export type SignOutInfo = {
+
+    __typename: SignOutInfo,
+
     revokeToken: {
         success: any,
         errors: any,
@@ -191,6 +233,9 @@ export type SignOutInfo = {
 };
 
 export type undefined = {
+
+    __typename: undefined,
+
     tokenAuth: {
         success: any,
         errors: any,

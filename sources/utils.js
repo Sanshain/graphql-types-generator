@@ -11,6 +11,7 @@ const any = 'any';
 class TypesGenerator{
 
 	serverTypes = null;
+	argTypes = '';
 	verbose = true;
 	mutationArgs = '\n\n/* Mutation Arguments types:*/\n';
 
@@ -42,6 +43,14 @@ class TypesGenerator{
 	}
 
 
+	/**
+	 * @pparam {{ 
+	 * 	rules: { 
+	 * 		string: string[]; bool: string[]; number: string[]; 
+	 * 	}; 
+	 * 	useServerTypes: boolean 
+	 * }} options
+	 */
 	constructor(options){
 		
 		let keyValidator = Object.keys(this.rules);
@@ -54,6 +63,7 @@ class TypesGenerator{
 			}
 		}
 	}
+
 
 	/**
 	 * добавляет сгенерированные типы в codeTypes и возвращает ее
@@ -73,7 +83,7 @@ class TypesGenerator{
 				console.warn(`Attention: graphql server unavalible! Types will be generated via field namings\n`);
 			}
 		}
-
+		
 		let gqlDe = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 
@@ -117,7 +127,11 @@ class TypesGenerator{
 			let selections = definition.selectionSet.selections;
 			
 			let serverType = Object.entries(this.serverTypes).find(([k, v]) => k == typeName)
+			
 			let gpaType = this.getType(selections, undefined, serverType);
+			if (this.options.attachTypeName){
+				gpaType.lines = `\n    __typename: ${typeName},\n\n` + gpaType.lines
+			}
 
 			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
 
@@ -139,7 +153,7 @@ class TypesGenerator{
 	getType(selections, deep, root, branchOfFields) {
 
 		let _gpaType = {};	
-		let lines = ''
+		let lines = ''	
 
 		deep = (deep || 0) + 4;
 		
@@ -262,6 +276,8 @@ class TypesGenerator{
 		this.rawSchema = rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
 		let mutationTypes = rawSchema.find(t => t.name == 'Mutation').fields;
 
+		let argTypes = []
+		
 		for (const mutation of mutationTypes) {
 			if (mutation.description.startsWith(':::')){
 				
@@ -272,8 +288,15 @@ class TypesGenerator{
 					.map(([k, v]) => `${k}: ${this.typeMatches[('' + v).trim()] || (v || 'unknown').trim()}`)
 					.join(',\n    ') + '\n}'
 				this.mutationArgs += '\n' + typeDec + '\n';
+				argTypes.push(mutation.name);
 			}
 		}
+
+		this.argTypes += argTypes.reduce(
+			(accType, typeName) => accType += (`    ${typeName}: ${typeName}Args,\n`), 
+			'export type ArgTypes = {\n'
+		) + '}'
+
 
 		let rawTypes = rawSchema.find(t => t.name == 'Query').fields;
 		for (let key in rawTypes)
@@ -282,7 +305,7 @@ class TypesGenerator{
 			let type = rawType.type.name || rawType.type.ofType?.name;	
 			type = type || (rawType.name.endsWith('s') 				
 				? rawTypes.find(t => t.name == rawType.name.slice(0, -1))?.type.name
-				: 'any[]'
+				: 'unknown[]'
 			);			
 
 			if (type){

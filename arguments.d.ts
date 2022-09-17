@@ -21,3 +21,12 @@ export type userSettingsMutationArgs = {
     placeId: number,
     placeTypeId: number
 }
+
+
+
+export type ArgTypes = {
+    postCreate: postCreateArgs,
+    likeApply: likeApplyArgs,
+    friendshipApply: friendshipApplyArgs,
+    userSettingsMutation: userSettingsMutationArgs,
+}
