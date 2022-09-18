@@ -91,7 +91,7 @@ class TypesGenerator{
 		let gqlDe = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 
-		console.log(`# ${gqls.length} types detected:`);		
+		console.log(`\n# ${gqls.length} types detected:`);		
 
 		for (const query of gqls) {
 
@@ -107,7 +107,7 @@ class TypesGenerator{
 			// console.log('-');
 
 			const typeName = definition.name?.value || 'undefined';
-			typeName === 'undefined' && console.warn(`---> Warning: detected undefined query name in ${filename}`);
+			typeName === 'undefined' && console.warn(`     ---> Warning: detected undefined query name in ${filename}`);
 
 			typeName && console.log(typeName);
 
@@ -154,7 +154,7 @@ class TypesGenerator{
 		
 		this.argTypesCode = Object.entries(this.argMatches).reduce(
 			(accType, [typeName, argTypes]) => accType += (`    ${typeName}: ${argTypes},\n`), 
-			'export type ArgTypes = {\n'
+			'export type ArgTypes = {\n\n    undefined: any,\n'
 		) + '}'
 
 		return this.argTypesCode;

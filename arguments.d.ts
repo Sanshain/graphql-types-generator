@@ -23,8 +23,9 @@ export type userSettingsMutationArgs = {
 }
 
 
-
 export type ArgTypes = {
+
+    undefined: any,
     PostMutation: postCreateArgs,
     LikeMutation: likeApplyArgs,
     FriendshipMutation: friendshipApplyArgs,
