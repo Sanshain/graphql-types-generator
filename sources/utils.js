@@ -10,6 +10,9 @@ const any = 'any';
 
 class TypesGenerator{
 
+	/**
+	 * @type {{[key: string]: any}?}
+	 */
 	serverTypes = null;
 	
 	argTypesCode = '';	
@@ -91,7 +94,7 @@ class TypesGenerator{
 		let gqlDe = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 
-		console.log(`\n# ${gqls.length} types detected:`);		
+		console.log(`\n# ${gqls.length} types detected: \n`);		
 
 		for (const query of gqls) {
 
@@ -107,7 +110,7 @@ class TypesGenerator{
 			// console.log('-');
 
 			const typeName = definition.name?.value || 'undefined';
-			typeName === 'undefined' && console.warn(`     ---> Warning: detected undefined query name in ${filename}`);
+			typeName === 'undefined' && console.warn(`  ---> Warning: detected undefined query name in ${filename}`);
 
 			typeName && console.log(typeName);
 
@@ -130,15 +133,20 @@ class TypesGenerator{
 			
 			let selections = definition.selectionSet.selections;
 			
+			//@ts-ignore
 			let serverType = Object.entries(this.serverTypes).find(([k, v]) => k == typeName)
 			
-			let gpaType = this.getType(selections, undefined, serverType);
-			if (this.options.attachTypeName){
-				gpaType.lines = `\n    __typename: "${typeName}",\n\n` + gpaType.lines
+			let gpaType = this.getType(selections, 0, serverType, null);
+			if (this.options.attachTypeName){				
 								
 				let argTypes = selections.map(s => s.name.value).filter(x => this.argTypes.includes(x));
 				if (argTypes.length){
-					this.argMatches[typeName] =  argTypes.map(t => t + 'Args').join(' & ');
+					this.argMatches[typeName] =  argTypes.map(t => t + 'Args').join(' & ');					
+				}
+
+				//TODO include as option:
+				if (argTypes.length){
+					gpaType.lines = `\n    __typename: "${typeName}",\n\n` + gpaType.lines
 				}
 			}
 			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
@@ -164,7 +172,7 @@ class TypesGenerator{
 	 * genarate code from graphql node
 	 * @param {[*]} selections - selections array
 	 * @param {number} deep count
-	 * @param {[string, {string: string}]} root - root type name
+	 * @param {[string, {string: string}] | undefined} root - root type name
 	 * 
 	 * @returns type object and code
 	 */
@@ -186,6 +194,7 @@ class TypesGenerator{
 
 				if (_type && false){
 
+					//@ts-ignore
 					_lines = this.getServerType(selection, _gpaType, _lines);
 				}
 				else{
@@ -259,10 +268,15 @@ class TypesGenerator{
 
 	}
 
+	/**
+	 * @param {{ selectionSet: { selections: any[]; }; name: { value: string | number; }; }} selection
+	 * @param {{ [x: string]: { [x: string]: any; }; }} _gpaType
+	 * @param {string} _lines
+	 */
 	getServerType(selection, _gpaType, _lines) {
 
 		let fields = selection.selectionSet.selections.map(f => f.name.value);
-		let selectionType = this.serverTypes[selection.name?.value];
+		let selectionType = (this.serverTypes || [])[selection.name?.value];
 		let isArray = Array.isArray(selectionType);
 		if (isArray)
 			_gpaType[selection.name.value] = [];

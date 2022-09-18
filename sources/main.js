@@ -84,7 +84,7 @@ module.exports = async function typesGenerate(
 
 	if (options.separateFileForArgumentsTypes){
 		
-		fs.writeFile(targetFile, codeTypes, () => console.log(`\nQueries types generated to ${targetFile}!`));		
+		fs.writeFile(targetFile, codeTypes, () => console.log(`\n\nQueries types generated to ${targetFile}!`));		
 
 		const argsTargetFile = path.join(process.cwd(), options.separateFileForArgumentsTypes);
 		fs.writeFile(
@@ -92,7 +92,7 @@ module.exports = async function typesGenerate(
 		);		
 	}
 	else fs.writeFile(
-		targetFile, codeTypes + generator.mutationArgs, () => console.log(`\nOutputs generated to ${targetFile}!`)
+		targetFile, codeTypes + generator.mutationArgs, () => console.log(`\n\nOutputs generated to ${targetFile}!`)
 	);	
 
 	
