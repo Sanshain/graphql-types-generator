@@ -3,28 +3,38 @@
 export type ProfileInfo = {
     users: Array<{
         id: number,
-        username: any,
+        username: string,
         name: string,
         lastName: string,
-        image: any,
+        image: string,
     }>,
     dialogs: Array<{
         id: number,
         title: string,
         founder: {
             id: number,
+            lastLogin: string,
+            username: string,
+            firstName: string,
+            lastName: string,
+            dateJoined: string,
+            avatar: string,
+            sex: boolean,
+            birthday: string,
+            placeId: number,
             name: string,
-            image: any,
+            image: string,
+            friendshipState: number,
         },
-        talkersAmount: any,
+        talkersAmount: number,
         lastMessage: {
-            author: any,
-            value: any,
+            author: string,
+            value: string,
         },
     }>,
     me: {
         id: number,
-        username: any,
+        username: string,
         firstName: string,
         lastName: string,
     },
@@ -36,11 +46,23 @@ export type DialogInfo = {
         title: string,
         founder: {
             id: number,
+            lastLogin: string,
+            username: string,
+            firstName: string,
+            lastName: string,
+            dateJoined: string,
+            avatar: string,
+            sex: boolean,
+            birthday: string,
+            placeId: number,
+            name: string,
+            image: string,
+            friendshipState: number,
         },
         users: {
             id: number,
             name: string,
-            image: any,
+            image: string,
         }[],
         messages: {
             id: number,
@@ -191,7 +213,7 @@ export type SignInfo = {
         token: any,
         user: {
             id: number,
-            username: any,
+            username: string,
         },
     },
 };
@@ -234,7 +256,7 @@ export type undefined = {
         unarchiving: any,
         user: {
             id: number,
-            username: any,
+            username: string,
         },
     },
 };

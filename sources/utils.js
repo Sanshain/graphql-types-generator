@@ -14,6 +14,11 @@ class TypesGenerator{
 	 * @type {{[key: string]: any}?}
 	 */
 	serverTypes = null;
+
+	/**
+	 * @type {{name: string, type: string| null}[]}?}
+	 */	
+	serverSubTypes = [];
 	
 	argTypesCode = '';	
 	argMatches = {}
@@ -183,8 +188,35 @@ class TypesGenerator{
 
 		deep = (deep || 0) + 4;
 		
+		let subType = null;
+		let subTypeFields = {}
+		const subTypeName = branchOfFields?.slice(-1).pop();
+		const subTypeInfo = this.serverSubTypes.find(tp => tp.name == subTypeName);
+		if (subTypeInfo){
+			subType = subTypeInfo.type;			
+			if (!subType && subTypeName.slice(-1) === 's'){				
+				subType = this.serverSubTypes.find(tp => tp.name == subTypeName.slice(0, -1))?.type;
+				if (!subType){
+					console.log(`--> Unexpected sub type ${subTypeName}: defining types by naming rules`);
+				}
+				else{					
+					// console.log(`--> sub type ${subTypeName} is not found. Using ${subTypeName.slice(0, -1)} instead`);
+				}
+			}
+			if (subType){
+				//@ts-ignore
+				subTypeFields = this.serverTypes[subType];
+				if (!subTypeFields){
+					console.warn(`--> Unexpected type ${subType} from sub types: defining types by name rules`);
+				}
+			}
+		}
+
+
 		for (const selection of selections) {
 		
+			// 
+
 			if (selection.selectionSet){
 					
 				let _lines = '', _gpaType = {}
@@ -192,16 +224,49 @@ class TypesGenerator{
 				// this.rawSchema.reduce((acc, el) => ((acc[el.name] = el.fields), acc), {})
 				let _type = (this.serverTypes || [])[selection.name?.value];
 
+				if (subType && subTypeFields){					
+
+					function genLines(typeFields, _deep){
+
+						let __gpaType = {}
+						let self = this;
+
+						let __lines = Object.entries(typeFields).reduce(function(acc, [k, v], i, arr, _) {
+							if (typeof v !== 'object'){						
+								__gpaType[k] = self.typeMatches[v]
+								acc += `${' '.repeat(_deep)}${k}: ${self.typeMatches[v]},\n`												
+							}
+							else if(v){
+								let [sub_gpaType, sub_Lines] = genLines(typeFields[k], _deep + 4)
+								__gpaType[k] = sub_gpaType
+								acc += sub_Lines
+							}
+							return acc;	
+						}, '')	
+
+						return [__gpaType, __lines]
+					}
+
+					let _subTypeFields = subTypeFields[selection.name.value];
+					if (_subTypeFields && typeof _subTypeFields === 'object')
+					{
+						([_gpaType, _lines] = genLines.call(this, subTypeFields[selection.name.value], deep + 4))
+					}
+					
+				}
+
 				if (_type && false){
 
 					//@ts-ignore
 					_lines = this.getServerType(selection, _gpaType, _lines);
+
+					// здесь можно заполнить серверные строки
 				}
-				else{
+				else if(!_lines){
 					({_gpaType, lines: _lines} = this.getType(
 						selection.selectionSet.selections, 
 						deep, 
-						root, (deep >= 8) ? [...branchOfFields || [], selection.name.value] : undefined
+						root, (deep >= 4) ? [...branchOfFields || [], selection.name.value] : undefined
 						// selection.selectionSet.selections, deep + 4
 					))
 				}
@@ -233,18 +298,32 @@ class TypesGenerator{
 					// 	// ? [branchOfFields.slice().pop(), root[1][branchOfFields[0]]] 			
 					// }
 					try{
-						let [rootName, types] = branchOfFields 						
-							? [branchOfFields.slice().pop(), branchOfFields.reduce((acc, elem) => acc[elem], root[1])]
+						let [rootName, types={}] = (branchOfFields && branchOfFields.length > 1) 						
+							? [
+								branchOfFields.slice().pop(), 
+								branchOfFields.slice((deep - 8) / 4).reduce((acc, elem) => acc[elem], root[1])
+							]
 							: root;
 						gType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
 						if (!gType){
-							console.warn(`${fieldName} field has not found in type ${rootName}`);
+							console.warn(`"${fieldName}" field has not found by parsing root type ${rootName}`);
 						}
 					}
 					catch(e){
 						console.log(e);
 					}
-				}				
+				}	
+
+				if ((!gType || gType === any) && subType){
+
+					let subField = subTypeFields[fieldName];
+					if (subField){
+						gType = this.typeMatches[subField];						
+					}					
+					else{
+						console.warn(`=> Unexpacted field "${fieldName}" in ${subType}. Definging from naming`);
+					}
+				}
 
 				if (!gType || gType === any){
 					if (this.rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)){
@@ -367,6 +446,7 @@ class TypesGenerator{
 		this.verbose && console.log(rawSchema);
 
 		this.serverTypes = serverTypes;
+		this.serverSubTypes = rawTypes.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}))
 	}
 
 
@@ -414,6 +494,13 @@ class TypesGenerator{
 						name,        
 						description
 						type {
+							fields{
+								name,
+								type{
+									name
+								}
+							},			
+							kind,				
 							name,          
 							ofType {
 								name					  

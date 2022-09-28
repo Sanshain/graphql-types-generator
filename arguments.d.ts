@@ -3,8 +3,8 @@
 /* Mutation Arguments types:*/
 
 export type postCreateArgs = {
-    files: any,
-    value: string
+    value: string,
+    files: any
 }
 
 export type likeApplyArgs = {
