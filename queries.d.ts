@@ -260,3 +260,28 @@ export type undefined = {
         },
     },
 };
+
+/*
+* `QueryTypes` - may be need for more flexible types management on client side 
+*
+* (optional: controlled by `matchTypeNames` option)
+*/
+type QueryTypes = {
+    ProfileInfo: ProfileInfo
+    DialogInfo: DialogInfo
+    PaginatedUsers: PaginatedUsers
+    PostMutation: PostMutation
+    LikeMutation: LikeMutation
+    FriendshipMutation: FriendshipMutation
+    SettingsMutationPayload: SettingsMutationPayload
+    UserNode: UserNode
+    UserType: UserType
+    PostType: PostType
+    DialogType: DialogType
+    SignInfo: SignInfo
+    SignUpInfo: SignUpInfo
+    PassResetInfo: PassResetInfo
+    AccountVerifyingInfo: AccountVerifyingInfo
+    SignOutInfo: SignOutInfo
+    undefined: undefined
+}

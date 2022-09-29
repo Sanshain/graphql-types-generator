@@ -23,8 +23,18 @@ let dir = './sources/';
 
 
 /** @type {{ filename: string; files: any; target: string; }} */ 
+
 module.exports = async function typesGenerate(
-	/** @type {{ filename: string; files: string[]; target: string; separateFileForArgumentsTypes?: string}} */ options,
+	/**
+	 * @type {{ 
+	 * 	filename: string; 
+	 * 	files: string[]; 
+	 * 	target: string; 
+	 * 	separateFileForArgumentsTypes?: string,
+	 * 	matchTypeNames: boolean
+	 * }} 
+	 * 
+	 */ options,
 	) {
 		
 	// let typeConds = {
@@ -33,7 +43,7 @@ module.exports = async function typesGenerate(
 	// 	number: ['Id']
 	// } 	
 
-	let graTypes = [];
+	let graTypes = {};
 	let codeTypes = '';
 	
 	options = Object.assign(
@@ -50,6 +60,10 @@ module.exports = async function typesGenerate(
 			 * attach `__typename` field for each query type
 			 */
 			attachTypeName: true,
+			/**
+			 * attach 'QueryTypes' type
+			 */
+			matchTypeNames: true,
 			separateFileForArgumentsTypes: '',
 			rules: {
 				string: ['Name', 'Title', 'Date', 'Time'],
@@ -81,6 +95,12 @@ module.exports = async function typesGenerate(
 
 	// generator.mutationArgs += `\n\n\n${generator.argTypesCode}`
 	generator.mutationArgs += `\n\n${generator.getArgumentMatchesType()}`
+
+	if (options.matchTypeNames){
+		codeTypes += '\n\n/*\n* `QueryTypes` - may be need for more flexible types management on client side \n*' +
+					'\n* (optional: controlled by `matchTypeNames` option)\n*/\n'		
+		codeTypes += `export type QueryTypes = {\n${Object.keys(graTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`
+	}
 
 	if (options.separateFileForArgumentsTypes){
 		

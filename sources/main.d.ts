@@ -5,6 +5,7 @@ declare type Options = {
 	dirname? : string,
 	target?: string,
 	attachTypeName?: boolean,
+	matchTypeNames?: boolean,
 	useServerTypes?: boolean,
 	rules?: object,
 	separateFileForArgumentsTypes?: string

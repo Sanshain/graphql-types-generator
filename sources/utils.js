@@ -11,14 +11,19 @@ const any = 'any';
 class TypesGenerator{
 
 	/**
-	 * @type {{[key: string]: any}?}
+	 * @type {{[key: string]: object}?} - серверные типы с описанием
 	 */
 	serverTypes = null;
 
 	/**
-	 * @type {{name: string, type: string| null}[]}?}
+	 * @type {{name: string, type: string| null}[]}?} - стор соответствий подзапросов их серверным типам
 	 */	
 	serverSubTypes = [];
+	/**
+	 * @type {string[]} - список типов
+	 */
+	rootTypes = []
+
 	
 	argTypesCode = '';	
 	argMatches = {}
@@ -157,7 +162,7 @@ class TypesGenerator{
 			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
 
 			codeTypes += typeString;
-			graTypes.push(gpaType);
+			graTypes[typeName] = gpaType;
 		}
 
 		return codeTypes;
@@ -219,7 +224,7 @@ class TypesGenerator{
 
 			if (selection.selectionSet){
 					
-				let _lines = '', _gpaType = {}
+				let _lines = '', _compositeSType = {}
 
 				// this.rawSchema.reduce((acc, el) => ((acc[el.name] = el.fields), acc), {})
 				let _type = (this.serverTypes || [])[selection.name?.value];
@@ -250,7 +255,9 @@ class TypesGenerator{
 					let _subTypeFields = subTypeFields[selection.name.value];
 					if (_subTypeFields && typeof _subTypeFields === 'object')
 					{
-						([_gpaType, _lines] = genLines.call(this, subTypeFields[selection.name.value], deep + 4))
+						let __gpaType;
+						([__gpaType, _lines] = genLines.call(this, subTypeFields[selection.name.value], deep + 4))
+						_compositeSType[selection.name.value] = __gpaType;	
 					}
 					
 				}
@@ -258,12 +265,12 @@ class TypesGenerator{
 				if (_type && false){
 
 					//@ts-ignore
-					_lines = this.getServerType(selection, _gpaType, _lines);
+					_lines = this.getServerType(selection, _compositeSType, _lines);
 
 					// здесь можно заполнить серверные строки
 				}
 				else if(!_lines){
-					({_gpaType, lines: _lines} = this.getType(
+					({_gpaType: _compositeSType[selection.name.value], lines: _lines} = this.getType(
 						selection.selectionSet.selections, 
 						deep, 
 						root, (deep >= 4) ? [...branchOfFields || [], selection.name.value] : undefined
@@ -271,7 +278,7 @@ class TypesGenerator{
 					))
 				}
 
-				_gpaType[selection.name.value] = _gpaType;	
+				// _gpaType[selection.name.value] = _gpaType;	
 				// const offset = ' '.repeat(deep + 4);			
 
 				let value = `{\n${_lines}${' '.repeat(deep)}}`;		
@@ -284,6 +291,8 @@ class TypesGenerator{
 					}
 				}
 				// let values = `[\n${offset}{\n${_lines}${offset}}\n${' '.repeat(deep)}]`;
+
+				_gpaType[selection.name.value] = _compositeSType[selection.name.value] || any;
 				lines += ' '.repeat(deep) + selection.name.value + `: ${values || value},\n`
 			}
 			else {
