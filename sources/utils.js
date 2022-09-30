@@ -91,6 +91,8 @@ class TypesGenerator{
 	 */
 	 async getTypes(filename, codeTypes, graTypes) {
 		
+		let declTypes = {}
+
 		if (this.serverTypes === null) {
 			try{
 				await this.getSchemaTypes();		
@@ -102,11 +104,16 @@ class TypesGenerator{
 		}
 		
 		let gqlDe = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
-		let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
-
+		// let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
+		let gqls = Array.from(			
+			// gqlDe.matchAll(/(\/\*[\s\S]+?\*\/)?\n?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
+			gqlDe.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
+			m => [m[1], m[3], m[4]]
+		)
+		
 		console.log(`\n# ${gqls.length} types detected: \n`);		
 
-		for (const query of gqls) {
+		for (const [comment, queryName, query] of gqls) {
 
 			try{
 				// @ts-ignore
@@ -158,14 +165,16 @@ class TypesGenerator{
 				if (argTypes.length){
 					gpaType.lines = `\n    __typename: "${typeName}",\n\n` + gpaType.lines
 				}
+				
 			}
 			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
 
 			codeTypes += typeString;
 			graTypes[typeName] = gpaType;
+			declTypes[queryName] = {typeName, comment};
 		}
 
-		return codeTypes;
+		return [declTypes, codeTypes];
 	}
 
 	getArgumentMatchesType() {

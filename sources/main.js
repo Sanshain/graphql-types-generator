@@ -31,7 +31,9 @@ module.exports = async function typesGenerate(
 	 * 	files: string[]; 
 	 * 	target: string; 
 	 * 	separateFileForArgumentsTypes?: string,
-	 * 	matchTypeNames: boolean
+	 * 	matchTypeNames: boolean,
+	 * 	declarateSource: string[],
+	 * 	declTemplate?: string,
 	 * }} 
 	 * 
 	 */ options,
@@ -77,10 +79,33 @@ module.exports = async function typesGenerate(
 	const generator = new TypesGenerator(options)
 
 	let filenames = options.filename ? [options.filename] : await globby(options.files || []);
+
+	let declTemplate = ''
+	if (options.declTemplate){
+		declTemplate = fs.readFileSync(options.declTemplate, { encoding: 'utf8', flag: 'r' })
+	}
+	
+
 	for (const filename of filenames) {
 		
 		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
-		let typesFromFile = await generator.getTypes(filename, codeTypes, graTypes);
+		let _graTypes = {}
+		let [declTypes, typesFromFile] = await generator.getTypes(filename, codeTypes, _graTypes);
+		
+		
+		if (declTemplate && options.declarateSource?.includes(filename)){
+			const declFile = filename.split('.').slice(0, -1).join('.') + '.d.ts';			
+
+			fs.writeFile(
+				declFile, 
+				declTemplate + Object.entries(declTypes).map(
+						([k,v]) => `\n${v.comment || ''}\nexport const ${k}: QueryString<'${v.typeName}'>;\n`
+					)
+					.join(''), 
+				() => console.log(`>> Declaration success generated >> ${declFile}`));		
+		}
+		
+		graTypes = {...graTypes, ..._graTypes};
 		codeTypes = typesFromFile;
 	}
 	
@@ -114,7 +139,6 @@ module.exports = async function typesGenerate(
 	else fs.writeFile(
 		targetFile, codeTypes + generator.mutationArgs, () => console.log(`\n\nOutputs generated to ${targetFile}!`)
 	);	
-
 	
 }
 

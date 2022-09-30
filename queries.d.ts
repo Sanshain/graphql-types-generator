@@ -90,6 +90,62 @@ export type PaginatedUsers = {
     }>,
 };
 
+export type SignInfo = {
+    tokenAuth: {
+        success: any,
+        errors: any,
+        unarchiving: any,
+        token: any,
+        user: {
+            id: number,
+            username: string,
+        },
+    },
+};
+
+export type SignUpInfo = {
+    register: {
+        success: any,
+        errors: any,
+        token: any,
+    },
+};
+
+export type PassResetInfo = {
+    passwordReset: {
+        success: any,
+        errors: any,
+    },
+};
+
+export type AccountVerifyingInfo = {
+    verifyAccount: {
+        success: any,
+        errors: any,
+    },
+};
+
+export type SignOutInfo = {
+    revokeToken: {
+        success: any,
+        errors: any,
+    },
+};
+
+export type undefined = {
+    tokenAuth: {
+        success: any,
+        errors: any,
+        token: any,
+        refreshToken: any,
+        unarchiving: any,
+        user: {
+            id: number,
+            username: string,
+        },
+    },
+};
+
 export type PostMutation = {
 
     __typename: "PostMutation",
@@ -205,71 +261,21 @@ export type DialogType = {
     },
 };
 
-export type SignInfo = {
-    tokenAuth: {
-        success: any,
-        errors: any,
-        unarchiving: any,
-        token: any,
-        user: {
-            id: number,
-            username: string,
-        },
-    },
-};
-
-export type SignUpInfo = {
-    register: {
-        success: any,
-        errors: any,
-        token: any,
-    },
-};
-
-export type PassResetInfo = {
-    passwordReset: {
-        success: any,
-        errors: any,
-    },
-};
-
-export type AccountVerifyingInfo = {
-    verifyAccount: {
-        success: any,
-        errors: any,
-    },
-};
-
-export type SignOutInfo = {
-    revokeToken: {
-        success: any,
-        errors: any,
-    },
-};
-
-export type undefined = {
-    tokenAuth: {
-        success: any,
-        errors: any,
-        token: any,
-        refreshToken: any,
-        unarchiving: any,
-        user: {
-            id: number,
-            username: string,
-        },
-    },
-};
-
 /*
 * `QueryTypes` - may be need for more flexible types management on client side 
 *
 * (optional: controlled by `matchTypeNames` option)
 */
-type QueryTypes = {
+export type QueryTypes = {
     ProfileInfo: ProfileInfo
     DialogInfo: DialogInfo
     PaginatedUsers: PaginatedUsers
+    SignInfo: SignInfo
+    SignUpInfo: SignUpInfo
+    PassResetInfo: PassResetInfo
+    AccountVerifyingInfo: AccountVerifyingInfo
+    SignOutInfo: SignOutInfo
+    undefined: undefined
     PostMutation: PostMutation
     LikeMutation: LikeMutation
     FriendshipMutation: FriendshipMutation
@@ -278,10 +284,4 @@ type QueryTypes = {
     UserType: UserType
     PostType: PostType
     DialogType: DialogType
-    SignInfo: SignInfo
-    SignUpInfo: SignUpInfo
-    PassResetInfo: PassResetInfo
-    AccountVerifyingInfo: AccountVerifyingInfo
-    SignOutInfo: SignOutInfo
-    undefined: undefined
 }

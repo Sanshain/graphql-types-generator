@@ -4,6 +4,11 @@
 const typesGenerate = require('./sources/main');
 // import { typesGenerate } from "./main";
 
+const sourceFiles = [
+	'./examples/real/queries.js',
+	'./examples/real/mutations/auth.ts',	
+]
+
 async function main() {
 	await typesGenerate({
 		// filename: './examples/mutations.js',
@@ -11,10 +16,11 @@ async function main() {
 		filename: '',
 		separateFileForArgumentsTypes: 'arguments.d.ts',
 		files: [
-			'./examples/real/queries.js',
-			'./examples/real/autoqueries.js',
-			'./examples/real/mutations/auth.ts',
+			...sourceFiles,
+			'./examples/real/autoqueries.js',			
 		],
+		declarateSource: sourceFiles,
+		declTemplate: './template.d.ts',
 		target: './queries.d.ts',
 		// 
 	});	
