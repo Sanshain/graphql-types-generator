@@ -1,5 +1,5 @@
 
-declare type Options = {
+type BaseOptions = {
 	filename: string,
 	files?: Array<string>, 
 	declarateSource?: Array<string>,
@@ -13,6 +13,6 @@ declare type Options = {
 	separateFileForArgumentsTypes?: string
 }
 
-declare function typesGenerate(options: Options): void;
+declare function typesGenerate(options: BaseOptions): void;
 
 export = typesGenerate

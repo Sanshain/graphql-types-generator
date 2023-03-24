@@ -1,12 +1,16 @@
+//@ts-check
+
 import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
+import path from "path";
 
 export default {
-  input: './example.js',
+	input: './cli-runner.js',
+//   input: './example.js',
 //   input: './sources/main.js',
-  output: {	  
+   output: {	  
 	  name: 'typesGenerate',
-     file: 'this.js',
+     file: './bin/cli-runner',
    //   format: 'iife',
    //   format: 'es',
      format: 'cjs',
@@ -21,6 +25,20 @@ export default {
       // explicitly specify unresolvable named exports
       // (see below for more details)
       namedExports: { 'react': ['createElement', 'Component' ] },  // Default: undefined
-    })
+    }),
+
+	 {
+		name: 'rollup-plugin-shebang-insert',
+		/**
+		 * @param {{file: string}} opts - options
+		 * @param {{[fileName: string]: {code: string}}} bundle 
+		 */
+		generateBundle(opts, bundle) {                        
+
+			 const file = path.parse(opts.file).base
+			 let code = bundle[file].code;
+			 bundle[file].code = '#!/usr/bin/env node\n\n' + bundle[file].code
+		}
+  }	 
   ]
 };

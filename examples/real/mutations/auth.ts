@@ -1,5 +1,15 @@
-import gql from "../graphql-tag";
+import gql from "../../base/graphql-tag";
 
+
+export const register = gql`
+    mutation Register {
+        register(email: $email, username: $username, password1: $password1, password2: $password2){
+            success,
+            errors,
+            token
+        }
+    }
+`;
 
 export const SIGN_IN = gql`
 	mutation SignInfo {

@@ -10,6 +10,12 @@ export type Scalars = {
   Int: number;
   Float: number;
   /**
+   * The `Date` scalar type represents a Date
+   * value as specified by
+   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+   */
+  Date: any;
+  /**
    * The `DateTime` scalar type represents a DateTime
    * value as specified by
    * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
@@ -53,26 +59,102 @@ export type Scalars = {
 };
 
 
-export type DialogQType = {
-  __typename?: 'DialogQType';
+
+export type DialogType = {
+  __typename?: 'DialogType';
   id: Scalars['ID'];
-  founder: UserQType;
+  founder: UserType;
   avatar: Scalars['String'];
   title: Scalars['String'];
-  users: Array<UserQType>;
-  messages: Array<MessageQType>;
+  users: Array<UserType>;
+  messages: Array<MessagesType>;
+  talkersAmount?: Maybe<Scalars['Int']>;
+  /** nested */
+  lastMessage?: Maybe<MessageSubType>;
+};
+
+export type ErrorType = {
+  __typename?: 'ErrorType';
+  field: Scalars['String'];
+  messages: Array<Scalars['String']>;
 };
 
 
+/**
+ * :::
+ * userId: number
+ */
+export type FriendshipMutation = {
+  __typename?: 'FriendshipMutation';
+  added?: Maybe<Scalars['Boolean']>;
+};
 
-export type MessageQType = {
-  __typename?: 'MessageQType';
+
+/** An enumeration. */
+export enum LikeFeeling {
+  /** Like */
+  Like = 'LIKE',
+  /** Profit */
+  Prof = 'PROF',
+  /** Wow */
+  Wow = 'WOW',
+  /** Lol */
+  Lol = 'LOL'
+}
+
+/**
+ * :::
+ * postId: number
+ */
+export type LikeMutation = {
+  __typename?: 'LikeMutation';
+  increased?: Maybe<Scalars['Boolean']>;
+};
+
+export type LikeType = {
+  __typename?: 'LikeType';
   id: Scalars['ID'];
-  by: UserQType;
+  target: PostType;
+  author: UserType;
+  value: Scalars['Int'];
+  feeling: LikeFeeling;
+};
+
+export type MessageSubType = {
+  __typename?: 'MessageSubType';
+  author?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+export type MessageType = {
+  __typename?: 'MessageType';
+  id: Scalars['ID'];
+  by: UserType;
   time: Scalars['DateTime'];
   value: Scalars['String'];
   files: Scalars['JSONString'];
-  toDialog?: Maybe<DialogQType>;
+  postPtr: PostType;
+  toDialog?: Maybe<DialogType>;
+  replyTo?: Maybe<MessagesType>;
+  messageSet: Array<MessagesType>;
+  likesCount?: Maybe<Scalars['Int']>;
+  rated?: Maybe<Scalars['Boolean']>;
+  author?: Maybe<Scalars['Int']>;
+};
+
+export type MessagesType = {
+  __typename?: 'MessagesType';
+  id: Scalars['ID'];
+  by: UserType;
+  time: Scalars['DateTime'];
+  value: Scalars['String'];
+  files: Scalars['JSONString'];
+  postPtr: PostType;
+  toDialog?: Maybe<DialogType>;
+  replyTo?: Maybe<MessagesType>;
+  messageSet: Array<MessagesType>;
+  likesCount?: Maybe<Scalars['Int']>;
+  rated?: Maybe<Scalars['Boolean']>;
   author?: Maybe<Scalars['Int']>;
 };
 
@@ -127,6 +209,30 @@ export type Mutation = {
    * User must be verified.
    */
   updateAccount?: Maybe<UpdateAccount>;
+  /**
+   * :::
+   * files:JSONString
+   * value:String
+   */
+  postCreate?: Maybe<PostMutation>;
+  /**
+   * :::
+   * postId: number
+   */
+  likeApply?: Maybe<LikeMutation>;
+  /**
+   * :::
+   * userId: number
+   */
+  friendshipApply?: Maybe<FriendshipMutation>;
+  /**
+   * :::
+   * birthday: Date
+   * sex: Boolean
+   * placeId: Positive
+   * placeTypeId: Foreign
+   */
+  userSettingsMutation?: Maybe<SettingsMutationPayload>;
 };
 
 
@@ -153,6 +259,27 @@ export type MutationTokenAuthArgs = {
 export type MutationUpdateAccountArgs = {
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationPostCreateArgs = {
+  files?: Maybe<Scalars['JSONString']>;
+  value: Scalars['String'];
+};
+
+
+export type MutationLikeApplyArgs = {
+  postId: Scalars['ID'];
+};
+
+
+export type MutationFriendshipApplyArgs = {
+  userId: Scalars['ID'];
+};
+
+
+export type MutationUserSettingsMutationArgs = {
+  input: SettingsMutationInput;
 };
 
 /** An object with an ID */
@@ -183,19 +310,55 @@ export type ObtainJsonWebToken = {
   unarchiving?: Maybe<Scalars['Boolean']>;
 };
 
+/**
+ * :::
+ * files:JSONString
+ * value:String
+ */
+export type PostMutation = {
+  __typename?: 'PostMutation';
+  post?: Maybe<PostType>;
+};
+
+export type PostType = {
+  __typename?: 'PostType';
+  id: Scalars['ID'];
+  by: UserType;
+  time: Scalars['DateTime'];
+  value: Scalars['String'];
+  files: Scalars['JSONString'];
+  message?: Maybe<MessagesType>;
+  likes: Array<LikeType>;
+  likesCount?: Maybe<Scalars['Int']>;
+  rated?: Maybe<Scalars['Boolean']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<UserNode>;
-  users?: Maybe<Array<Maybe<UserQType>>>;
-  dialogs?: Maybe<Array<Maybe<DialogQType>>>;
-  messages?: Maybe<MessageQType>;
-  user?: Maybe<UserQType>;
-  dialog?: Maybe<DialogQType>;
+  users?: Maybe<Array<UserType>>;
+  friends?: Maybe<Array<Maybe<UserType>>>;
+  paginatedUsers?: Maybe<Array<UserType>>;
+  user?: Maybe<UserType>;
+  posts?: Maybe<Array<Maybe<PostType>>>;
+  dialogs?: Maybe<Array<DialogType>>;
+  dialog?: Maybe<DialogType>;
+  messages?: Maybe<Array<MessageType>>;
+};
+
+
+export type QueryPaginatedUsersArgs = {
+  filter?: Maybe<Scalars['String']>;
 };
 
 
 export type QueryUserArgs = {
   id?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryPostsArgs = {
+  user?: Maybe<Scalars['Int']>;
 };
 
 
@@ -230,6 +393,30 @@ export type Register = {
   token?: Maybe<Scalars['String']>;
 };
 
+export type SettingsMutationInput = {
+  birthday?: Maybe<Scalars['Date']>;
+  sex?: Maybe<Scalars['Boolean']>;
+  placeId: Scalars['Int'];
+  placeTypeId: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/**
+ * :::
+ * birthday: Date
+ * sex: Boolean
+ * placeId: Positive
+ * placeTypeId: Foreign
+ */
+export type SettingsMutationPayload = {
+  __typename?: 'SettingsMutationPayload';
+  profile?: Maybe<UserType>;
+  errors?: Maybe<Array<Maybe<ErrorType>>>;
+  settings?: Maybe<UserSettingsType>;
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
 /**
  * Update user model fields, defined on settings.
  *
@@ -257,36 +444,48 @@ export type UserNode = Node & {
   isActive: Scalars['Boolean'];
   dateJoined: Scalars['DateTime'];
   avatar?: Maybe<Scalars['String']>;
-  startedDialogs: Array<DialogQType>;
-  dialogs: Array<DialogQType>;
+  friends: Array<UserType>;
+  sex?: Maybe<Scalars['Boolean']>;
+  birthday?: Maybe<Scalars['Date']>;
+  placeId: Scalars['Int'];
+  startedDialogs: Array<DialogType>;
+  dialogs: Array<DialogType>;
+  postSet: Array<PostType>;
+  likeSet: Array<LikeType>;
+  profileSet: Array<UserType>;
   pk?: Maybe<Scalars['Int']>;
   archived?: Maybe<Scalars['Boolean']>;
   verified?: Maybe<Scalars['Boolean']>;
   secondaryEmail?: Maybe<Scalars['String']>;
 };
 
-export type UserQType = {
-  __typename?: 'UserQType';
+export type UserSettingsType = {
+  __typename?: 'UserSettingsType';
+  firstName: Scalars['String'];
+};
+
+export type UserType = {
+  __typename?: 'UserType';
   id: Scalars['ID'];
   lastLogin?: Maybe<Scalars['DateTime']>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
-  email: Scalars['String'];
-  /** Designates whether the user can log into this admin site. */
-  isStaff: Scalars['Boolean'];
-  /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
-  isActive: Scalars['Boolean'];
   dateJoined: Scalars['DateTime'];
   avatar?: Maybe<Scalars['String']>;
-  startedDialogs: Array<DialogQType>;
-  dialogs: Array<DialogQType>;
-  password: Scalars['String'];
-  /** Designates that this user has all permissions without explicitly assigning them. */
-  isSuperuser: Scalars['Boolean'];
+  friends: Array<UserType>;
+  sex?: Maybe<Scalars['Boolean']>;
+  birthday?: Maybe<Scalars['Date']>;
+  placeId: Scalars['Int'];
+  startedDialogs: Array<DialogType>;
+  dialogs: Array<DialogType>;
+  postSet: Array<PostType>;
+  likeSet: Array<LikeType>;
+  profileSet: Array<UserType>;
   name?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
+  friendshipState?: Maybe<Scalars['Int']>;
 };
 
 /**
@@ -301,3 +500,8 @@ export type VerifyAccount = {
   success?: Maybe<Scalars['Boolean']>;
   errors?: Maybe<Scalars['ExpectedErrorType']>;
 };
+
+export type DialogInfoQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DialogInfoQuery = { __typename?: 'Query', dialog?: { __typename?: 'DialogType', id: string, title: string, founder: { __typename?: 'UserType', id: string }, users: Array<{ __typename?: 'UserType', id: string, name?: string | null, image?: string | null }>, messages: Array<{ __typename?: 'MessagesType', id: string, author?: number | null, time: any, value: string, files: any, likesCount?: number | null, rated?: boolean | null, replyTo?: { __typename?: 'MessagesType', id: string, time: any, value: string, files: any, author?: number | null } | null }> } | null };

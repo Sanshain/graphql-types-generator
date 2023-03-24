@@ -111,7 +111,7 @@ class TypesGenerator{
 			m => [m[1], m[3], m[4]]
 		)
 		
-		console.log(`\n# ${gqls.length} types detected: \n`);		
+		console.log(`\n# ${gqls.length} types detected in "${filename}": \n`);
 
 		for (const [comment, queryName, query] of gqls) {
 
@@ -156,7 +156,7 @@ class TypesGenerator{
 			let gpaType = this.getType(selections, 0, serverType, null);
 			if (this.options.attachTypeName){				
 								
-				let argTypes = selections.map(s => s.name.value).filter(x => this.argTypes.includes(x));
+				let argTypes = selections.map(s => s.name.value).filter(x => this.argTypes.includes(x));				
 				if (argTypes.length){
 					this.argMatches[typeName] =  argTypes.map(t => t + 'Args').join(' & ');					
 				}
@@ -204,14 +204,15 @@ class TypesGenerator{
 		
 		let subType = null;
 		let subTypeFields = {}
-		const subTypeName = branchOfFields?.slice(-1).pop();
-		const subTypeInfo = this.serverSubTypes.find(tp => tp.name == subTypeName);
-		if (subTypeInfo){
-			subType = subTypeInfo.type;			
-			if (!subType && subTypeName.slice(-1) === 's'){				
-				subType = this.serverSubTypes.find(tp => tp.name == subTypeName.slice(0, -1))?.type;
+		const subFieldName = branchOfFields?.slice(-1).pop();
+		const subFieldInfo = this.serverSubTypes.find(tp => tp.name == subFieldName);
+		if (subFieldInfo){
+			subType = subFieldInfo.type;			
+			// TODO fix: => type.kind == 'LIST'
+			if (!subType && subFieldName.slice(-1) === 's'){				
+				subType = this.serverSubTypes.find(tp => tp.name == subFieldName.slice(0, -1))?.type;
 				if (!subType){
-					console.log(`--> Unexpected sub type ${subTypeName}: defining types by naming rules`);
+					console.log(`--> Unexpected sub type ${subFieldName}: defining types by naming rules`);
 				}
 				else{					
 					// console.log(`--> sub type ${subTypeName} is not found. Using ${subTypeName.slice(0, -1)} instead`);
@@ -512,10 +513,13 @@ class TypesGenerator{
 						name,        
 						description
 						type {
-							fields{
+							fields{								
 								name,
 								type{
-									name
+									name,
+									fields{
+										name
+									}									
 								}
 							},			
 							kind,				

@@ -12,6 +12,7 @@ const path = require('path');
 // import { type } from 'os';
 
 const globby = require('globby');
+// const glob = require("glob")
 // import { TypesGenerator } from './utils';
 const { TypesGenerator } = require('./utils');
 
@@ -78,7 +79,30 @@ module.exports = async function typesGenerate(
 
 	const generator = new TypesGenerator(options)
 
-	let filenames = options.filename ? [options.filename] : await globby(options.files || []);
+	let filenames = options.filename 
+		? [options.filename] 
+		: await ((async () => {
+		
+			let arr = [];
+			for (const file of options.files) {
+				let _files = await globby([file]);
+				arr = arr.concat(_files.length ? _files : [file])
+			}
+			return arr;		
+		})())	
+		// : await ((() => {
+			
+		// 	let arr = [];
+		// 	for (const files of options.files) {
+		// 		glob(files, {}, function(er, _files){
+		// 			arr.push(..._files)
+		// 		})
+		// 	}
+		// 	return Promise.resolve(arr);
+		// })())
+	
+	
+	// await globby(options.files || []);
 
 	let declTemplate = ''
 	if (options.declTemplate){
