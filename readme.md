@@ -23,6 +23,12 @@ Of course not. The guys who made codegen did a lot of work and - I must admit - 
 npm i graphql-types-generator -D
 ```
 
+## Terminal usage:
+
+```shell
+types-gen -s "./examples/queries.js"
+```
+
 ## Programmatic usage: 
 
 
@@ -39,12 +45,6 @@ async function main() {
 }
 
 main();
-```
-
-## Terminal usage:
-
-```shell
-types-gen -s "examples/queries.js"
 ```
 
 # How it works?
