@@ -33,9 +33,9 @@ const typesGenerate = require('./sources/main');
 const typesGenerate = require('graphql-types-generator');
 
 async function main() {
-	await typesGenerate({
-		filename: './examples/mutations.js'
-	});	
+   await typesGenerate({
+      filename: './examples/mutations.js'
+   });	
 }
 
 main();
@@ -56,16 +56,16 @@ an server unavailability and generates types from namings.
 
 ```js
 export const GET_DIALOGS_INIT = gql`
-    query profileInfo {
-        users {
-            username,
+   query profileInfo {
+      users {
+         username,
             firstName
-        },
-        dialogs{
-            id,
-            title
-        }
-    }
+      },
+      dialogs{
+         id,
+         title
+      }
+   }
 `;
 ```
 
@@ -73,14 +73,14 @@ export const GET_DIALOGS_INIT = gql`
 
 ```ts
 export type profileInfo = {
-    users: Array<{
-        username: any,
-        firstName: string,
-    }>,
-    dialogs: Array<{
-        id: number,
-        title: string,
-    }>,
+   users: Array<{
+      username: any,
+      firstName: string,
+   }>,
+   dialogs: Array<{
+      id: number,
+      title: string,
+   }>,
 };
 ```
 
