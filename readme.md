@@ -53,7 +53,8 @@ const typesGenerate = require('graphql-types-generator');
 
 async function main() {
    await typesGenerate({
-      filename: './examples/mutations.js'
+      filename: './examples/mutations.js',
+      // ...other options
    });	
 }
 
@@ -64,6 +65,19 @@ main();
 
 By default it expects server on `http://127.0.0.1:8000/graphql`. If doesn't exists return warnings about 
 an server unavailability and generates types from namings.
+
+## Possible options:
+
+- `filename: string` - path to js file with graphql queries wrapped to tagged template `gql` (required)
+- `files?: string[]` - as alternative `filename` allowing multiple source files passing at same time
+- `declarateSource?: Array<string>` - list of files for generating declaration (`*.d.ts`) files (may match with `files` option. useful for covering query argument types).
+- `declTemplate?: string` - file name of template using for ts files generation (look up `examples` directory)
+- `target?: string` - target file name
+- `attachTypeName?: boolean` - attach `__typename` field for each query type
+- `matchTypeNames?: boolean` - attach 'QueryTypes' type
+- `useServerTypes?: boolean` - using server types for generation
+- `rules?: object` - advanced naming rules to generate types
+- `separateFileForArgumentsTypes?: boolean` - separate argument types and queries result types
 
 ### source: 
 
