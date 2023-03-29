@@ -26,7 +26,7 @@ The generally accepted method and considered correct is the generation of typesc
    <summary>
       <h3>Should I throw codegen in the trash?</h3> - <h3>No, I wouldn't do that</h3>
    </summary>
-   it has a rich ecosystem, community, a set of plugins and support. In addition, in some cases it does a better job of identifying types from the server. Therefore, I  think that this thing fully deserves a place among the developer's tools and it is not worth throwing it out. However, as my practice has shown, even he is not omnipotent when the server does not provide some types. And here the use of graphql-types-generator may be alternative solution
+   It has a rich ecosystem, community, a set of plugins and support. In addition, in some cases it does a better job of identifying types from the server. Therefore, I  think that this thing fully deserves a place among the developer's tools and it is not worth throwing it out. However, as my practice has shown, even he is not omnipotent when the server does not provide some types. And here the use of `graphql-types-generator` may be alternative solution
 </details>
 
 
