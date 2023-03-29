@@ -19,20 +19,20 @@ The generally accepted method and considered correct is the generation of typesc
    <summary>
       <h3>Why not codegen/typescript-operations?</h3> - <h3>It's your choice</h3>
    </summary>
-   `Codegen/typescript` does not know how out of the box, what it can do (generate types from queries) `graphql-types-generator`. The `codegen/typescript-operations` plugin does the most similar work in the `codegen` ecosystem. But how he does it is somewhat different: at the input, he expects the hard-boiled values of the query arguments, which may be a minor problem with simple queries, but very significant - with complex ones. `Graphql-types-generator` does not have this problem. Nevertheless, I find graphql-types-generator easier to configure.
+   `Codegen/typescript` does not know how out of the box, what it can do (generate types from queries) `graphql-types-generator`. The `codegen/typescript-operations` plugin does the most similar work in the `codegen` ecosystem. But how he does it is somewhat different: at the input, he expects the hard-boiled values of the query arguments, which may be a minor problem with simple queries, but very significant - with complex ones. `Graphql-types-generator` does not have this problem. 
 </details>
 
 <details>
    <summary>
       <h3>Should I throw codegen in the trash?</h3> - <h3>No, I wouldn't do that</h3>
    </summary>
-   `Codegen/typescript` does not know how out of the box, what it can do (generate types from queries) `graphql-types-generator`. The `codegen/typescript-operations` plugin does the most similar work in the `codegen` ecosystem. But how he does it is somewhat different: at the input, he expects the hard-boiled values of the query arguments, which may be a minor problem with simple queries, but very significant - with complex ones. `Graphql-types-generator` does not have this problem. Nevertheless, I find graphql-types-generator easier to configure.
+   it has a rich ecosystem, community, a set of plugins and support. In addition, in some cases it does a better job of identifying types from the server. Therefore, I do not think that this thing fully deserves a place among the developer's tools and it is not worth throwing it out. However, as my practice has shown, even he is not omnipotent when the server does not provide some types. 
 </details>
 
 
 ## Installation
 
-```
+```shell script
 npm i graphql-types-generator -D
 ```
 
@@ -75,8 +75,15 @@ main();
 
 # How it works?
 
-By default it expects server on `http://127.0.0.1:8000/graphql`. If doesn't exists return warnings about 
-an server unavailability and generates types based on naming rules.
+By default (`useServerTypes` by default always is true) it expects server on `http://127.0.0.1:8000/graphql` and generates types based on types provided by this one. If some primitive type in not provided by server, it generates the type based on naming rule. If the server doesn't exists, it returns warning about an server unavailability and generates types purely based on naming rules. By default the rules look so:
+
+```js
+rules = {
+   string: ['Name', 'Title', 'Date', 'Time'],    // endsWith
+   bool: ['is'],                                 // startsWith
+   number: ['Id', 'Count', 'Sum']                // endsWith
+}	
+```
 
 ## Possible options:
 
