@@ -11007,12 +11007,7 @@ class TypesGenerator$1{
 
 
 	/**
-	 * @pparam {{ 
-	 * 	rules: { 
-	 * 		string: string[]; bool: string[]; number: string[]; 
-	 * 	}; 
-	 * 	useServerTypes: boolean 
-	 * }} options
+	 * @param {import('./main').BaseOptions} options
 	 */
 	constructor(options){
 		
@@ -11028,15 +11023,15 @@ class TypesGenerator$1{
 	}
 
 
-	/**
+	 /**
 	 * добавляет сгенерированные типы в codeTypes и возвращает ее
 	 * @param {*} filename - имя файла
-	 * @param {*} codeTypes - типы тайпскрипт в виде объекта	
+	 * @param {*} codeTypes - типы тайпскрипт в виде объекта
 	 * @param {*} graTypes - типы тайпскрипт в виде строк
 	 * @returns typescript code
 	 */
 	 async getTypes(filename, codeTypes, graTypes) {
-		
+
 		let declTypes = {};
 
 		if (this.serverTypes === null) {
@@ -11154,7 +11149,7 @@ class TypesGenerator$1{
 		const subFieldInfo = this.serverSubTypes.find(tp => tp.name == subFieldName);
 		if (subFieldInfo){
 			subType = subFieldInfo.type;			
-			// TODO fix: => type.kind == 'LIST
+			// TODO fix: => type.kind == 'LIST'
 			if (!subType && subFieldName.slice(-1) === 's'){				
 				subType = this.serverSubTypes.find(tp => tp.name == subFieldName.slice(0, -1))?.type;
 				if (!subType){
@@ -11342,7 +11337,7 @@ class TypesGenerator$1{
 	}
 
 	async getSchemaTypes(typeName){
-
+		
 		let serverTypes = {};		
 
 		let rawSchema = await this.typesRequest(this.queriesInfoQuery);	
@@ -11415,15 +11410,17 @@ class TypesGenerator$1{
 	/**
 	 * @param {string} queriesInfoQuery
 	 */
-	typesRequest(queriesInfoQuery){
-		
+	typesRequest(queriesInfoQuery){			
+				
+		const reqOptions = typeof this.options.useServerTypes == 'object' ? this.options.useServerTypes : {};
+
 		return new Promise(function(resolve, reject) {
 			// Эта функция будет вызвана автоматически
 		 
 			let data = '';
 			const options = {		
-				hostname: '127.0.0.1',
-				port: 8000,
+				hostname: reqOptions.host || '127.0.0.1',
+				port: reqOptions.port || 8000,
 				path: '/graphql',
 				method: 'POST',		
 				headers: {'Content-Type': 'application/json'}
@@ -11456,10 +11453,13 @@ class TypesGenerator$1{
 						name,        
 						description
 						type {
-							fields{
+							fields{								
 								name,
 								type{
-									name
+									name,
+									fields{
+										name
+									}									
 								}
 							},			
 							kind,				
@@ -11504,17 +11504,9 @@ const { TypesGenerator } = utils;
 
 var main = async function typesGenerate(
 	/**
-	 * @type {{ 
-	 * 	filename: string; 
-	 * 	files: string[]; 
-	 * 	target: string; 
-	 * 	separateFileForArgumentsTypes?: string,
-	 * 	matchTypeNames: boolean,
-	 * 	declarateSource: string[],
-	 * 	declTemplate?: string,
-	 * }} 
-	 * 
-	 */ options,
+	 * @type {import('./main').BaseOptions} 
+	 */ 
+	 options
 	) {
 		
 	// let typeConds = {
@@ -11524,8 +11516,7 @@ var main = async function typesGenerate(
 	// } 	
 
 	let graTypes = {};
-	let codeTypes = '';
-	
+	let codeTypes = '';	
 	options = Object.assign(
 		{
 			filename: 'queries.js',
@@ -11556,17 +11547,20 @@ var main = async function typesGenerate(
 
 	const generator = new TypesGenerator(options);
 
-	let filenames = options.filename 
-		? [options.filename] 
-		: await ((async () => {
+	options.files = options.filename ? options.files?.concat([options.filename]) : options.files;
+
+	let filenames = options.files 
+		? await ((async () => {
 		
 			let arr = [];
+			//@ts-expect-error
 			for (const file of options.files) {
 				let _files = await globby([file]);
 				arr = arr.concat(_files.length ? _files : [file]);
 			}
 			return arr;		
-		})());	
+		})())
+		: [options.filename]; 
 		// : await ((() => {
 			
 		// 	let arr = [];
@@ -11585,13 +11579,15 @@ var main = async function typesGenerate(
 	if (options.declTemplate){
 		declTemplate = fs__default["default"].readFileSync(options.declTemplate, { encoding: 'utf8', flag: 'r' });
 	}
-	
+
 
 	for (const filename of filenames) {
 		
 		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
 		let _graTypes = {};
-		let [declTypes, typesFromFile] = await generator.getTypes(filename, codeTypes, _graTypes);
+		let [declTypes, typesFromFile] = await generator.getTypes(
+			filename, codeTypes, _graTypes,			
+		);
 		
 		
 		if (declTemplate && options.declarateSource?.includes(filename)){
@@ -11612,7 +11608,7 @@ var main = async function typesGenerate(
 	
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
 
-	let targetFile = path__default["default"].join(process.cwd(), target);		// path.resolve(path.dirname(''))
+	let targetFile = path__default["default"].join(process.cwd(), target || '');		// path.resolve(path.dirname(''))
 	
 
 	// generator.mutationArgs += 	"\n\nexport type QueryString<T extends string, Q extends string> = " +
@@ -11651,6 +11647,9 @@ var main = async function typesGenerate(
 
 var args = process.argv.slice(2);
 
+/**
+ * @param {`${string}`} argname
+ */
 function getParam(argname) {
 
 	let hasTarget = args.indexOf(argname);
@@ -11667,13 +11666,51 @@ const options = {},
 params = {
 	'-s': 'filename',
 	'-t': 'target',	
+	'-p': 'useServerTypes.port',
+	'-h': 'useServerTypes.host',
+	'--ds': 'declarateSource',
+	'--m': 'matchTypeNames'
 };
 
+/*
+	'-d': 'declarateSource',
+	'-m': 'matchTypeNames'
+*/
 
 
 for (const key in params) {
+	
+	/// for truthy options:
+	if (key.startsWith('--') && ~args.indexOf(key)){
+		const param = params[key];
+		
+		/// for bool option:
+		if (key.length < 4) options[param] = true; 
+		else {
+			/// for doublicate string value from another option:
+			const anotherOption = '-' + key.slice(3);
+			let value = getParam(anotherOption);
+
+			options[param] = [value];
+		}
+		continue
+	}
+
+	/// for complex options: 
 	let option = getParam(key);
-	if (option) options[params[key]] = option;
+	if (option) {
+
+		/// for key-value options:
+		let param = params[key];		
+		if (!~param.indexOf('.')) options[param] = option;		
+		else {
+
+			/// for complex options like `useServerTypes.host`:
+			const [rootOption, nestedOption] = param.split('.');
+			options[rootOption] = options[rootOption] || {};
+			options[rootOption][nestedOption] = option;
+		}
+	}
 }
 
 if (!('filename' in options)) {
@@ -11685,7 +11722,9 @@ if (!('filename' in options)) {
 
 console.log(process.argv);
 
+
 (async function main$1() {
+	// options.useServerTypes = options.useServerTypes || true;
 	// @ts-ignore
 	main(options);	
 })();

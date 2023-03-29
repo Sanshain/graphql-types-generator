@@ -27,17 +27,9 @@ let dir = './sources/';
 
 module.exports = async function typesGenerate(
 	/**
-	 * @type {{ 
-	 * 	filename: string; 
-	 * 	files: string[]; 
-	 * 	target: string; 
-	 * 	separateFileForArgumentsTypes?: string,
-	 * 	matchTypeNames: boolean,
-	 * 	declarateSource: string[],
-	 * 	declTemplate?: string,
-	 * }} 
-	 * 
-	 */ options,
+	 * @type {import('./main').BaseOptions} 
+	 */ 
+	 options
 	) {
 		
 	// let typeConds = {
@@ -47,8 +39,7 @@ module.exports = async function typesGenerate(
 	// } 	
 
 	let graTypes = {};
-	let codeTypes = '';
-	
+	let codeTypes = '';	
 	options = Object.assign(
 		{
 			filename: 'queries.js',
@@ -79,17 +70,20 @@ module.exports = async function typesGenerate(
 
 	const generator = new TypesGenerator(options)
 
-	let filenames = options.filename 
-		? [options.filename] 
-		: await ((async () => {
+	options.files = options.filename ? options.files?.concat([options.filename]) : options.files
+
+	let filenames = options.files 
+		? await ((async () => {
 		
 			let arr = [];
+			//@ts-expect-error
 			for (const file of options.files) {
 				let _files = await globby([file]);
 				arr = arr.concat(_files.length ? _files : [file])
 			}
 			return arr;		
-		})())	
+		})())
+		: [options.filename] 
 		// : await ((() => {
 			
 		// 	let arr = [];
@@ -108,13 +102,15 @@ module.exports = async function typesGenerate(
 	if (options.declTemplate){
 		declTemplate = fs.readFileSync(options.declTemplate, { encoding: 'utf8', flag: 'r' })
 	}
-	
+
 
 	for (const filename of filenames) {
 		
 		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
 		let _graTypes = {}
-		let [declTypes, typesFromFile] = await generator.getTypes(filename, codeTypes, _graTypes);
+		let [declTypes, typesFromFile] = await generator.getTypes(
+			filename, codeTypes, _graTypes,			
+		);
 		
 		
 		if (declTemplate && options.declarateSource?.includes(filename)){
@@ -135,7 +131,7 @@ module.exports = async function typesGenerate(
 	
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
 
-	let targetFile = path.join(process.cwd(), target);		// path.resolve(path.dirname(''))
+	let targetFile = path.join(process.cwd(), target || '');		// path.resolve(path.dirname(''))
 	
 
 	// generator.mutationArgs += 	"\n\nexport type QueryString<T extends string, Q extends string> = " +

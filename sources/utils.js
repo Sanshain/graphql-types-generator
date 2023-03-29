@@ -61,12 +61,7 @@ class TypesGenerator{
 
 
 	/**
-	 * @pparam {{ 
-	 * 	rules: { 
-	 * 		string: string[]; bool: string[]; number: string[]; 
-	 * 	}; 
-	 * 	useServerTypes: boolean 
-	 * }} options
+	 * @param {import('./main').BaseOptions} options
 	 */
 	constructor(options){
 		
@@ -82,15 +77,15 @@ class TypesGenerator{
 	}
 
 
-	/**
+	 /**
 	 * добавляет сгенерированные типы в codeTypes и возвращает ее
 	 * @param {*} filename - имя файла
-	 * @param {*} codeTypes - типы тайпскрипт в виде объекта	
+	 * @param {*} codeTypes - типы тайпскрипт в виде объекта
 	 * @param {*} graTypes - типы тайпскрипт в виде строк
 	 * @returns typescript code
 	 */
 	 async getTypes(filename, codeTypes, graTypes) {
-		
+
 		let declTypes = {}
 
 		if (this.serverTypes === null) {
@@ -399,7 +394,7 @@ class TypesGenerator{
 	}
 
 	async getSchemaTypes(typeName){
-
+		
 		let serverTypes = {}		
 
 		let rawSchema = await this.typesRequest(this.queriesInfoQuery);	
@@ -472,15 +467,17 @@ class TypesGenerator{
 	/**
 	 * @param {string} queriesInfoQuery
 	 */
-	typesRequest(queriesInfoQuery){
-		
+	typesRequest(queriesInfoQuery){			
+				
+		const reqOptions = typeof this.options.useServerTypes == 'object' ? this.options.useServerTypes : {}
+
 		return new Promise(function(resolve, reject) {
 			// Эта функция будет вызвана автоматически
 		 
 			let data = ''
 			const options = {		
-				hostname: '127.0.0.1',
-				port: 8000,
+				hostname: reqOptions.host || '127.0.0.1',
+				port: reqOptions.port || 8000,
 				path: '/graphql',
 				method: 'POST',		
 				headers: {'Content-Type': 'application/json'}
