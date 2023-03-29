@@ -41,6 +41,18 @@ npm i graphql-types-generator -D
 ```shell
 types-gen -s "./examples/queries.js"
 ```
+or
+
+```shell script
+npm graphql-types-generator -s "./examples/queries.js"
+```
+
+#### Advanced possible options: 
+- `-t` - target file name 
+- `-p` - graphql server port
+- `-h` - graphql server host
+- `--ds` - generate `*.d.ts` file for source file with `QueryString` type declarations for each query
+- `--m` - attach 'QueryTypes' type listing all names of generated queries types with links to appropriate types
 
 ## Programmatic usage: 
 
@@ -64,19 +76,19 @@ main();
 # How it works?
 
 By default it expects server on `http://127.0.0.1:8000/graphql`. If doesn't exists return warnings about 
-an server unavailability and generates types from namings.
+an server unavailability and generates types based on naming rules.
 
 ## Possible options:
 
-- `filename: string` - path to js file with graphql queries wrapped to tagged template `gql` (required)
-- `files?: string[]` - as alternative `filename` allowing multiple source files passing at same time
+- `filename: string` - path to js file with graphql queries wrapped to tagged template `gql` (possible to use glob pattern) (required)
+- `files?: string[]` - as alternative `filename` option allowing multiple source files passing at same time
 - `declarateSource?: Array<string>` - list of files for generating declaration (`*.d.ts`) files (may match with `files` option. useful for covering query argument types).
-- `declTemplate?: string` - file name of template using for ts files generation (look up `examples` directory)
+- `declTemplate?: string` - file name of template using for `*.d.ts` files generation (look up `examples` directory)
 - `target?: string` - target file name
 - `attachTypeName?: boolean` - attach `__typename` field for each query type
 - `matchTypeNames?: boolean` - attach 'QueryTypes' type
 - `useServerTypes?: boolean` - using server types for generation
-- `rules?: object` - advanced naming rules to generate types
+- `rules?: object` - advanced naming rules to generate types like `{number: ['count', 'amount']}`
 - `separateFileForArgumentsTypes?: boolean` - separate argument types and queries result types
 
 ### source: 
