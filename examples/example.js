@@ -18,8 +18,12 @@ async function main() {
 		// filename: './examples/queries.js',
 		
 		declTemplate: './examples/template.d.ts',	
+		
 		// the same as files
-		filename: path.resolve(basePath, './queries/queries.js'),
+		// filename: path.resolve(basePath, './queries/queries.js'),
+		// filename: path.resolve(basePath, './real/queries.js'),
+		filename: path.resolve(basePath, './real/autoqueries.js'),
+
 		// generate types based on queries described at the following files:
 		// files: [
 		// 	...sourceFiles,
@@ -33,7 +37,9 @@ async function main() {
 		target: './examples/queries/queries.ts',
 		
 		// separate arguments types from response types:
-		separateFileForArgumentsTypes: './examples/queries/arguments.ts',				
+		separateFileForArgumentsTypes: './examples/queries/arguments.ts',		
+		
+		attachTypeName: true		
 	});	
 }
 

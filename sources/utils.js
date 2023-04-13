@@ -3,6 +3,7 @@
 const gql = require('graphql-tag');
 const fs = require('fs');
 const http = require('http');
+const { execArgv } = require('process');
 
 
 const any = 'any';
@@ -40,11 +41,16 @@ class TypesGenerator{
 		null: 'any',
 	}
 
-	/// for naming approach 
+	/**
+	 * @description for naming approach 
+	 * @type {Exclude<Required<import('./main').BaseOptions['rules']>, undefined>}
+	 */	
 	rules = {
+		/// endsWith:
 		string: ['Name', 'Title', 'Date', 'Time'],
+		number: ['Id', 'Count', 'Sum'],
+		/// startsWith:
 		bool: ['is'],
-		number: ['Id', 'Count', 'Sum']
 	}	
 
 	typeMatches = {
@@ -66,7 +72,8 @@ class TypesGenerator{
 	constructor(options){
 		
 		let keyValidator = Object.keys(this.rules);
-		this.rules = options.rules || this.rules;
+		
+		if (options.rules) this.rules = { ...options.rules, ...this.rules}
 		this.options = options;
 		
 		if (options.rules){
@@ -100,10 +107,15 @@ class TypesGenerator{
 		
 		let gqlDe = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		// let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
-		let gqls = Array.from(			
+		let gqls = Array.from(
 			// gqlDe.matchAll(/(\/\*[\s\S]+?\*\/)?\n?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
-			gqlDe.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
-			m => [m[1], m[3], m[4]]
+			gqlDe.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?export (?:const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
+			// gqlDe.matchAll(
+			// 	/(\/\*[\s\S]*?\*\/\r?\n)?export (?:const|let) ([\w_\d]+)\s?= gql`(\s*(?:query|mutation)\s*\w+\s*\{\s*(\w+)[^`]*?)`/gi
+			// ),
+			m => {
+				return [m[1], m[2], m[3]]
+			}
 		)
 		
 		console.log(`\n# ${gqls.length} types detected in "${filename}": \n`);
@@ -150,17 +162,17 @@ class TypesGenerator{
 			
 			let gpaType = this.getType(selections, 0, serverType, null);
 			if (this.options.attachTypeName){				
-								
+					
 				let argTypes = selections.map(s => s.name.value).filter(x => this.argTypes.includes(x));				
 				if (argTypes.length){
 					this.argMatches[typeName] =  argTypes.map(t => t + 'Args').join(' & ');					
 				}
 
 				//TODO include as option:
+				// if (this.options.matchTypeNames || argTypes.length){
 				if (argTypes.length){
 					gpaType.lines = `\n    __typename: "${typeName}",\n\n` + gpaType.lines
-				}
-				
+				}				
 			}
 			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
 
@@ -173,10 +185,19 @@ class TypesGenerator{
 	}
 
 	getArgumentMatchesType() {
+
+		let splitted = false;
 		
 		this.argTypesCode = Object.entries(this.argMatches).reduce(
-			(accType, [typeName, argTypes]) => accType += (`    ${typeName}: ${argTypes},\n`), 
-			'export type ArgTypes = {\n\n    undefined: any,\n'
+			(accType, [typeName, argTypes], i) => {
+				/// split it: 
+				// (TODO reshape more optimum)
+				if (i && !splitted && !this.argTypes[this.argTypes.indexOf(argTypes.slice(0, -4)) - 1]) {
+					accType += '    \n'					// 
+				}
+				return accType += (`    ${typeName}: ${argTypes},\n`)
+			}, 
+			'export type ArgTypes = {\n    undefined: never,\n\n'
 		) + '}'
 
 		return this.argTypesCode;
@@ -397,30 +418,26 @@ class TypesGenerator{
 		
 		let serverTypes = {}		
 
+		/** 
+		 * @type {Awaited<ReturnType<TypesGenerator['typesRequest']>> }
+		 * */
 		let rawSchema = await this.typesRequest(this.queriesInfoQuery);	
-		this.rawSchema = rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
-		let mutationTypes = rawSchema.find(t => t.name == 'Mutation').fields;
+		this.rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
+		let mutationTypes = this.rawSchema.find(t => t.name == 'Mutation')?.fields || [];
 
 		let argTypes = []
+		const typeFromDescMark = this.options.typeFromDescMark || ':::';
 		
-		for (const mutation of mutationTypes) {
-			if (mutation.description.startsWith(':::')){
-				
-				let inputFields = mutation.description.substring(3).split('\n')
-					.filter(item => item.trim())
-					.map(item => item.trim().split(':'));
-				let typeDec = `export type ${mutation.name + 'Args'} = {\n    ` + inputFields
-					.map(([k, v]) => `${k}: ${this.typeMatches[('' + v).trim()] || (v || 'unknown').trim()}`)
-					.join(',\n    ') + '\n}'
-				this.mutationArgs += '\n' + typeDec + '\n';
+		for (const mutation of mutationTypes) {								
+
+				this.genInputTypes(mutation, typeFromDescMark);
 				argTypes.push(mutation.name);
-			}
 		}
 
 		this.argTypes = argTypes
+		argTypes.push('')
 
-
-		let rawTypes = rawSchema.find(t => t.name == 'Query').fields;
+		let rawTypes = this.rawTypes = this.rawSchema.find(t => t.name == 'Query')?.fields;
 		for (let key in rawTypes)
 		{
 			const rawType = rawTypes[key];			
@@ -432,15 +449,15 @@ class TypesGenerator{
 
 			if (type){
 				let tsType = {}
-				for (const field of rawSchema.find(t => type == t.name).fields) 
-				{
-					tsType[field.name] = field.type.name || field.type.ofType.name;
+				for (const field of (this.rawSchema.find(t => type == t.name)?.fields || [])) {
+
+					tsType[field.name] = field.type.name || field.type.ofType?.name;
 					if (!~['Int', 'String', 'Boolean', 'ID', 'DateTime', 'Date'].indexOf(tsType[field.name])){
-						const subType = rawSchema.find(w => w.name == tsType[field.name]);
+						const subType = this.rawSchema.find(w => w.name == tsType[field.name]);
 						if (subType && subType.fields && subType.fields.length) {
 							tsType[field.name] = {}
 							for (const subField of subType.fields) {
-								tsType[field.name][subField.name] = subField.type.name || subField.type.ofType.name;
+								tsType[field.name][subField.name] = subField.type.name || subField.type.ofType?.name;
 							}
 						}
 
@@ -452,6 +469,14 @@ class TypesGenerator{
 				serverTypes[type] = rawType.type.name 
 					? tsType
 					: [tsType]
+				
+				/// args: 
+				if (rawType.args && rawType.args.length){
+					
+					this.genInputTypes(rawType, typeFromDescMark);
+					argTypes.push(rawType.name);
+				}
+
 			}
 		}
 
@@ -460,12 +485,69 @@ class TypesGenerator{
 		this.verbose && console.log(rawSchema);
 
 		this.serverTypes = serverTypes;
-		this.serverSubTypes = rawTypes.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}))
+		//@ts-expect-error
+		this.serverSubTypes = this.rawTypes.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}))
 	}
 
 
 	/**
+	 * @param {{ 
+	 * 	name: string; 
+	 * 	description: string | null; 									// string - for mutations, undefined - for queries
+	 * 	args: Array<{name?: string, type?: {name: string}}>; 
+	 * 	type?: { 
+	 * 		fields?: unknown[] | undefined; 
+	 * 		kind: "OBJECT" | "LIST" | "SCALAR" | "NOT_NULL"; 
+	 * 		name?: string | undefined;
+	 * 		ofType?: { name: string; } | undefined; 
+	 * 	};
+	 *  }} queryOrMutation
+	 * @param {string} typeFromDescMark
+	 */
+	genInputTypes(queryOrMutation, typeFromDescMark) {
+
+		let inputFields = queryOrMutation.args.map(param => [param.name, param.type?.name || 'any'])
+
+		if (queryOrMutation.description && queryOrMutation.description.startsWith(typeFromDescMark)) {
+			console.log(`Types for "${queryOrMutation.name}" mutation generates from server side description`);
+			inputFields = queryOrMutation.description.substring(3).split('\n')
+				.filter(item => item.trim())
+				.map(item => item.trim().split(':'));
+		}
+		let typeDec = `export type ${queryOrMutation.name + 'Args'} = {\n    ` + inputFields
+			.map(([k, v]) => `${k}: ${this.typeMatches[('' + v).trim()] || (v || 'unknown').trim()}`)
+			.join(',\n    ') + '\n}';
+		this.mutationArgs += '\n' + typeDec + '\n';
+		
+		return inputFields;
+	}
+
+	/**
 	 * @param {string} queriesInfoQuery
+	 * @returns {Promise<{
+	 * 	data:{
+	 * 		__schema:{
+	 * 			types: Array<{
+	 * 				name: string,
+	 * 				fields?: Array<{
+	 * 					name: string,
+	 * 					description: string,
+	 * 					args: Array<{
+	 * 						name: string,
+	 * 						type?: {name: string},
+	 * 						ofType?: {name: string}
+	 * 					}>,
+	 * 					type: {
+	 * 						fields?: Array<unknown>,
+	 * 						kind: 'OBJECT' | 'LIST' | 'SCALAR' | 'NOT_NULL',
+	 * 						name?: string,
+	 * 						ofType?: {name: string}
+	 * 					}
+	 * 				}>
+	 * 			}>
+	 * 		}
+	 * 	}
+	 * }>}
 	 */
 	typesRequest(queriesInfoQuery){			
 				
@@ -507,7 +589,13 @@ class TypesGenerator{
 				types {
 					name,
 					fields {
-						name,        
+						name,
+						args{
+							name,  
+							type{
+								name
+							}
+						},						        
 						description
 						type {
 							fields{								

@@ -2,9 +2,31 @@
 
 /* Mutation Arguments types:*/
 
+export type registerArgs = {
+    email: any,
+    username: any,
+    password1: any,
+    password2: any
+}
+
+export type verifyAccountArgs = {
+    token: any
+}
+
+export type tokenAuthArgs = {
+    password: any,
+    email: string,
+    username: string
+}
+
+export type updateAccountArgs = {
+    firstName: string,
+    lastName: string
+}
+
 export type postCreateArgs = {
-    files: any,
-    value: string
+    value: string,
+    files: any
 }
 
 export type likeApplyArgs = {
@@ -22,8 +44,32 @@ export type userSettingsMutationArgs = {
     placeTypeId: number
 }
 
+export type userArgs = {
+    id: number
+}
+
+export type userSettingsArgs = {
+    id: number
+}
+
+export type postsArgs = {
+    user: number
+}
+
+export type dialogArgs = {
+    id: number
+}
+
 
 export type ArgTypes = {
+    undefined: never,
 
-    undefined: any,
+    PostMutation: postCreateArgs,
+    LikeMutation: likeApplyArgs,
+    FriendshipMutation: friendshipApplyArgs,
+    SettingsMutationPayload: userSettingsMutationArgs,
+    
+    UserType: userArgs,
+    PostType: postsArgs,
+    DialogType: dialogArgs,
 }

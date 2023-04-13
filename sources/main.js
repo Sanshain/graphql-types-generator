@@ -149,7 +149,7 @@ module.exports = async function typesGenerate(
 
 	if (options.separateFileForArgumentsTypes){
 		
-		fs.writeFile(targetFile, codeTypes, () => console.log(`\n\nQueries types generated to ${targetFile}!`));		
+		fs.writeFile(targetFile, codeTypes, () => console.log(`\nQueries types generated to ${targetFile}!`));		
 
 		const argsTargetFile = path.join(process.cwd(), options.separateFileForArgumentsTypes);
 		fs.writeFile(

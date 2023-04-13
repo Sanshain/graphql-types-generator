@@ -5,7 +5,7 @@
 	"main": "./sources/main.js",
 	"homepage": "https://github.com/Sanshain/graphql-types-generator",
 	"scripts": {
-		"test": "node ./example.js",
+		"test": "node ./examples/example.js",
 		"generate": "graphql-codegen",
 		"init": "node ./sources/main"
 	},
