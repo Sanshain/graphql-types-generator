@@ -10,4 +10,4 @@ that such a feature would be a good cherry on the cake.
 <h2 align="center">DONE</h2>
 
 
-- **Typing of queries arguments**  *(v1.6.1)*
+- **Typing of queries arguments (^1.6.\*)**
