@@ -5,4 +5,4 @@ generates:
       - typescript
       - typescript-operations
     documents:
-      - "./examples/queries/queries.___codegen.js"
+      - "./codegen-contrast/queries-to-codegen.js"

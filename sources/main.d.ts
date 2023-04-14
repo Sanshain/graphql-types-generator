@@ -28,7 +28,7 @@ export type BaseOptions = {
 	separateFileForArgumentsTypes?: string
 }
 
-declare function typesGenerate(options: BaseOptions): void;
+declare function typesGenerate(options: BaseOptions): Promise<void>;
 
 //@ts-ignore
 export = typesGenerate

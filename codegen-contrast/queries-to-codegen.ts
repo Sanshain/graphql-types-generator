@@ -1,3 +1,6 @@
+/// for compareing:
+
+//@ts-ignore
 export const get_DialogInit = gql`
 	query DialogInfo {
 		dialog(id: 0){
