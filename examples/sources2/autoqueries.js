@@ -1,5 +1,14 @@
 import gql from "./graphql-tag";
 
+export const verifyAccount = gql`
+    mutation VerifyAccount {
+        verifyAccount(token: $token){
+            success,
+            errors
+        }
+    }
+`;
+
 export const postCreate = gql`
     mutation PostMutation {
         postCreate(files: $files, value: $value){

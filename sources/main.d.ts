@@ -25,7 +25,8 @@ export type BaseOptions = {
 		number?: string[]; 
 		// JSONField?: string
 	},
-	separateFileForArgumentsTypes?: string
+	separateFileForArgumentsTypes?: string,
+	debug?: boolean
 }
 
 declare function typesGenerate(options: BaseOptions): Promise<void>;
@@ -34,3 +35,4 @@ declare function typesGenerate(options: BaseOptions): Promise<void>;
 export = typesGenerate
 
 export default typesGenerate;
+

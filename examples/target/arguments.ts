@@ -64,6 +64,14 @@ export type dialogArgs = {
 export type ArgTypes = {
     undefined: never,
 
+    DialogInfo: dialogArgs,
+    
+    Register: registerArgs,
+    SignInfo: tokenAuthArgs,
+    
+    SignUpInfo: registerArgs,
+    AccountVerifyingInfo: verifyAccountArgs,
+    VerifyAccount: verifyAccountArgs,
     PostMutation: postCreateArgs,
     LikeMutation: likeApplyArgs,
     FriendshipMutation: friendshipApplyArgs,

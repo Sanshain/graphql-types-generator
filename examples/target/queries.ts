@@ -1,5 +1,148 @@
 
 
+export type ProfileInfo = {
+    users: Array<{
+        id: number,
+        username: any,
+        name: string,
+        lastName: string,
+        image: any,
+    }>,
+    dialogs: Array<{
+        id: number,
+        title: string,
+        founder: {
+            id: number,
+            name: string,
+            image: any,
+        },
+        talkersAmount: any,
+        lastMessage: {
+            author: any,
+            value: any,
+        },
+    }>,
+    me: {
+        id: number,
+        username: string,
+        firstName: string,
+        lastName: string,
+    },
+};
+
+export type DialogInfo = {
+
+    __typename: "DialogInfo",
+
+    dialog: {
+        id: number,
+        title: string,
+        founder: {
+            id: number,
+        },
+        users: {
+            id: number,
+            name: string,
+            image: any,
+        }[],
+        messages: {
+            id: number,
+            author: any,
+            time: string,
+            value: any,
+            files: any,
+            replyTo: {
+                id: number,
+                time: string,
+                value: any,
+                files: any,
+                author: any,
+            },
+            likesCount: number,
+            rated: any,
+        }[],
+    },
+};
+
+export type PaginatedUsers = {
+    paginatedUsers: Array<{
+        username: any,
+        firstName: string,
+    }>,
+};
+
+export type Register = {
+
+    __typename: "Register",
+
+    register: {
+        success: any,
+        errors: any,
+        token: any,
+    },
+};
+
+export type SignInfo = {
+
+    __typename: "SignInfo",
+
+    tokenAuth: {
+        success: any,
+        errors: any,
+        unarchiving: any,
+        token: any,
+        user: {
+            id: number,
+            username: any,
+        },
+    },
+};
+
+export type SignUpInfo = {
+
+    __typename: "SignUpInfo",
+
+    register: {
+        success: any,
+        errors: any,
+        token: any,
+    },
+};
+
+export type PassResetInfo = {
+    passwordReset: {
+        success: any,
+        errors: any,
+    },
+};
+
+export type AccountVerifyingInfo = {
+
+    __typename: "AccountVerifyingInfo",
+
+    verifyAccount: {
+        success: any,
+        errors: any,
+    },
+};
+
+export type SignOutInfo = {
+    revokeToken: {
+        success: any,
+        errors: any,
+    },
+};
+
+export type VerifyAccount = {
+
+    __typename: "VerifyAccount",
+
+    verifyAccount: {
+        success: any,
+        errors: any,
+    },
+};
+
 export type PostMutation = {
 
     __typename: "PostMutation",
@@ -130,6 +273,16 @@ export type DialogType = {
 * (optional: controlled by `matchTypeNames` option)
 */
 export type QueryTypes = {
+    ProfileInfo: ProfileInfo
+    DialogInfo: DialogInfo
+    PaginatedUsers: PaginatedUsers
+    Register: Register
+    SignInfo: SignInfo
+    SignUpInfo: SignUpInfo
+    PassResetInfo: PassResetInfo
+    AccountVerifyingInfo: AccountVerifyingInfo
+    SignOutInfo: SignOutInfo
+    VerifyAccount: VerifyAccount
     PostMutation: PostMutation
     LikeMutation: LikeMutation
     FriendshipMutation: FriendshipMutation

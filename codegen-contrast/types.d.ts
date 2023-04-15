@@ -211,8 +211,8 @@ export type Mutation = {
   updateAccount?: Maybe<UpdateAccount>;
   /**
    * :::
-   * files:JSONString
    * value:String
+   * files:JSONString
    */
   postCreate?: Maybe<PostMutation>;
   /**
@@ -312,8 +312,8 @@ export type ObtainJsonWebToken = {
 
 /**
  * :::
- * files:JSONString
  * value:String
+ * files:JSONString
  */
 export type PostMutation = {
   __typename?: 'PostMutation';
@@ -336,24 +336,30 @@ export type PostType = {
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<UserNode>;
-  users?: Maybe<Array<UserType>>;
-  friends?: Maybe<Array<Maybe<UserType>>>;
-  paginatedUsers?: Maybe<Array<UserType>>;
   user?: Maybe<UserType>;
+  userSettings?: Maybe<UserSettingsType>;
+  users?: Maybe<Array<UserType>>;
+  paginatedUsers?: Maybe<Array<UserType>>;
+  friends?: Maybe<Array<Maybe<UserType>>>;
   posts?: Maybe<Array<Maybe<PostType>>>;
-  dialogs?: Maybe<Array<DialogType>>;
   dialog?: Maybe<DialogType>;
+  dialogs?: Maybe<Array<DialogType>>;
   messages?: Maybe<Array<MessageType>>;
-};
-
-
-export type QueryPaginatedUsersArgs = {
-  filter?: Maybe<Scalars['String']>;
 };
 
 
 export type QueryUserArgs = {
   id?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryUserSettingsArgs = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryPaginatedUsersArgs = {
+  filter?: Maybe<Scalars['String']>;
 };
 
 
@@ -459,6 +465,10 @@ export type UserNode = Node & {
   secondaryEmail?: Maybe<Scalars['String']>;
 };
 
+/**
+ * :::
+ * id: Int
+ */
 export type UserSettingsType = {
   __typename?: 'UserSettingsType';
   firstName: Scalars['String'];
@@ -501,7 +511,7 @@ export type VerifyAccount = {
   errors?: Maybe<Scalars['ExpectedErrorType']>;
 };
 
-export type DialogInfoQueryVariables = Exact<{ [key: string]: never; }>;
+export type RegisterMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type DialogInfoQuery = { __typename?: 'Query', dialog?: { __typename?: 'DialogType', id: string, title: string, founder: { __typename?: 'UserType', id: string }, users: Array<{ __typename?: 'UserType', id: string, name?: string | null, image?: string | null }>, messages: Array<{ __typename?: 'MessagesType', id: string, author?: number | null, time: any, value: string, files: any, likesCount?: number | null, rated?: boolean | null, replyTo?: { __typename?: 'MessagesType', id: string, time: any, value: string, files: any, author?: number | null } | null }> } | null };
+export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'Register', success?: boolean | null, errors?: any | null, token?: string | null } | null };

@@ -1,8 +1,9 @@
 schema: http://localhost:8000/graphql
 generates:
-  ./codegen-contrast/types.d.ts:
+  ./codegen-contrast/types.d.ts:  
     plugins:
       - typescript
       - typescript-operations
     documents:
       - "./codegen-contrast/queries-to-codegen.js"
+      - ./codegen-contrast/schema.graphql

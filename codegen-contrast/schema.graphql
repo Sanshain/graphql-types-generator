@@ -1,0 +1,7 @@
+mutation Register {
+	register(email: "", username: "$username", password1: "$password1", password2: "$password1"){
+		success,
+		errors,
+		token
+	}
+}
