@@ -20,6 +20,47 @@ The generally accepted method and considered correct is the generation of typesc
       <h3>Why not codegen/typescript-operations?</h3> - <h3>It's your choice</h3>
    </summary>
    `Codegen/typescript` does not know how out of the box, what it can do (generate types from queries) `graphql-types-generator`. The `codegen/typescript-operations` plugin does the most similar work in the `codegen` ecosystem. But how he does it is somewhat different: at the input, he expects the hard-boiled values of the query arguments, which may be a minor problem with simple queries, but very significant - with complex ones. `Graphql-types-generator` does not have this problem. 
+   
+And at the moment I also see the following advatages of the `graphql-types-generator` over the `codegen/typescript-operations`:
+- `codegen/typescript-operations` generates query types with fields linked to whole types of apropriate server types like this. 
+   #### Example: 
+   ```gql
+   We have:
+    mutation SettingsMutationPayload {
+        userSettingsMutation(birthday: $birthday){
+            profile{
+                id,
+                firstName
+            }
+        }
+    }   
+   ```
+   where type of `profile` is `UserType` with 20 fields and `codegen/typescript-operations` generates type with field linked to UserType having all 20 fields instead of 
+   just 2 we need:
+   ```ts
+   export type SettingsMutationPayload = {
+     __typename?: 'SettingsMutationPayload';
+     profile?: Maybe<UserType>;
+   };   
+   ```
+   Intead of that `codegen/typescript-operations` generates only required fields:
+   ```ts
+   export type SettingsMutationPayload = {
+       userSettingsMutation: {
+           profile: {
+               id: number,
+               username: string
+           }
+       }
+   }
+   ```
+- has possibility to specify more tiny type for types generation via specify naming rules or server type description (look up `typeFromDescMark` option). Its may be usefull for example for Unions of some fixed strings or numbers instead of base scalar types or using string template literal in the types. That maky possible use the types as generics for more typing covering
+- `codegen/typescript-operations` performs generation faster
+
+And the following disadvantages: 
+
+- `codegen/typescript-operations` outputs scalar types for fields more precisely now
+
 </details>
 
 <details>
