@@ -261,6 +261,8 @@ class TypesGenerator{
 			}
 		}
 
+		const isLIST = Array.isArray(subTypeFields);
+		subTypeFields = isLIST ? subTypeFields[0] : subTypeFields;
 
 		for (const selection of selections) {
 		
@@ -268,7 +270,7 @@ class TypesGenerator{
 
 			if (selection.selectionSet){
 					
-				let _lines = '', _compositeSType = {}
+				let _lines = '', _compositeSType = {}, isNestedList = false
 
 				// this.rawSchema.reduce((acc, el) => ((acc[el.name] = el.fields), acc), {})
 				//@ts-expect-error
@@ -319,7 +321,7 @@ class TypesGenerator{
 					// здесь можно заполнить серверные строки
 				}
 				else if(!_lines){
-					({_gpaType: _compositeSType[selection.name?.value], lines: _lines} = this.getType(
+					({_gpaType: _compositeSType[selection.name?.value], lines: _lines, isNestedList} = this.getType(
 						//@ts-expect-error
 						selection.selectionSet.selections, 
 						deep, 
@@ -331,7 +333,7 @@ class TypesGenerator{
 				// _gpaType[selection.name.value] = _gpaType;	
 				// const offset = ' '.repeat(deep + 4);			
 
-				let value = `{\n${_lines}${' '.repeat(deep)}}`;		
+				let value = `{\n${_lines}${' '.repeat(deep)}}` + (isNestedList ? ' []' : '');		
 				let values = null;				
 
 				//@ts-expect-error
@@ -408,7 +410,7 @@ class TypesGenerator{
 			}
 		}
 
-		return {_gpaType, lines};
+		return {_gpaType, lines, isNestedList: isLIST};
 
 	}
 

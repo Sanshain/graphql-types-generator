@@ -3,25 +3,35 @@
 export type ProfileInfo = {
     users: {
         id: number,
-        username: any,
+        username: string,
         name: string,
         lastName: string,
-        image: any,
-    },
+        image: string,
+    } [],
     dialogs: {
         id: number,
         title: string,
         founder: {
             id: number,
+            lastLogin: string,
+            username: string,
+            firstName: string,
+            lastName: string,
+            dateJoined: string,
+            avatar: string,
+            sex: boolean,
+            birthday: string,
+            placeId: number,
             name: string,
-            image: any,
+            image: string,
+            friendshipState: number,
         },
-        talkersAmount: any,
+        talkersAmount: number,
         lastMessage: {
-            author: any,
-            value: any,
+            author: string,
+            value: string,
         },
-    },
+    } [],
     me: {
         id: number,
         username: string,
@@ -39,12 +49,24 @@ export type DialogInfo = {
         title: string,
         founder: {
             id: number,
+            lastLogin: string,
+            username: string,
+            firstName: string,
+            lastName: string,
+            dateJoined: string,
+            avatar: string,
+            sex: boolean,
+            birthday: string,
+            placeId: number,
+            name: string,
+            image: string,
+            friendshipState: number,
         },
         users: {
             id: number,
             name: string,
-            image: any,
-        },
+            image: string,
+        } [],
         messages: {
             id: number,
             author: any,
@@ -61,7 +83,7 @@ export type DialogInfo = {
             likesCount: number,
             rated: any,
         },
-    },
+    } [],
 };
 
 export type PaginatedUsers = {
@@ -102,8 +124,8 @@ export type SignInfo = {
         token: any,
         user: {
             id: number,
-            username: any,
-        },
+            username: string,
+        } [],
     },
 };
 
@@ -243,7 +265,7 @@ export type UserType = {
         name: string,
         image: string,
         friendshipState: number,
-    },
+    } [],
 };
 
 export type PostType = {
@@ -257,7 +279,7 @@ export type PostType = {
         files: any,
         likesCount: number,
         rated: boolean,
-    },
+    } [],
 };
 
 export type DialogType = {
@@ -270,10 +292,10 @@ export type DialogType = {
         title: string,
         talkersAmount: number,
         lastMessage: {
-            author: any,
-            value: any,
+            author: string,
+            value: string,
         },
-    },
+    } [],
 };
 
 /*
