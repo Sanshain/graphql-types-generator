@@ -33,7 +33,7 @@ var arrayUnion = (...arguments_) => {
  * Licensed under the MIT license.
  */
 
-const PassThrough = stream__default["default"].PassThrough;
+const PassThrough = stream__default['default'].PassThrough;
 const slice = Array.prototype.slice;
 
 var merge2_1 = merge2;
@@ -257,7 +257,7 @@ function unixify(filepath) {
 }
 exports.unixify = unixify;
 function makeAbsolute(cwd, filepath) {
-    return path__default["default"].resolve(cwd, filepath);
+    return path__default['default'].resolve(cwd, filepath);
 }
 exports.makeAbsolute = makeAbsolute;
 function escape(pattern) {
@@ -354,8 +354,8 @@ var isGlob = function isGlob(str, options) {
   return false;
 };
 
-var pathPosixDirname = path__default["default"].posix.dirname;
-var isWin32 = os__default["default"].platform() === 'win32';
+var pathPosixDirname = path__default['default'].posix.dirname;
+var isWin32 = os__default['default'].platform() === 'win32';
 
 var slash$1 = '/';
 var backslash = /\\/g;
@@ -942,7 +942,7 @@ const toRegex = (start, end, options) => {
 };
 
 const rangeError = (...args) => {
-  return new RangeError('Invalid range arguments: ' + util__default["default"].inspect(...args));
+  return new RangeError('Invalid range arguments: ' + util__default['default'].inspect(...args));
 };
 
 const invalidRange = (start, end, options) => {
@@ -1938,7 +1938,7 @@ var constants$1 = {
   CHAR_VERTICAL_LINE: 124, /* | */
   CHAR_ZERO_WIDTH_NOBREAK_SPACE: 65279, /* \uFEFF */
 
-  SEP: path__default["default"].sep,
+  SEP: path__default['default'].sep,
 
   /**
    * Create EXTGLOB_CHARS
@@ -2053,7 +2053,7 @@ exports.isWindows = options => {
   if (options && typeof options.windows === 'boolean') {
     return options.windows;
   }
-  return win32 === true || path__default["default"].sep === '\\';
+  return win32 === true || path__default['default'].sep === '\\';
 };
 
 exports.escapeLast = (input, char, lastIdx) => {
@@ -3719,7 +3719,7 @@ picomatch$1.test = (input, regex, options, { glob, posix } = {}) => {
 
 picomatch$1.matchBase = (input, glob, options, posix = utils$3.isWindows(options)) => {
   const regex = glob instanceof RegExp ? glob : picomatch$1.makeRe(glob, options);
-  return regex.test(path__default["default"].basename(input));
+  return regex.test(path__default['default'].basename(input));
 };
 
 /**
@@ -4085,7 +4085,7 @@ micromatch.not = (list, patterns, options = {}) => {
 
 micromatch.contains = (str, pattern, options) => {
   if (typeof str !== 'string') {
-    throw new TypeError(`Expected a string: "${util__default["default"].inspect(str)}"`);
+    throw new TypeError(`Expected a string: "${util__default['default'].inspect(str)}"`);
   }
 
   if (Array.isArray(pattern)) {
@@ -4231,7 +4231,7 @@ micromatch.every = (list, patterns, options) => {
 
 micromatch.all = (str, patterns, options) => {
   if (typeof str !== 'string') {
-    throw new TypeError(`Expected a string: "${util__default["default"].inspect(str)}"`);
+    throw new TypeError(`Expected a string: "${util__default['default'].inspect(str)}"`);
   }
 
   return [].concat(patterns).every(p => picomatch(p, options)(str));
@@ -4472,7 +4472,7 @@ function endsWithSlashGlobStar(pattern) {
 }
 exports.endsWithSlashGlobStar = endsWithSlashGlobStar;
 function isAffectDepthOfReadingPattern(pattern) {
-    const basename = path__default["default"].basename(pattern);
+    const basename = path__default['default'].basename(pattern);
     return endsWithSlashGlobStar(pattern) || isStaticPattern(basename);
 }
 exports.isAffectDepthOfReadingPattern = isAffectDepthOfReadingPattern;
@@ -4778,10 +4778,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createFileSystemAdapter = exports.FILE_SYSTEM_ADAPTER = void 0;
 
 exports.FILE_SYSTEM_ADAPTER = {
-    lstat: fs__default["default"].lstat,
-    stat: fs__default["default"].stat,
-    lstatSync: fs__default["default"].lstatSync,
-    statSync: fs__default["default"].statSync
+    lstat: fs__default['default'].lstat,
+    stat: fs__default['default'].stat,
+    lstatSync: fs__default['default'].lstatSync,
+    statSync: fs__default['default'].statSync
 };
 function createFileSystemAdapter(fsMethods) {
     if (fsMethods === undefined) {
@@ -5162,12 +5162,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createFileSystemAdapter = exports.FILE_SYSTEM_ADAPTER = void 0;
 
 exports.FILE_SYSTEM_ADAPTER = {
-    lstat: fs__default["default"].lstat,
-    stat: fs__default["default"].stat,
-    lstatSync: fs__default["default"].lstatSync,
-    statSync: fs__default["default"].statSync,
-    readdir: fs__default["default"].readdir,
-    readdirSync: fs__default["default"].readdirSync
+    lstat: fs__default['default'].lstat,
+    stat: fs__default['default'].stat,
+    lstatSync: fs__default['default'].lstatSync,
+    statSync: fs__default['default'].statSync,
+    readdir: fs__default['default'].readdir,
+    readdirSync: fs__default['default'].readdirSync
 };
 function createFileSystemAdapter(fsMethods) {
     if (fsMethods === undefined) {
@@ -5192,7 +5192,7 @@ class Settings {
         this._options = _options;
         this.followSymbolicLinks = this._getValue(this._options.followSymbolicLinks, false);
         this.fs = fs_1.createFileSystemAdapter(this._options.fs);
-        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path__default["default"].sep);
+        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path__default['default'].sep);
         this.stats = this._getValue(this._options.stats, false);
         this.throwErrorOnBrokenSymbolicLink = this._getValue(this._options.throwErrorOnBrokenSymbolicLink, true);
         this.fsStatSettings = new out$3.Settings({
@@ -5596,7 +5596,7 @@ class AsyncReader extends reader$1.default {
         super(_root, _settings);
         this._settings = _settings;
         this._scandir = out$2.scandir;
-        this._emitter = new events__default["default"].EventEmitter();
+        this._emitter = new events__default['default'].EventEmitter();
         this._queue = queue(this._worker.bind(this), this._settings.concurrency);
         this._isFatalError = false;
         this._isDestroyed = false;
@@ -5728,7 +5728,7 @@ class StreamProvider {
         this._root = _root;
         this._settings = _settings;
         this._reader = new async$2.default(this._root, this._settings);
-        this._stream = new stream__default["default"].Readable({
+        this._stream = new stream__default['default'].Readable({
             objectMode: true,
             read: () => { },
             destroy: () => {
@@ -5850,7 +5850,7 @@ class Settings {
         this.deepFilter = this._getValue(this._options.deepFilter, null);
         this.entryFilter = this._getValue(this._options.entryFilter, null);
         this.errorFilter = this._getValue(this._options.errorFilter, null);
-        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path__default["default"].sep);
+        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path__default['default'].sep);
         this.fsScandirSettings = new out$2.Settings({
             followSymbolicLinks: this._options.followSymbolicLinks,
             fs: this._options.fs,
@@ -5925,7 +5925,7 @@ class Reader {
         });
     }
     _getFullEntryPath(filepath) {
-        return path__default["default"].resolve(this._settings.cwd, filepath);
+        return path__default['default'].resolve(this._settings.cwd, filepath);
     }
     _makeEntry(stats, pattern) {
         const entry = {
@@ -5964,7 +5964,7 @@ class ReaderStream extends reader.default {
     }
     static(patterns, options) {
         const filepaths = patterns.map(this._getFullEntryPath, this);
-        const stream = new stream__default["default"].PassThrough({ objectMode: true });
+        const stream = new stream__default['default'].PassThrough({ objectMode: true });
         stream._write = (index, _enc, done) => {
             return this._getEntry(filepaths[index], patterns[index], options)
                 .then((entry) => {
@@ -6293,7 +6293,7 @@ class Provider {
         this.entryTransformer = new entry.default(this._settings);
     }
     _getRootDirectory(task) {
-        return path__default["default"].resolve(this._settings.cwd, task.base);
+        return path__default['default'].resolve(this._settings.cwd, task.base);
     }
     _getReaderOptions(task) {
         const basePath = task.base === '.' ? '' : task.base;
@@ -6375,7 +6375,7 @@ class ProviderStream extends provider.default {
         const root = this._getRootDirectory(task);
         const options = this._getReaderOptions(task);
         const source = this.api(root, task, options);
-        const destination = new stream__default["default"].Readable({ objectMode: true, read: () => { } });
+        const destination = new stream__default['default'].Readable({ objectMode: true, read: () => { } });
         source
             .once('error', (error) => destination.emit('error', error))
             .on('data', (entry) => destination.emit('data', options.transform(entry)))
@@ -6479,14 +6479,14 @@ exports.DEFAULT_FILE_SYSTEM_ADAPTER = void 0;
  * The `os.cpus` method can return zero. We expect the number of cores to be greater than zero.
  * https://github.com/nodejs/node/blob/7faeddf23a98c53896f8b574a6e66589e8fb1eb8/lib/os.js#L106-L107
  */
-const CPU_COUNT = Math.max(os__default["default"].cpus().length, 1);
+const CPU_COUNT = Math.max(os__default['default'].cpus().length, 1);
 exports.DEFAULT_FILE_SYSTEM_ADAPTER = {
-    lstat: fs__default["default"].lstat,
-    lstatSync: fs__default["default"].lstatSync,
-    stat: fs__default["default"].stat,
-    statSync: fs__default["default"].statSync,
-    readdir: fs__default["default"].readdir,
-    readdirSync: fs__default["default"].readdirSync
+    lstat: fs__default['default'].lstat,
+    lstatSync: fs__default['default'].lstatSync,
+    stat: fs__default['default'].stat,
+    statSync: fs__default['default'].statSync,
+    readdir: fs__default['default'].readdir,
+    readdirSync: fs__default['default'].readdirSync
 };
 class Settings {
     constructor(_options = {}) {
@@ -6593,7 +6593,7 @@ function assertPatternsInput$1(input) {
 }
 var out = FastGlob;
 
-const {promisify: promisify$1} = util__default["default"];
+const {promisify: promisify$1} = util__default['default'];
 
 
 async function isType(fsStatType, statsMethodName, filePath) {
@@ -6602,7 +6602,7 @@ async function isType(fsStatType, statsMethodName, filePath) {
 	}
 
 	try {
-		const stats = await promisify$1(fs__default["default"][fsStatType])(filePath);
+		const stats = await promisify$1(fs__default['default'][fsStatType])(filePath);
 		return stats[statsMethodName]();
 	} catch (error) {
 		if (error.code === 'ENOENT') {
@@ -6619,7 +6619,7 @@ function isTypeSync(fsStatType, statsMethodName, filePath) {
 	}
 
 	try {
-		return fs__default["default"][fsStatType](filePath)[statsMethodName]();
+		return fs__default['default'][fsStatType](filePath)[statsMethodName]();
 	} catch (error) {
 		if (error.code === 'ENOENT') {
 			return false;
@@ -6649,11 +6649,11 @@ const getExtensions = extensions => extensions.length > 1 ? `{${extensions.join(
 
 const getPath = (filepath, cwd) => {
 	const pth = filepath[0] === '!' ? filepath.slice(1) : filepath;
-	return path__default["default"].isAbsolute(pth) ? pth : path__default["default"].join(cwd, pth);
+	return path__default['default'].isAbsolute(pth) ? pth : path__default['default'].join(cwd, pth);
 };
 
 const addExtensions = (file, extensions) => {
-	if (path__default["default"].extname(file)) {
+	if (path__default['default'].extname(file)) {
 		return `**/${file}`;
 	}
 
@@ -6670,18 +6670,18 @@ const getGlob = (directory, options) => {
 	}
 
 	if (options.files && options.extensions) {
-		return options.files.map(x => path__default["default"].posix.join(directory, addExtensions(x, options.extensions)));
+		return options.files.map(x => path__default['default'].posix.join(directory, addExtensions(x, options.extensions)));
 	}
 
 	if (options.files) {
-		return options.files.map(x => path__default["default"].posix.join(directory, `**/${x}`));
+		return options.files.map(x => path__default['default'].posix.join(directory, `**/${x}`));
 	}
 
 	if (options.extensions) {
-		return [path__default["default"].posix.join(directory, `**/*.${getExtensions(options.extensions)}`)];
+		return [path__default['default'].posix.join(directory, `**/*.${getExtensions(options.extensions)}`)];
 	}
 
-	return [path__default["default"].posix.join(directory, '**')];
+	return [path__default['default'].posix.join(directory, '**')];
 };
 
 var dirGlob = async (input, options) => {
@@ -7327,7 +7327,7 @@ var slash = path => {
 	return path.replace(/\\/g, '/');
 };
 
-const {promisify} = util__default["default"];
+const {promisify} = util__default['default'];
 
 
 
@@ -7341,18 +7341,18 @@ const DEFAULT_IGNORE = [
 	'**/.git'
 ];
 
-const readFileP = promisify(fs__default["default"].readFile);
+const readFileP = promisify(fs__default['default'].readFile);
 
 const mapGitIgnorePatternTo = base => ignore => {
 	if (ignore.startsWith('!')) {
-		return '!' + path__default["default"].posix.join(base, ignore.slice(1));
+		return '!' + path__default['default'].posix.join(base, ignore.slice(1));
 	}
 
-	return path__default["default"].posix.join(base, ignore);
+	return path__default['default'].posix.join(base, ignore);
 };
 
 const parseGitIgnore = (content, options) => {
-	const base = slash(path__default["default"].relative(options.cwd, path__default["default"].dirname(options.fileName)));
+	const base = slash(path__default['default'].relative(options.cwd, path__default['default'].dirname(options.fileName)));
 
 	return content
 		.split(/\r?\n/)
@@ -7375,7 +7375,7 @@ const reduceIgnore = files => {
 
 const ensureAbsolutePathForCwd = (cwd, p) => {
 	cwd = slash(cwd);
-	if (path__default["default"].isAbsolute(p)) {
+	if (path__default['default'].isAbsolute(p)) {
 		if (slash(p).startsWith(cwd)) {
 			return p;
 		}
@@ -7383,15 +7383,15 @@ const ensureAbsolutePathForCwd = (cwd, p) => {
 		throw new Error(`Path ${p} is not in cwd ${cwd}`);
 	}
 
-	return path__default["default"].join(cwd, p);
+	return path__default['default'].join(cwd, p);
 };
 
 const getIsIgnoredPredecate = (ignores, cwd) => {
-	return p => ignores.ignores(slash(path__default["default"].relative(cwd, ensureAbsolutePathForCwd(cwd, p.path || p))));
+	return p => ignores.ignores(slash(path__default['default'].relative(cwd, ensureAbsolutePathForCwd(cwd, p.path || p))));
 };
 
 const getFile = async (file, cwd) => {
-	const filePath = path__default["default"].join(cwd, file);
+	const filePath = path__default['default'].join(cwd, file);
 	const content = await readFileP(filePath, 'utf8');
 
 	return {
@@ -7402,8 +7402,8 @@ const getFile = async (file, cwd) => {
 };
 
 const getFileSync = (file, cwd) => {
-	const filePath = path__default["default"].join(cwd, file);
-	const content = fs__default["default"].readFileSync(filePath, 'utf8');
+	const filePath = path__default['default'].join(cwd, file);
+	const content = fs__default['default'].readFileSync(filePath, 'utf8');
 
 	return {
 		cwd,
@@ -7448,7 +7448,7 @@ var sync$1 = options => {
 };
 gitignore.sync = sync$1;
 
-const {Transform} = stream__default["default"];
+const {Transform} = stream__default['default'];
 
 class ObjectTransform extends Transform {
 	constructor() {
@@ -7513,7 +7513,7 @@ const checkCwdOption = (options = {}) => {
 
 	let stat;
 	try {
-		stat = fs__default["default"].statSync(options.cwd);
+		stat = fs__default['default'].statSync(options.cwd);
 	} catch {
 		return;
 	}
@@ -7523,7 +7523,7 @@ const checkCwdOption = (options = {}) => {
 	}
 };
 
-const getPathString = p => p.stats instanceof fs__default["default"].Stats ? p.path : p;
+const getPathString = p => p.stats instanceof fs__default['default'].Stats ? p.path : p;
 
 const generateGlobTasks = (patterns, taskOptions) => {
 	patterns = arrayUnion([].concat(patterns));
@@ -8155,7 +8155,6 @@ function invariant(condition, message) {
 
 // istanbul ignore next (See: 'https://github.com/graphql/graphql-js/issues/2317')
 var nodejsCustomInspectSymbol = typeof Symbol === 'function' && typeof Symbol.for === 'function' ? Symbol.for('nodejs.util.inspect.custom') : undefined;
-var nodejsCustomInspectSymbol$1 = nodejsCustomInspectSymbol;
 
 /**
  * The `defineInspect()` function defines `inspect()` prototype method as alias of `toJSON`
@@ -8166,8 +8165,8 @@ function defineInspect(classObject) {
   typeof fn === 'function' || invariant(0);
   classObject.prototype.inspect = fn; // istanbul ignore else (See: 'https://github.com/graphql/graphql-js/issues/2317')
 
-  if (nodejsCustomInspectSymbol$1) {
-    classObject.prototype[nodejsCustomInspectSymbol$1] = fn;
+  if (nodejsCustomInspectSymbol) {
+    classObject.prototype[nodejsCustomInspectSymbol] = fn;
   }
 }
 
@@ -8410,7 +8409,7 @@ function formatArray(array, seenValues) {
 }
 
 function getCustomFn(object) {
-  var customInspectFn = object[String(nodejsCustomInspectSymbol$1)];
+  var customInspectFn = object[String(nodejsCustomInspectSymbol)];
 
   if (typeof customInspectFn === 'function') {
     return customInspectFn;
@@ -10945,7 +10944,7 @@ var extras = {
 gql["default"] = gql;
 var gql$1 = gql;
 
-const any = 'any';
+const any = 'any';  
 
 
 class TypesGenerator$1{
@@ -11047,7 +11046,7 @@ class TypesGenerator$1{
 			}
 		}
 		
-		let gqlDefs = fs__default["default"].readFileSync(filename, { encoding: 'utf8', flag: 'r' });
+		let gqlDefs = fs__default['default'].readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		// let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 		let gqls = Array.from(
 			// gqlDe.matchAll(/(\/\*[\s\S]+?\*\/)?\n?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
@@ -11080,6 +11079,7 @@ class TypesGenerator$1{
 
 			const typeName = definition?.name?.value || 'undefined';
 			if (typeName == 'undefined'){ 
+				// TODO somethong with this one: (works fine, but what`s wrong?)
 				this.options.debug && console.warn(`! >> ${queryName} definition name is not recognized`);
 				continue;
 			}
@@ -11161,13 +11161,13 @@ class TypesGenerator$1{
 
 	/**
 	 * genarate code from graphql node
-	 * @param {readonly [*]} selections - selections array
+	 * @param {readonly [import("graphql").OperationDefinitionNode]} selections
 	 * @param {number} deep count
-	 * @param {[string, {string: string;}] | undefined} root - root type name
+	 * @param {string[] | undefined} rootTree - root type name - !! TODO delete (unusal)
 	 * @returns type object and code
-	 * @param {any[] | null | undefined} branchOfFields
+	 * @param {any[] | null | undefined} branchOfFields	 
 	 */
-	getType(selections, deep, root, branchOfFields) {
+	getType(selections, deep, rootTree, branchOfFields) {
 
 		let _gpaType = {};	
 		let lines = '';	
@@ -11175,37 +11175,68 @@ class TypesGenerator$1{
 		deep = (deep || 0) + 4;
 		
 		let subType = null;
-		let subTypeFields = {};
+		let subTypeFields = null;
 		const subFieldName = branchOfFields?.slice(-1).pop();
 		const subFieldInfo = this.serverSubTypes.find(tp => tp.name == subFieldName);
 		if (subFieldInfo){
 			subType = subFieldInfo.type;			
 			// TODO fix: => type.kind == 'LIST'
 			if (!subType && subFieldName.slice(-1) === 's'){				
-				subType = this.serverSubTypes.find(tp => tp.name == subFieldName.slice(0, -1))?.type;
-				if (!subType){
+				// subType = this.serverSubTypes.find(tp => tp.name == subFieldName.slice(0, -1))?.type;
+
+				subType = this.serverSubTypes.find(tp => tp.name == subFieldName)?.type;
+				
+				// || this.serverSubTypes.find(
+				// 	tp => tp.name == subFieldName.slice(0, -1)
+				// )?.type;				
+
+				if (subType === 'undefined'){
 					console.log(`--> Unexpected sub type ${subFieldName}: defining types by naming rules`);
+				}
+				else {
+					console.log(`--> Unexpected sub type ${subFieldName}: defining types by naming rules *`);
+					// type == 'null'	
+					// console.log(`--> sub type ${subTypeName} is not found. Using ${subTypeName.slice(0, -1)} instead`);
 				}
 			}
 			if (subType){
 				//@ts-ignore
-				subTypeFields = this.serverTypes[subType];
+				subTypeFields = this.serverTypes[subFieldName]; // this.serverTypes[subType];
 				if (!subTypeFields){
-					console.warn(`--> Unexpected type ${subType} from sub types: defining types by name rules`);
+					console.warn(`--> Unexpected type ${subType} from sub types: defining types by name rules **`);
 				}
 			}
 		}
 
+		let isLIST = Array.isArray(subTypeFields);
+		subTypeFields = isLIST ? subTypeFields[0] : subTypeFields;
+		if (subFieldName && !subTypeFields){
+			if (this.mutationTypes?.[subFieldName]){
+				isLIST = this.mutationTypes[subFieldName].type.kind === 'LIST';
+			}
+			else if (branchOfFields && this.mutationTypes?.[branchOfFields[0]]){
+				
+				let subFuelds = this.mutationTypes?.[branchOfFields[0]].type.fields;
+				isLIST = subFuelds.find(f => f.name == subFieldName).type.kind === 'LIST';
+			}
+			else {
+				// naming rule
+				isLIST = subFieldName.slice(-1)[0] === 's';
+				subTypeFields = {};
+			}
+		}
 
+		
 		for (const selection of selections) {
 		
 			// 
 
 			if (selection.selectionSet){
 					
-				let _lines = '', _compositeSType = {};
+				let _lines = '', _compositeSType = {}, isNestedList = false;
 
 				// this.rawSchema.reduce((acc, el) => ((acc[el.name] = el.fields), acc), {})
+				//@ts-expect-error
 				let _type = (this.serverTypes || [])[selection.name?.value];
 
 				if (subType && subTypeFields){					
@@ -11235,12 +11266,12 @@ class TypesGenerator$1{
 						return [__gpaType, __lines]
 					}
 
-					let _subTypeFields = subTypeFields[selection.name.value];
+					let _subTypeFields = subTypeFields[selection.name?.value + ''];
 					if (_subTypeFields && typeof _subTypeFields === 'object')
 					{
 						let __gpaType;
-						([__gpaType, _lines] = genLines.call(this, subTypeFields[selection.name.value], deep + 4));
-						_compositeSType[selection.name.value] = __gpaType;	
+						([__gpaType, _lines] = genLines.call(this, subTypeFields[selection.name?.value + ''], deep + 4));
+						_compositeSType[selection.name?.value] = __gpaType;	
 					}
 					
 				}
@@ -11253,10 +11284,12 @@ class TypesGenerator$1{
 					// здесь можно заполнить серверные строки
 				}
 				else if(!_lines){
-					({_gpaType: _compositeSType[selection.name.value], lines: _lines} = this.getType(
+					({_gpaType: _compositeSType[selection.name?.value], lines: _lines, isNestedList} = this.getType(
+						//@ts-expect-error
 						selection.selectionSet.selections, 
 						deep, 
-						root, (deep >= 4) ? [...branchOfFields || [], selection.name.value] : undefined
+						[subFieldName].concat(rootTree || []), 
+						(deep >= 4) ? [...branchOfFields || [], selection.name?.value] : undefined
 						// selection.selectionSet.selections, deep + 4
 					));
 				}
@@ -11264,27 +11297,32 @@ class TypesGenerator$1{
 				// _gpaType[selection.name.value] = _gpaType;	
 				// const offset = ' '.repeat(deep + 4);			
 
-				let value = `{\n${_lines}${' '.repeat(deep)}}`;		
-				let values = null;				
+				let value = `{\n${_lines}${' '.repeat(deep)}}` + (isNestedList ? ' []' : '');		
 
-				if (selection.name.value.slice(-1) === 's')		{
-					if (deep % 8 === 0) values = `${value}[]`;
-					else {
-						values = `Array<${value}>`;
-					}
-				}
+				// //@ts-expect-error
+				// const isLIST = selection.kind === 'LIST' || (!selection.kind && selection.name.value.slice(-1) === 's')
+				
+				// if (isLIST)		{
+				// 	if (deep % 8 === 0) values = `${value}[]`;
+				// 	else{
+				// 		values = `Array<${value}>`;
+				// 	}
+				// }
 				// let values = `[\n${offset}{\n${_lines}${offset}}\n${' '.repeat(deep)}]`;
 
-				_gpaType[selection.name.value] = _compositeSType[selection.name.value] || any;
-				lines += ' '.repeat(deep) + selection.name.value + `: ${values || value},\n`;
+				_gpaType[selection.name?.value] = _compositeSType[selection.name?.value] || any;
+				lines += ' '.repeat(deep) + selection.name?.value + `: ${value},\n`;
 			}
 			else {
 
-				const fieldName =  selection.name.value;
-				let gType = any;
+				const fieldName =  selection.name?.value;
+
+				if (!fieldName) continue;
+
+				let graphQType = any;
 
 				// server type apply:
-				if (this.options.useServerTypes && deep >= 8 && root){					
+				if (this.options.useServerTypes && deep >= 8 && rootTree){					
 					// if (deep > 8){
 					// 	console.log(branchOfFields);			
 					// 	// ? [branchOfFields.slice().pop(), root[1][branchOfFields[0]]] 			
@@ -11293,11 +11331,15 @@ class TypesGenerator$1{
 						let [rootName, types={}] = (branchOfFields && branchOfFields.length > 1) 						
 							? [
 								branchOfFields.slice().pop(), 
-								branchOfFields.slice((deep - 8) / 4).reduce((/** @type {{ [x: string]: any; }} */ acc, /** @type {string | number} */ elem) => acc[elem], root[1])
+								branchOfFields.slice((deep - 8) / 4).reduce(
+									(/** @type {{ [x: string]: any; }} */ acc, /** @type {string | number} */ elem) => {
+										return acc[elem], rootTree[1]
+									}
+								)
 							]
-							: root;
-						gType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
-						if (!gType){
+							: rootTree;
+						graphQType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
+						if (!graphQType){
 							console.warn(`"${fieldName}" field has not found by parsing root type ${rootName}`);
 						}
 					}
@@ -11306,36 +11348,49 @@ class TypesGenerator$1{
 					}
 				}	
 
-				if ((!gType || gType === any) && subType){
+				// subTypeFields && subType - `means if Query`
+				if (subTypeFields && (!graphQType || graphQType === any) && subType){
 
 					let subField = subTypeFields[fieldName];
 					if (subField){
-						gType = this.typeMatches[subField];						
+						graphQType = this.typeMatches[subField];						
 					}					
 					else {
 						console.warn(`=> Unexpacted field "${fieldName}" in ${subType}. Definging from naming`);
 					}
 				}
 
-				if (!gType || gType === any){
-					if (this.rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)){
-						gType = 'number';
+				if (this.mutationTypes?.[subFieldName]?.type?.fields){
+					const filter = (/** @type {{ name: string; }} */ w) => w.name == fieldName;
+					const GraphType = this.mutationTypes?.[subFieldName]?.type?.fields?.find(filter)?.type?.name;
+					graphQType = this.typeMatches[GraphType];
+					if (!graphQType){
+						console.log(graphQType);
 					}
-					if (this.rules.string.some(m => fieldName.startsWith(m.toLowerCase()) || fieldName.endsWith(m))){
-						gType = 'string';
-					}
-					else if(this.rules.bool.some(m => selection.name.value.startsWith(m))){
-						gType = 'boolean';
+					if ('userSettingsMutation' == subFieldName){
+						console.log('userSettingsMutation');
 					}
 				}
 
-				_gpaType[selection.name.value] = gType || any;
+				if (!graphQType || graphQType === any){
+					if (this.rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)){
+						graphQType = 'number';
+					}
+					if (this.rules.string.some(m => fieldName.startsWith(m.toLowerCase()) || fieldName.endsWith(m))){
+						graphQType = 'string';
+					}
+					else if(this.rules.bool.some(m => selection.name?.value.startsWith(m))){
+						graphQType = 'boolean';
+					}
+				}
 
-				lines += ' '.repeat(deep) + selection.name.value + `: ${gType || any},\n`;
+				_gpaType[selection.name.value] = graphQType || any;
+
+				lines += ' '.repeat(deep) + selection.name.value + `: ${graphQType || any},\n`;
 			}
 		}
 
-		return {_gpaType, lines};
+		return {_gpaType, lines, isNestedList: isLIST};
 
 	}
 
@@ -11382,11 +11437,13 @@ class TypesGenerator$1{
 		this.rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
 		let mutationTypes = this.rawSchema.find(t => t.name == 'Mutation')?.fields || [];
 
+		this.mutationTypes = {};
 		let argTypes = [];
 		const typeFromDescMark = this.options.typeFromDescMark || ':::';
 
 		for (const mutation of mutationTypes) {	
 			
+			this.mutationTypes[mutation.name] = mutation;
 			// TODO get fields from type name like `get output fields from server side` for queries below
 			// via queryOrMutation.type?.name			
 
@@ -11397,13 +11454,13 @@ class TypesGenerator$1{
 		this.argTypes = argTypes;
 		argTypes.push('');
 
-		let rawTypes = this.rawTypes = this.rawSchema.find(t => t.name == 'Query')?.fields;
-		for (let key in rawTypes)
+		let rawQueries = this.rawQueries = this.rawSchema.find(t => t.name == 'Query')?.fields;
+		for (let key in rawQueries)
 		{
-			const rawType = rawTypes[key];						
+			const rawType = rawQueries[key];						
 			let type = rawType.type.name || rawType.type.ofType?.name;	
 			type = type || (rawType.name.endsWith('s') 				
-				? rawTypes.find(t => t.name == rawType.name.slice(0, -1))?.type.name
+				? rawQueries.find(t => t.name == rawType.name.slice(0, -1))?.type.name
 				: 'unknown[]'
 			);						
 
@@ -11427,8 +11484,13 @@ class TypesGenerator$1{
 					tsType[field.name] = tsType[field.name] || 'object[]';
 					// tsType[type] = field.type.name || field.type.ofType.name;
 				}
+
+				// if (rawType.name == 'dialog'){
+				// 	console.log(rawType.name);
+				// }				
 				// serverTypes[rawType.name] = rawType.type.name 
-				serverTypes[type] = rawType.type.name 
+				// serverTypes[type] = rawType.type.kind !== 'LIST' // rawType.type.name 
+				serverTypes[rawType.name] = rawType.type.kind !== 'LIST' // rawType.type.name 
 					? tsType
 					: [tsType];
 				
@@ -11449,7 +11511,7 @@ class TypesGenerator$1{
 
 		this.serverTypes = serverTypes;
 		//@ts-expect-error
-		this.serverSubTypes = this.rawTypes.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}));
+		this.serverSubTypes = this.rawQueries.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}));
 	}
 
 
@@ -11460,7 +11522,7 @@ class TypesGenerator$1{
 	 * 	args: Array<{name?: string, type?: {name: string}}>; 
 	 * 	type?: { 
 	 * 		fields?: unknown[] | undefined; 
-	 * 		kind: "OBJECT" | "LIST" | "SCALAR" | "NOT_NULL"; 
+	 * 		kind: "OBJECT" | "LIST" | "SCALAR" | "NOT_NULL" | "Field"; 
 	 * 		name?: string | undefined;
 	 * 		ofType?: { name: string; } | undefined; 
 	 * 	};
@@ -11487,30 +11549,7 @@ class TypesGenerator$1{
 
 	/**
 	 * @param {string} queriesInfoQuery
-	 * @returns {Promise<{
-	 * 	data:{
-	 * 		__schema:{
-	 * 			types: Array<{
-	 * 				name: string,
-	 * 				fields?: Array<{
-	 * 					name: string,
-	 * 					description: string,
-	 * 					args: Array<{
-	 * 						name: string,
-	 * 						type?: {name: string},
-	 * 						ofType?: {name: string}
-	 * 					}>,
-	 * 					type: {
-	 * 						fields?: Array<unknown>,
-	 * 						kind: 'OBJECT' | 'LIST' | 'SCALAR' | 'NOT_NULL',
-	 * 						name?: string,
-	 * 						ofType?: {name: string}
-	 * 					}
-	 * 				}>
-	 * 			}>
-	 * 		}
-	 * 	}
-	 * }>}
+	 * @returns {Promise<import('./main').Schema>}
 	 */
 	typesRequest(queriesInfoQuery){			
 				
@@ -11528,7 +11567,7 @@ class TypesGenerator$1{
 				headers: {'Content-Type': 'application/json'}
 			};
 			
-			const request = http__default["default"].request(options, (response) => {
+			const request = http__default['default'].request(options, (response) => {
 			
 				console.log(`statusCode: ${response.statusCode}`);
 				response.on('data', (d) => data += d.toString());					
@@ -11565,8 +11604,14 @@ class TypesGenerator$1{
 								name,
 								type{
 									name,
+									kind,									
 									fields{
-										name
+										name,
+										type{
+											ofType{
+												name
+											}											
+										}										
 									}									
 								}
 							},			
@@ -11685,7 +11730,7 @@ var main = async function typesGenerate(
 
 	let declTemplate = '';
 	if (options.declTemplate){
-		declTemplate = fs__default["default"].readFileSync(options.declTemplate, { encoding: 'utf8', flag: 'r' });
+		declTemplate = fs__default['default'].readFileSync(options.declTemplate, { encoding: 'utf8', flag: 'r' });
 	}
 
 
@@ -11701,7 +11746,7 @@ var main = async function typesGenerate(
 		if (declTemplate && options.declarateSource?.includes(filename)){
 			const declFile = filename.split('.').slice(0, -1).join('.') + '.d.ts';			
 
-			fs__default["default"].writeFile(
+			fs__default['default'].writeFile(
 				declFile, 
 				declTemplate + Object.entries(declTypes).map(
 						([k,v]) => `\n${v.comment || ''}\nexport const ${k}: QueryString<'${v.typeName}'>;\n`
@@ -11716,7 +11761,7 @@ var main = async function typesGenerate(
 	
 	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
 
-	let targetFile = path__default["default"].join(process.cwd(), target || '');		// path.resolve(path.dirname(''))
+	let targetFile = path__default['default'].join(process.cwd(), target || '');		// path.resolve(path.dirname(''))
 	
 
 	// generator.mutationArgs += 	"\n\nexport type QueryString<T extends string, Q extends string> = " +
@@ -11734,14 +11779,14 @@ var main = async function typesGenerate(
 
 	if (options.separateFileForArgumentsTypes){
 		
-		fs__default["default"].writeFile(targetFile, codeTypes, () => console.log(`\nQueries types generated to ${targetFile}!`));		
+		fs__default['default'].writeFile(targetFile, codeTypes, () => console.log(`\nQueries types generated to ${targetFile}!`));		
 
-		const argsTargetFile = path__default["default"].join(process.cwd(), options.separateFileForArgumentsTypes);
-		fs__default["default"].writeFile(
+		const argsTargetFile = path__default['default'].join(process.cwd(), options.separateFileForArgumentsTypes);
+		fs__default['default'].writeFile(
 			argsTargetFile, generator.mutationArgs, () => console.log(`Arguments types generated to ${argsTargetFile}!`)
 		);		
 	}
-	else fs__default["default"].writeFile(
+	else fs__default['default'].writeFile(
 		targetFile, codeTypes + generator.mutationArgs, () => console.log(`\n\nOutputs generated to ${targetFile}!`)
 	);	
 	

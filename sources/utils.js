@@ -288,6 +288,7 @@ class TypesGenerator{
 			}
 		}
 
+		
 		for (const selection of selections) {
 		
 			// 

@@ -1,12 +1,13 @@
 {
 	"name": "graphql-types-generator",
-	"version": "1.6.4",
+	"version": "1.6.6",
 	"description": "Generates typescript types from raw graphql queries, based on server types and the most common naming of variables of certain types",
 	"main": "./sources/main.js",
 	"types": "./sources/main.d.ts",
 	"homepage": "https://github.com/Sanshain/graphql-types-generator",	
 	"scripts": {
 		"test": "node ./examples/example.js",
+		"build": "rollup -c",
 		"codegen": "graphql-codegen",
 		"init": "node ./sources/main"
 	},
