@@ -6,7 +6,7 @@ const http = require('http');
 const { execArgv } = require('process');
 
 
-const any = 'any';
+const any = 'any';  
 
 
 class TypesGenerator{
@@ -225,11 +225,11 @@ class TypesGenerator{
 	 * genarate code from graphql node
 	 * @param {readonly [import("graphql").OperationDefinitionNode]} selections
 	 * @param {number} deep count
-	 * @param {[string, {string: string;}] | undefined} root - root type name
+	 * @param {string[] | undefined} rootTree - root type name - !! TODO delete (unusal)
 	 * @returns type object and code
 	 * @param {any[] | null | undefined} branchOfFields	 
 	 */
-	getType(selections, deep, root, branchOfFields) {
+	getType(selections, deep, rootTree, branchOfFields) {
 
 		let _gpaType = {};	
 		let lines = ''	
@@ -237,32 +237,56 @@ class TypesGenerator{
 		deep = (deep || 0) + 4;
 		
 		let subType = null;
-		let subTypeFields = {}
+		let subTypeFields = null
 		const subFieldName = branchOfFields?.slice(-1).pop();
 		const subFieldInfo = this.serverSubTypes.find(tp => tp.name == subFieldName);
 		if (subFieldInfo){
 			subType = subFieldInfo.type;			
 			// TODO fix: => type.kind == 'LIST'
 			if (!subType && subFieldName.slice(-1) === 's'){				
-				subType = this.serverSubTypes.find(tp => tp.name == subFieldName.slice(0, -1))?.type;
-				if (!subType){
+				// subType = this.serverSubTypes.find(tp => tp.name == subFieldName.slice(0, -1))?.type;
+
+				subType = this.serverSubTypes.find(tp => tp.name == subFieldName)?.type
+				
+				// || this.serverSubTypes.find(
+				// 	tp => tp.name == subFieldName.slice(0, -1)
+				// )?.type;				
+
+				if (subType === 'undefined'){
 					console.log(`--> Unexpected sub type ${subFieldName}: defining types by naming rules`);
 				}
-				else{					
+				else{
+					console.log(`--> Unexpected sub type ${subFieldName}: defining types by naming rules *`);
+					// type == 'null'	
 					// console.log(`--> sub type ${subTypeName} is not found. Using ${subTypeName.slice(0, -1)} instead`);
 				}
 			}
 			if (subType){
 				//@ts-ignore
-				subTypeFields = this.serverTypes[subType];
+				subTypeFields = this.serverTypes[subFieldName]; // this.serverTypes[subType];
 				if (!subTypeFields){
-					console.warn(`--> Unexpected type ${subType} from sub types: defining types by name rules`);
+					console.warn(`--> Unexpected type ${subType} from sub types: defining types by name rules **`);
 				}
 			}
 		}
 
-		const isLIST = Array.isArray(subTypeFields);
+		let isLIST = Array.isArray(subTypeFields);
 		subTypeFields = isLIST ? subTypeFields[0] : subTypeFields;
+		if (subFieldName && !subTypeFields){
+			if (this.mutationTypes?.[subFieldName]){
+				isLIST = this.mutationTypes[subFieldName].type.kind === 'LIST'
+			}
+			else if (branchOfFields && this.mutationTypes?.[branchOfFields[0]]){
+				
+				let subFuelds = this.mutationTypes?.[branchOfFields[0]].type.fields
+				isLIST = subFuelds.find(f => f.name == subFieldName).type.kind === 'LIST';
+			}
+			else{
+				// naming rule
+				isLIST = subFieldName.slice(-1)[0] === 's';
+				subTypeFields = {}
+			}
+		}
 
 		for (const selection of selections) {
 		
@@ -303,11 +327,11 @@ class TypesGenerator{
 						return [__gpaType, __lines]
 					}
 
-					let _subTypeFields = subTypeFields[selection.name?.value];
+					let _subTypeFields = subTypeFields[selection.name?.value + ''];
 					if (_subTypeFields && typeof _subTypeFields === 'object')
 					{
 						let __gpaType;
-						([__gpaType, _lines] = genLines.call(this, subTypeFields[selection.name?.value], deep + 4))
+						([__gpaType, _lines] = genLines.call(this, subTypeFields[selection.name?.value + ''], deep + 4))
 						_compositeSType[selection.name?.value] = __gpaType;	
 					}
 					
@@ -325,7 +349,8 @@ class TypesGenerator{
 						//@ts-expect-error
 						selection.selectionSet.selections, 
 						deep, 
-						root, (deep >= 4) ? [...branchOfFields || [], selection.name?.value] : undefined
+						[subFieldName].concat(rootTree || []), 
+						(deep >= 4) ? [...branchOfFields || [], selection.name?.value] : undefined
 						// selection.selectionSet.selections, deep + 4
 					))
 				}
@@ -336,15 +361,15 @@ class TypesGenerator{
 				let value = `{\n${_lines}${' '.repeat(deep)}}` + (isNestedList ? ' []' : '');		
 				let values = null;				
 
-				//@ts-expect-error
-				const isLIST = selection.kind === 'LIST' || (!selection.kind && selection.name.value.slice(-1) === 's')
+				// //@ts-expect-error
+				// const isLIST = selection.kind === 'LIST' || (!selection.kind && selection.name.value.slice(-1) === 's')
 				
-				if (isLIST)		{
-					if (deep % 8 === 0) values = `${value}[]`;
-					else{
-						values = `Array<${value}>`;
-					}
-				}
+				// if (isLIST)		{
+				// 	if (deep % 8 === 0) values = `${value}[]`;
+				// 	else{
+				// 		values = `Array<${value}>`;
+				// 	}
+				// }
 				// let values = `[\n${offset}{\n${_lines}${offset}}\n${' '.repeat(deep)}]`;
 
 				_gpaType[selection.name?.value] = _compositeSType[selection.name?.value] || any;
@@ -359,7 +384,7 @@ class TypesGenerator{
 				let graphQType = any;
 
 				// server type apply:
-				if (this.options.useServerTypes && deep >= 8 && root){					
+				if (this.options.useServerTypes && deep >= 8 && rootTree){					
 					// if (deep > 8){
 					// 	console.log(branchOfFields);			
 					// 	// ? [branchOfFields.slice().pop(), root[1][branchOfFields[0]]] 			
@@ -368,9 +393,13 @@ class TypesGenerator{
 						let [rootName, types={}] = (branchOfFields && branchOfFields.length > 1) 						
 							? [
 								branchOfFields.slice().pop(), 
-								branchOfFields.slice((deep - 8) / 4).reduce((/** @type {{ [x: string]: any; }} */ acc, /** @type {string | number} */ elem) => acc[elem], root[1])
+								branchOfFields.slice((deep - 8) / 4).reduce(
+									(/** @type {{ [x: string]: any; }} */ acc, /** @type {string | number} */ elem) => {
+										return acc[elem], rootTree[1]
+									}
+								)
 							]
-							: root;
+							: rootTree;
 						graphQType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
 						if (!graphQType){
 							console.warn(`"${fieldName}" field has not found by parsing root type ${rootName}`);
@@ -381,7 +410,8 @@ class TypesGenerator{
 					}
 				}	
 
-				if ((!graphQType || graphQType === any) && subType){
+				// subTypeFields && subType - `means if Query`
+				if (subTypeFields && (!graphQType || graphQType === any) && subType){
 
 					let subField = subTypeFields[fieldName];
 					if (subField){
@@ -389,6 +419,18 @@ class TypesGenerator{
 					}					
 					else{
 						console.warn(`=> Unexpacted field "${fieldName}" in ${subType}. Definging from naming`);
+					}
+				}
+
+				if (this.mutationTypes?.[subFieldName]?.type?.fields){
+					const filter = (/** @type {{ name: string; }} */ w) => w.name == fieldName;
+					const GraphType = this.mutationTypes?.[subFieldName]?.type?.fields?.find(filter)?.type?.name
+					graphQType = this.typeMatches[GraphType]
+					if (!graphQType){
+						console.log(graphQType);
+					}
+					if ('userSettingsMutation' == subFieldName){
+						console.log('userSettingsMutation');
 					}
 				}
 
@@ -457,11 +499,13 @@ class TypesGenerator{
 		this.rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
 		let mutationTypes = this.rawSchema.find(t => t.name == 'Mutation')?.fields || [];
 
+		this.mutationTypes = {}
 		let argTypes = []
 		const typeFromDescMark = this.options.typeFromDescMark || ':::';
 
 		for (const mutation of mutationTypes) {	
 			
+			this.mutationTypes[mutation.name] = mutation;
 			// TODO get fields from type name like `get output fields from server side` for queries below
 			// via queryOrMutation.type?.name			
 
@@ -472,13 +516,13 @@ class TypesGenerator{
 		this.argTypes = argTypes
 		argTypes.push('')
 
-		let rawTypes = this.rawTypes = this.rawSchema.find(t => t.name == 'Query')?.fields;
-		for (let key in rawTypes)
+		let rawQueries = this.rawQueries = this.rawSchema.find(t => t.name == 'Query')?.fields;
+		for (let key in rawQueries)
 		{
-			const rawType = rawTypes[key];						
+			const rawType = rawQueries[key];						
 			let type = rawType.type.name || rawType.type.ofType?.name;	
 			type = type || (rawType.name.endsWith('s') 				
-				? rawTypes.find(t => t.name == rawType.name.slice(0, -1))?.type.name
+				? rawQueries.find(t => t.name == rawType.name.slice(0, -1))?.type.name
 				: 'unknown[]'
 			);						
 
@@ -502,8 +546,13 @@ class TypesGenerator{
 					tsType[field.name] = tsType[field.name] || 'object[]';
 					// tsType[type] = field.type.name || field.type.ofType.name;
 				}
+
+				// if (rawType.name == 'dialog'){
+				// 	console.log(rawType.name);
+				// }				
 				// serverTypes[rawType.name] = rawType.type.name 
-				serverTypes[type] = rawType.type.name 
+				// serverTypes[type] = rawType.type.kind !== 'LIST' // rawType.type.name 
+				serverTypes[rawType.name] = rawType.type.kind !== 'LIST' // rawType.type.name 
 					? tsType
 					: [tsType]
 				
@@ -524,7 +573,7 @@ class TypesGenerator{
 
 		this.serverTypes = serverTypes;
 		//@ts-expect-error
-		this.serverSubTypes = this.rawTypes.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}))
+		this.serverSubTypes = this.rawQueries.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}))
 	}
 
 
@@ -617,8 +666,14 @@ class TypesGenerator{
 								name,
 								type{
 									name,
+									kind,									
 									fields{
-										name
+										name,
+										type{
+											ofType{
+												name
+											}											
+										}										
 									}									
 								}
 							},			

@@ -3,33 +3,23 @@
 export type ProfileInfo = {
     users: {
         id: number,
-        username: string,
+        username: any,
         name: string,
         lastName: string,
-        image: string,
+        image: any,
     } [],
     dialogs: {
         id: number,
         title: string,
         founder: {
             id: number,
-            lastLogin: string,
-            username: string,
-            firstName: string,
-            lastName: string,
-            dateJoined: string,
-            avatar: string,
-            sex: boolean,
-            birthday: string,
-            placeId: number,
             name: string,
-            image: string,
-            friendshipState: number,
+            image: any,
         },
-        talkersAmount: number,
+        talkersAmount: any,
         lastMessage: {
-            author: string,
-            value: string,
+            author: any,
+            value: any,
         },
     } [],
     me: {
@@ -65,7 +55,7 @@ export type DialogInfo = {
         users: {
             id: number,
             name: string,
-            image: string,
+            image: any,
         } [],
         messages: {
             id: number,
@@ -82,15 +72,15 @@ export type DialogInfo = {
             },
             likesCount: number,
             rated: any,
-        },
-    } [],
+        } [],
+    },
 };
 
 export type PaginatedUsers = {
     paginatedUsers: {
         username: any,
         firstName: string,
-    },
+    } [],
 };
 
 export type UserSettingsType = {
@@ -107,9 +97,9 @@ export type Register = {
     __typename: "Register",
 
     register: {
-        success: any,
+        success: boolean,
         errors: any,
-        token: any,
+        token: string,
     },
 };
 
@@ -118,14 +108,14 @@ export type SignInfo = {
     __typename: "SignInfo",
 
     tokenAuth: {
-        success: any,
+        success: boolean,
         errors: any,
-        unarchiving: any,
-        token: any,
+        unarchiving: boolean,
+        token: string,
         user: {
             id: number,
             username: string,
-        } [],
+        },
     },
 };
 
@@ -134,9 +124,9 @@ export type SignUpInfo = {
     __typename: "SignUpInfo",
 
     register: {
-        success: any,
+        success: boolean,
         errors: any,
-        token: any,
+        token: string,
     },
 };
 
@@ -152,7 +142,7 @@ export type AccountVerifyingInfo = {
     __typename: "AccountVerifyingInfo",
 
     verifyAccount: {
-        success: any,
+        success: boolean,
         errors: any,
     },
 };
@@ -169,7 +159,7 @@ export type VerifyAccount = {
     __typename: "VerifyAccount",
 
     verifyAccount: {
-        success: any,
+        success: boolean,
         errors: any,
     },
 };
@@ -193,7 +183,7 @@ export type LikeMutation = {
     __typename: "LikeMutation",
 
     likeApply: {
-        increased: any,
+        increased: boolean,
     },
 };
 
@@ -202,7 +192,7 @@ export type FriendshipMutation = {
     __typename: "FriendshipMutation",
 
     friendshipApply: {
-        added: any,
+        added: boolean,
     },
 };
 
@@ -223,7 +213,7 @@ export type SettingsMutationPayload = {
         settings: {
             firstName: string,
         },
-        clientMutationId: number,
+        clientMutationId: string,
     },
 };
 
@@ -265,7 +255,7 @@ export type UserType = {
         name: string,
         image: string,
         friendshipState: number,
-    } [],
+    },
 };
 
 export type PostType = {
@@ -295,7 +285,7 @@ export type DialogType = {
             author: string,
             value: string,
         },
-    } [],
+    },
 };
 
 /*
