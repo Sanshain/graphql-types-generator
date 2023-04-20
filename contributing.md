@@ -11,4 +11,5 @@ that such a feature would be a good cherry on the cake.
 <h2 align="center">DONE</h2>
 
 
+- **Detect kinds of mutation responce fields (~1.6.5)**
 - **Typing of queries arguments (^1.6.\*)**
