@@ -1,14 +1,14 @@
 
 
 export type ProfileInfo = {
-    users: Array<{
+    users: {
         id: number,
         username: any,
         name: string,
         lastName: string,
         image: any,
-    }>,
-    dialogs: Array<{
+    },
+    dialogs: {
         id: number,
         title: string,
         founder: {
@@ -21,7 +21,7 @@ export type ProfileInfo = {
             author: any,
             value: any,
         },
-    }>,
+    },
     me: {
         id: number,
         username: string,
@@ -44,7 +44,7 @@ export type DialogInfo = {
             id: number,
             name: string,
             image: any,
-        }[],
+        },
         messages: {
             id: number,
             author: any,
@@ -60,15 +60,24 @@ export type DialogInfo = {
             },
             likesCount: number,
             rated: any,
-        }[],
+        },
     },
 };
 
 export type PaginatedUsers = {
-    paginatedUsers: Array<{
+    paginatedUsers: {
         username: any,
         firstName: string,
-    }>,
+    },
+};
+
+export type UserSettingsType = {
+
+    __typename: "UserSettingsType",
+
+    userSettings: {
+        firstName: string,
+    },
 };
 
 export type Register = {
@@ -191,7 +200,7 @@ export type SettingsMutationPayload = {
         errors: any,
         settings: {
             firstName: string,
-        }[],
+        },
         clientMutationId: number,
     },
 };
@@ -241,14 +250,14 @@ export type PostType = {
 
     __typename: "PostType",
 
-    posts: Array<{
+    posts: {
         id: number,
         time: string,
         value: string,
         files: any,
         likesCount: number,
         rated: boolean,
-    }>,
+    },
 };
 
 export type DialogType = {
@@ -276,6 +285,7 @@ export type QueryTypes = {
     ProfileInfo: ProfileInfo
     DialogInfo: DialogInfo
     PaginatedUsers: PaginatedUsers
+    UserSettingsType: UserSettingsType
     Register: Register
     SignInfo: SignInfo
     SignUpInfo: SignUpInfo

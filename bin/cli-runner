@@ -9,6 +9,7 @@ var os = require('os');
 var util = require('util');
 var events = require('events');
 var http = require('http');
+require('process');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -10944,13 +10945,6 @@ var extras = {
 gql["default"] = gql;
 var gql$1 = gql;
 
-//@ts-check
-
-
-
-
-
-
 const any = 'any';
 
 
@@ -10973,6 +10967,9 @@ class TypesGenerator$1{
 	
 	argTypesCode = '';	
 	argMatches = {}
+	/**
+	 * @type {string | any[]}
+	 */
 	argTypes = [];
 
 	verbose = false;
@@ -10986,11 +10983,16 @@ class TypesGenerator$1{
 		null: 'any',
 	}
 
-	/// for naming approach 
+	/**
+	 * @description for naming approach 
+	 * @type {Exclude<Required<import('./main').BaseOptions['rules']>, undefined>}
+	 */	
 	rules = {
+		/// endsWith:
 		string: ['Name', 'Title', 'Date', 'Time'],
+		number: ['Id', 'Count', 'Sum'],
+		/// startsWith:
 		bool: ['is'],
-		number: ['Id', 'Count', 'Sum']
 	}	
 
 	typeMatches = {
@@ -11012,7 +11014,8 @@ class TypesGenerator$1{
 	constructor(options){
 		
 		let keyValidator = Object.keys(this.rules);
-		this.rules = options.rules || this.rules;
+		
+		if (options.rules) this.rules = { ...options.rules, ...this.rules};
 		this.options = options;
 		
 		if (options.rules){
@@ -11023,14 +11026,14 @@ class TypesGenerator$1{
 	}
 
 
-	 /**
+	/**
 	 * добавляет сгенерированные типы в codeTypes и возвращает ее
 	 * @param {*} filename - имя файла
 	 * @param {*} codeTypes - типы тайпскрипт в виде объекта
 	 * @param {*} graTypes - типы тайпскрипт в виде строк
 	 * @returns typescript code
 	 */
-	 async getTypes(filename, codeTypes, graTypes) {
+	async getTypes(filename, codeTypes, graTypes) {
 
 		let declTypes = {};
 
@@ -11044,30 +11047,42 @@ class TypesGenerator$1{
 			}
 		}
 		
-		let gqlDe = fs__default["default"].readFileSync(filename, { encoding: 'utf8', flag: 'r' });
+		let gqlDefs = fs__default["default"].readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		// let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
-		let gqls = Array.from(			
+		let gqls = Array.from(
 			// gqlDe.matchAll(/(\/\*[\s\S]+?\*\/)?\n?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
-			gqlDe.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
-			m => [m[1], m[3], m[4]]
+			gqlDefs.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?export (?:const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
+			// gqlDe.matchAll(
+			// 	/(\/\*[\s\S]*?\*\/\r?\n)?export (?:const|let) ([\w_\d]+)\s?= gql`(\s*(?:query|mutation)\s*\w+\s*\{\s*(\w+)[^`]*?)`/gi
+			// ),
+			m => {
+				return [m[1], m[2], m[3]]
+			}
 		);
 		
 		console.log(`\n# ${gqls.length} types detected in "${filename}": \n`);
 
 		for (const [comment, queryName, query] of gqls) {
 
-			try{
-				// @ts-ignore
-				var definition = gql$1(query).definitions.pop();
+			try{				
+				/**
+				 * @type {import('graphql').OperationDefinitionNode} [DefinitionNode as OperationDefinitionNode]
+				 */
+				//@ts-expect-error
+				var definition = gql$1.gql(query).definitions.pop();
+				// var definition = gql.gql(query).definitions.slice(-1)[0]
 			}
 			catch(ex){
-				console.warn('Detected wrong gql syntax. Check comments');
-				continue;
+				console.warn('Detected wrong gql syntax. Check comments'); continue;
 			}
 
 			// console.log('-');
 
-			const typeName = definition.name?.value || 'undefined';
+			const typeName = definition?.name?.value || 'undefined';
+			if (typeName == 'undefined'){ 
+				this.options.debug && console.warn(`! >> ${queryName} definition name is not recognized`);
+				continue;
+			}
 			typeName === 'undefined' && console.warn(`  ---> Warning: detected undefined query name in ${filename}`);
 
 			typeName && console.log(typeName);
@@ -11089,29 +11104,36 @@ class TypesGenerator$1{
 			// 	continue
 			// }
 			
-			let selections = definition.selectionSet.selections;
+			/**
+			 * @type {import('graphql').OperationDefinitionNode[]} [DefinitionNode as OperationDefinitionNode]
+			 */			
+			//@ts-expect-error
+			let selections = definition?.selectionSet.selections;
 			
-			//@ts-ignore
+			//@ts-expect-error
 			let serverType = Object.entries(this.serverTypes).find(([k, v]) => k == typeName);
 			
-			let gpaType = this.getType(selections, 0, serverType, null);
+			//@ts-expect-error
+			let genType = this.getType(selections, 0, serverType, null);
 			if (this.options.attachTypeName){				
-								
-				let argTypes = selections.map(s => s.name.value).filter(x => this.argTypes.includes(x));				
+				
+				//@ts-expect-error
+				let argTypes = selections.map((s) => s.name.value)
+												 .filter((/** @type {any} */ x) => this.argTypes.includes(x));				
 				if (argTypes.length){
-					this.argMatches[typeName] =  argTypes.map(t => t + 'Args').join(' & ');					
+					this.argMatches[typeName] =  argTypes.map((/** @type {string} */ t) => t + 'Args').join(' & ');					
 				}
 
 				//TODO include as option:
+				// if (this.options.matchTypeNames || argTypes.length){
 				if (argTypes.length){
-					gpaType.lines = `\n    __typename: "${typeName}",\n\n` + gpaType.lines;
-				}
-				
+					genType.lines = `\n    __typename: "${typeName}",\n\n` + genType.lines;
+				}				
 			}
-			let typeString = `\n\nexport type ${typeName} = {\n${gpaType.lines}};`;
+			let typeString = `\n\nexport type ${typeName} = {\n${genType.lines}};`;
 
 			codeTypes += typeString;
-			graTypes[typeName] = gpaType;
+			graTypes[typeName] = genType;
 			declTypes[queryName] = {typeName, comment};
 		}
 
@@ -11119,10 +11141,19 @@ class TypesGenerator$1{
 	}
 
 	getArgumentMatchesType() {
+
+		let splitted = false;
 		
 		this.argTypesCode = Object.entries(this.argMatches).reduce(
-			(accType, [typeName, argTypes]) => accType += (`    ${typeName}: ${argTypes},\n`), 
-			'export type ArgTypes = {\n\n    undefined: any,\n'
+			(accType, [typeName, argTypes], i) => {
+				/// split it: 
+				// (TODO reshape more optimum)
+				if (i && !splitted && !this.argTypes[this.argTypes.indexOf(argTypes.slice(0, -4)) - 1]) {
+					accType += '    \n';					// 
+				}
+				return accType += (`    ${typeName}: ${argTypes},\n`)
+			}, 
+			'export type ArgTypes = {\n    undefined: never,\n\n'
 		) + '}';
 
 		return this.argTypesCode;
@@ -11130,11 +11161,11 @@ class TypesGenerator$1{
 
 	/**
 	 * genarate code from graphql node
-	 * @param {[*]} selections - selections array
+	 * @param {readonly [*]} selections - selections array
 	 * @param {number} deep count
-	 * @param {[string, {string: string}] | undefined} root - root type name
-	 * 
+	 * @param {[string, {string: string;}] | undefined} root - root type name
 	 * @returns type object and code
+	 * @param {any[] | null | undefined} branchOfFields
 	 */
 	getType(selections, deep, root, branchOfFields) {
 
@@ -11179,12 +11210,16 @@ class TypesGenerator$1{
 
 				if (subType && subTypeFields){					
 
+					/**
+					 * @param {{ [s: string]: any; } | ArrayLike<any>} typeFields
+					 * @param {number} _deep
+					 */
 					function genLines(typeFields, _deep){
 
 						let __gpaType = {};
 						let self = this;
 
-						let __lines = Object.entries(typeFields).reduce(function(acc, [k, v], i, arr, _) {
+						let __lines = Object.entries(typeFields).reduce(function(/** @type {string} */ acc, [k, v], /** @type {any} */ i, /** @type {any} */ arr, /** @type {any} */ _) {
 							if (typeof v !== 'object'){						
 								__gpaType[k] = self.typeMatches[v];
 								acc += `${' '.repeat(_deep)}${k}: ${self.typeMatches[v]},\n`;												
@@ -11258,7 +11293,7 @@ class TypesGenerator$1{
 						let [rootName, types={}] = (branchOfFields && branchOfFields.length > 1) 						
 							? [
 								branchOfFields.slice().pop(), 
-								branchOfFields.slice((deep - 8) / 4).reduce((acc, elem) => acc[elem], root[1])
+								branchOfFields.slice((deep - 8) / 4).reduce((/** @type {{ [x: string]: any; }} */ acc, /** @type {string | number} */ elem) => acc[elem], root[1])
 							]
 							: root;
 						gType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
@@ -11336,57 +11371,58 @@ class TypesGenerator$1{
 		return _lines;
 	}
 
-	async getSchemaTypes(typeName){
+	async getSchemaTypes(){
 		
 		let serverTypes = {};		
 
+		/** 
+		 * @type {Awaited<ReturnType<TypesGenerator['typesRequest']>> }
+		 * */
 		let rawSchema = await this.typesRequest(this.queriesInfoQuery);	
-		this.rawSchema = rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
-		let mutationTypes = rawSchema.find(t => t.name == 'Mutation').fields;
+		this.rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
+		let mutationTypes = this.rawSchema.find(t => t.name == 'Mutation')?.fields || [];
 
 		let argTypes = [];
-		
-		for (const mutation of mutationTypes) {
-			if (mutation.description.startsWith(':::')){
-				
-				let inputFields = mutation.description.substring(3).split('\n')
-					.filter(item => item.trim())
-					.map(item => item.trim().split(':'));
-				let typeDec = `export type ${mutation.name + 'Args'} = {\n    ` + inputFields
-					.map(([k, v]) => `${k}: ${this.typeMatches[('' + v).trim()] || (v || 'unknown').trim()}`)
-					.join(',\n    ') + '\n}';
-				this.mutationArgs += '\n' + typeDec + '\n';
-				argTypes.push(mutation.name);
-			}
+		const typeFromDescMark = this.options.typeFromDescMark || ':::';
+
+		for (const mutation of mutationTypes) {	
+			
+			// TODO get fields from type name like `get output fields from server side` for queries below
+			// via queryOrMutation.type?.name			
+
+			this.genInputTypes(mutation, typeFromDescMark);
+			argTypes.push(mutation.name);
 		}
 
 		this.argTypes = argTypes;
+		argTypes.push('');
 
-
-		let rawTypes = rawSchema.find(t => t.name == 'Query').fields;
+		let rawTypes = this.rawTypes = this.rawSchema.find(t => t.name == 'Query')?.fields;
 		for (let key in rawTypes)
 		{
-			const rawType = rawTypes[key];			
+			const rawType = rawTypes[key];						
 			let type = rawType.type.name || rawType.type.ofType?.name;	
 			type = type || (rawType.name.endsWith('s') 				
 				? rawTypes.find(t => t.name == rawType.name.slice(0, -1))?.type.name
 				: 'unknown[]'
-			);			
+			);						
 
 			if (type){
+
+				/// try get output fields from server side:
+
 				let tsType = {};
-				for (const field of rawSchema.find(t => type == t.name).fields) 
-				{
-					tsType[field.name] = field.type.name || field.type.ofType.name;
+				for (const field of (this.rawSchema.find(t => type == t.name)?.fields || [])) {
+
+					tsType[field.name] = field.type.name || field.type.ofType?.name;
 					if (!~['Int', 'String', 'Boolean', 'ID', 'DateTime', 'Date'].indexOf(tsType[field.name])){
-						const subType = rawSchema.find(w => w.name == tsType[field.name]);
+						const subType = this.rawSchema.find(w => w.name == tsType[field.name]);
 						if (subType && subType.fields && subType.fields.length) {
 							tsType[field.name] = {};
 							for (const subField of subType.fields) {
-								tsType[field.name][subField.name] = subField.type.name || subField.type.ofType.name;
+								tsType[field.name][subField.name] = subField.type.name || subField.type.ofType?.name;
 							}
 						}
-
 					}
 					tsType[field.name] = tsType[field.name] || 'object[]';
 					// tsType[type] = field.type.name || field.type.ofType.name;
@@ -11395,6 +11431,15 @@ class TypesGenerator$1{
 				serverTypes[type] = rawType.type.name 
 					? tsType
 					: [tsType];
+				
+				/// args: 
+
+				if (rawType.args && rawType.args.length){
+					
+					this.genInputTypes(rawType, typeFromDescMark);
+					argTypes.push(rawType.name);
+				}
+
 			}
 		}
 
@@ -11403,12 +11448,69 @@ class TypesGenerator$1{
 		this.verbose && console.log(rawSchema);
 
 		this.serverTypes = serverTypes;
-		this.serverSubTypes = rawTypes.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}));
+		//@ts-expect-error
+		this.serverSubTypes = this.rawTypes.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}));
 	}
 
 
 	/**
+	 * @param {{ 
+	 * 	name: string; 
+	 * 	description: string | null; 									// string - for mutations, undefined - for queries
+	 * 	args: Array<{name?: string, type?: {name: string}}>; 
+	 * 	type?: { 
+	 * 		fields?: unknown[] | undefined; 
+	 * 		kind: "OBJECT" | "LIST" | "SCALAR" | "NOT_NULL"; 
+	 * 		name?: string | undefined;
+	 * 		ofType?: { name: string; } | undefined; 
+	 * 	};
+	 *  }} queryOrMutation
+	 * @param {string} typeFromDescMark
+	 */
+	genInputTypes(queryOrMutation, typeFromDescMark) {		
+
+		let inputFields = queryOrMutation.args.map(param => [param.name, param.type?.name || 'any']);
+
+		if (queryOrMutation.description && queryOrMutation.description.startsWith(typeFromDescMark)) {
+			console.log(`Types for "${queryOrMutation.name}" mutation generates from server side description`);
+			inputFields = queryOrMutation.description.substring(3).split('\n')
+				.filter(item => item.trim())
+				.map(item => item.trim().split(':'));
+		}
+		let typeDec = `export type ${queryOrMutation.name + 'Args'} = {\n    ` + inputFields
+			.map(([k, v]) => `${k}: ${this.typeMatches[('' + v).trim()] || (v || 'unknown').trim()}`)
+			.join(',\n    ') + '\n}';
+		this.mutationArgs += '\n' + typeDec + '\n';
+		
+		return inputFields;
+	}
+
+	/**
 	 * @param {string} queriesInfoQuery
+	 * @returns {Promise<{
+	 * 	data:{
+	 * 		__schema:{
+	 * 			types: Array<{
+	 * 				name: string,
+	 * 				fields?: Array<{
+	 * 					name: string,
+	 * 					description: string,
+	 * 					args: Array<{
+	 * 						name: string,
+	 * 						type?: {name: string},
+	 * 						ofType?: {name: string}
+	 * 					}>,
+	 * 					type: {
+	 * 						fields?: Array<unknown>,
+	 * 						kind: 'OBJECT' | 'LIST' | 'SCALAR' | 'NOT_NULL',
+	 * 						name?: string,
+	 * 						ofType?: {name: string}
+	 * 					}
+	 * 				}>
+	 * 			}>
+	 * 		}
+	 * 	}
+	 * }>}
 	 */
 	typesRequest(queriesInfoQuery){			
 				
@@ -11450,7 +11552,13 @@ class TypesGenerator$1{
 				types {
 					name,
 					fields {
-						name,        
+						name,
+						args{
+							name,  
+							type{
+								name
+							}
+						},						        
 						description
 						type {
 							fields{								
@@ -11626,7 +11734,7 @@ var main = async function typesGenerate(
 
 	if (options.separateFileForArgumentsTypes){
 		
-		fs__default["default"].writeFile(targetFile, codeTypes, () => console.log(`\n\nQueries types generated to ${targetFile}!`));		
+		fs__default["default"].writeFile(targetFile, codeTypes, () => console.log(`\nQueries types generated to ${targetFile}!`));		
 
 		const argsTargetFile = path__default["default"].join(process.cwd(), options.separateFileForArgumentsTypes);
 		fs__default["default"].writeFile(

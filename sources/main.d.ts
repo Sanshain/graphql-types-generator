@@ -1,4 +1,29 @@
 
+export type Schema = {
+	data: {
+		__schema: {
+			types: Array<{
+				name: string,
+				fields?: Array<{
+					name: string,
+					description: string,
+					args: Array<{
+						name: string,
+						type?: { name: string },
+						ofType?: { name: string }
+					}>,
+					type: {
+						fields?: Array<unknown>,
+						kind: 'OBJECT' | 'LIST' | 'SCALAR' | 'NOT_NULL' | 'Field',
+						name?: string,
+						ofType?: { name: string }
+					}
+				}>
+			}>
+		}
+	}
+}
+
 export type BaseOptions = {
 
 	// files options:
@@ -7,7 +32,7 @@ export type BaseOptions = {
 	files?: Array<string>, 					// or source file names
 	declarateSource?: Array<string>,		// create *.d.ts files for according sources with QueryString<`$TypeName`> for each query
 	declTemplate?: string,					// file for target template
-	dirname? : string, 		// ?
+	dirname?: string, 		// ?
 	target?: string,							// target file name	
 
 	// types generate options:
@@ -18,11 +43,11 @@ export type BaseOptions = {
 	useServerTypes?: boolean | {
 		port?: number,
 		host?: string
- 	},	
+	},
 	rules?: {
-		string?: string[]; 
-		bool?: string[]; 
-		number?: string[]; 
+		string?: string[];
+		bool?: string[];
+		number?: string[];
 		// JSONField?: string
 	},
 	separateFileForArgumentsTypes?: string,

@@ -97,6 +97,14 @@ export const getPaginatedUsers = gql`
 	}
 `
 
+export const userSettingsType = gql`
+    query UserSettingsType {
+        userSettings (id: $id) {
+            firstName
+        }
+    }
+`;
+
 
 /**
  * via relay variation:

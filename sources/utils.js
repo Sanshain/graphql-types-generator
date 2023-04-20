@@ -141,6 +141,7 @@ class TypesGenerator{
 
 			const typeName = definition?.name?.value || 'undefined';
 			if (typeName == 'undefined'){ 
+				// TODO somethong with this one: (works fine, but what`s wrong?)
 				this.options.debug && console.warn(`! >> ${queryName} definition name is not recognized`);
 				continue;
 			}
@@ -222,11 +223,11 @@ class TypesGenerator{
 
 	/**
 	 * genarate code from graphql node
-	 * @param {readonly [*]} selections - selections array
+	 * @param {readonly [import("graphql").OperationDefinitionNode]} selections
 	 * @param {number} deep count
 	 * @param {[string, {string: string;}] | undefined} root - root type name
 	 * @returns type object and code
-	 * @param {any[] | null | undefined} branchOfFields
+	 * @param {any[] | null | undefined} branchOfFields	 
 	 */
 	getType(selections, deep, root, branchOfFields) {
 
@@ -270,6 +271,7 @@ class TypesGenerator{
 				let _lines = '', _compositeSType = {}
 
 				// this.rawSchema.reduce((acc, el) => ((acc[el.name] = el.fields), acc), {})
+				//@ts-expect-error
 				let _type = (this.serverTypes || [])[selection.name?.value];
 
 				if (subType && subTypeFields){					
@@ -299,12 +301,12 @@ class TypesGenerator{
 						return [__gpaType, __lines]
 					}
 
-					let _subTypeFields = subTypeFields[selection.name.value];
+					let _subTypeFields = subTypeFields[selection.name?.value];
 					if (_subTypeFields && typeof _subTypeFields === 'object')
 					{
 						let __gpaType;
-						([__gpaType, _lines] = genLines.call(this, subTypeFields[selection.name.value], deep + 4))
-						_compositeSType[selection.name.value] = __gpaType;	
+						([__gpaType, _lines] = genLines.call(this, subTypeFields[selection.name?.value], deep + 4))
+						_compositeSType[selection.name?.value] = __gpaType;	
 					}
 					
 				}
@@ -317,10 +319,11 @@ class TypesGenerator{
 					// здесь можно заполнить серверные строки
 				}
 				else if(!_lines){
-					({_gpaType: _compositeSType[selection.name.value], lines: _lines} = this.getType(
+					({_gpaType: _compositeSType[selection.name?.value], lines: _lines} = this.getType(
+						//@ts-expect-error
 						selection.selectionSet.selections, 
 						deep, 
-						root, (deep >= 4) ? [...branchOfFields || [], selection.name.value] : undefined
+						root, (deep >= 4) ? [...branchOfFields || [], selection.name?.value] : undefined
 						// selection.selectionSet.selections, deep + 4
 					))
 				}
@@ -331,7 +334,10 @@ class TypesGenerator{
 				let value = `{\n${_lines}${' '.repeat(deep)}}`;		
 				let values = null;				
 
-				if (selection.name.value.slice(-1) === 's')		{
+				//@ts-expect-error
+				const isLIST = selection.kind === 'LIST' || (!selection.kind && selection.name.value.slice(-1) === 's')
+				
+				if (isLIST)		{
 					if (deep % 8 === 0) values = `${value}[]`;
 					else{
 						values = `Array<${value}>`;
@@ -339,13 +345,16 @@ class TypesGenerator{
 				}
 				// let values = `[\n${offset}{\n${_lines}${offset}}\n${' '.repeat(deep)}]`;
 
-				_gpaType[selection.name.value] = _compositeSType[selection.name.value] || any;
-				lines += ' '.repeat(deep) + selection.name.value + `: ${values || value},\n`
+				_gpaType[selection.name?.value] = _compositeSType[selection.name?.value] || any;
+				lines += ' '.repeat(deep) + selection.name?.value + `: ${values || value},\n`
 			}
 			else {
 
-				const fieldName =  selection.name.value;
-				let gType = any;
+				const fieldName =  selection.name?.value;
+
+				if (!fieldName) continue;
+
+				let graphQType = any;
 
 				// server type apply:
 				if (this.options.useServerTypes && deep >= 8 && root){					
@@ -360,8 +369,8 @@ class TypesGenerator{
 								branchOfFields.slice((deep - 8) / 4).reduce((/** @type {{ [x: string]: any; }} */ acc, /** @type {string | number} */ elem) => acc[elem], root[1])
 							]
 							: root;
-						gType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
-						if (!gType){
+						graphQType = this.typeMatches[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
+						if (!graphQType){
 							console.warn(`"${fieldName}" field has not found by parsing root type ${rootName}`);
 						}
 					}
@@ -370,32 +379,32 @@ class TypesGenerator{
 					}
 				}	
 
-				if ((!gType || gType === any) && subType){
+				if ((!graphQType || graphQType === any) && subType){
 
 					let subField = subTypeFields[fieldName];
 					if (subField){
-						gType = this.typeMatches[subField];						
+						graphQType = this.typeMatches[subField];						
 					}					
 					else{
 						console.warn(`=> Unexpacted field "${fieldName}" in ${subType}. Definging from naming`);
 					}
 				}
 
-				if (!gType || gType === any){
+				if (!graphQType || graphQType === any){
 					if (this.rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)){
-						gType = 'number'
+						graphQType = 'number'
 					}
 					if (this.rules.string.some(m => fieldName.startsWith(m.toLowerCase()) || fieldName.endsWith(m))){
-						gType = 'string'
+						graphQType = 'string'
 					}
-					else if(this.rules.bool.some(m => selection.name.value.startsWith(m))){
-						gType = 'boolean'
+					else if(this.rules.bool.some(m => selection.name?.value.startsWith(m))){
+						graphQType = 'boolean'
 					}
 				}
 
-				_gpaType[selection.name.value] = gType || any;
+				_gpaType[selection.name.value] = graphQType || any;
 
-				lines += ' '.repeat(deep) + selection.name.value + `: ${gType || any},\n`
+				lines += ' '.repeat(deep) + selection.name.value + `: ${graphQType || any},\n`
 			}
 		}
 
@@ -524,7 +533,7 @@ class TypesGenerator{
 	 * 	args: Array<{name?: string, type?: {name: string}}>; 
 	 * 	type?: { 
 	 * 		fields?: unknown[] | undefined; 
-	 * 		kind: "OBJECT" | "LIST" | "SCALAR" | "NOT_NULL"; 
+	 * 		kind: "OBJECT" | "LIST" | "SCALAR" | "NOT_NULL" | "Field"; 
 	 * 		name?: string | undefined;
 	 * 		ofType?: { name: string; } | undefined; 
 	 * 	};
@@ -551,30 +560,7 @@ class TypesGenerator{
 
 	/**
 	 * @param {string} queriesInfoQuery
-	 * @returns {Promise<{
-	 * 	data:{
-	 * 		__schema:{
-	 * 			types: Array<{
-	 * 				name: string,
-	 * 				fields?: Array<{
-	 * 					name: string,
-	 * 					description: string,
-	 * 					args: Array<{
-	 * 						name: string,
-	 * 						type?: {name: string},
-	 * 						ofType?: {name: string}
-	 * 					}>,
-	 * 					type: {
-	 * 						fields?: Array<unknown>,
-	 * 						kind: 'OBJECT' | 'LIST' | 'SCALAR' | 'NOT_NULL',
-	 * 						name?: string,
-	 * 						ofType?: {name: string}
-	 * 					}
-	 * 				}>
-	 * 			}>
-	 * 		}
-	 * 	}
-	 * }>}
+	 * @returns {Promise<import('./main').Schema>}
 	 */
 	typesRequest(queriesInfoQuery){			
 				

@@ -44,11 +44,11 @@ export type userSettingsMutationArgs = {
     placeTypeId: number
 }
 
-export type userArgs = {
+export type userSettingsArgs = {
     id: number
 }
 
-export type userSettingsArgs = {
+export type userArgs = {
     id: number
 }
 
@@ -66,6 +66,8 @@ export type ArgTypes = {
 
     DialogInfo: dialogArgs,
     
+    UserSettingsType: userSettingsArgs,
+    
     Register: registerArgs,
     SignInfo: tokenAuthArgs,
     
@@ -76,7 +78,6 @@ export type ArgTypes = {
     LikeMutation: likeApplyArgs,
     FriendshipMutation: friendshipApplyArgs,
     SettingsMutationPayload: userSettingsMutationArgs,
-    
     UserType: userArgs,
     PostType: postsArgs,
     DialogType: dialogArgs,
