@@ -1,6 +1,6 @@
 //@ts-check
 
-import { scalarTypes } from './rules';
+const { scalarTypes } = require('./rules');
 
 
 const any = 'any';  
@@ -18,7 +18,7 @@ const any = 'any';
  * 	isNestedList: boolean
  * }} type object and code
  */
-export function extractType(selections, deep, rootTree, branchOfFields) {
+exports.extractType = function extractType(selections, deep, rootTree, branchOfFields) {
 
 	/**
 	 * @type {Record<string, string>}
@@ -102,12 +102,12 @@ export function extractType(selections, deep, rootTree, branchOfFields) {
 				function genLines(typeFields, _deep) {
 
 					let __gpaType = {}
-					let self = this;
+					let self = this;					
 
 					let __lines = Object.entries(typeFields).reduce(function (/** @type {string} */ acc, [k, v], /** @type {any} */ i, /** @type {any} */ arr, /** @type {any} */ _) {
 						if (typeof v !== 'object') {
-							__gpaType[k] = self.typeMatches[v]
-							acc += `${' '.repeat(_deep)}${k}: ${self.typeMatches[v]},\n`
+							__gpaType[k] = scalarTypes[v]
+							acc += `${' '.repeat(_deep)}${k}: ${scalarTypes[v]},\n`
 						}
 						else if (v) {
 							let [sub_gpaType, sub_Lines] = genLines(typeFields[k], _deep + 4)
@@ -137,8 +137,7 @@ export function extractType(selections, deep, rootTree, branchOfFields) {
 				// здесь можно заполнить серверные строки
 			}
 			else if (!_lines) {
-				({ _gpaType: _compositeSType[selection.name?.value], lines: _lines, isNestedList } = this.extractType(
-					//@ts-expect-error
+				({ _gpaType: _compositeSType[selection.name?.value], lines: _lines, isNestedList } = extractType.call(this,
 					selection.selectionSet.selections,
 					deep,
 					[subFieldName].concat(rootTree || []),
@@ -165,7 +164,8 @@ export function extractType(selections, deep, rootTree, branchOfFields) {
 			// let values = `[\n${offset}{\n${_lines}${offset}}\n${' '.repeat(deep)}]`;
 
 			_gpaType[selection.name?.value + ''] = _compositeSType[selection.name?.value] || any;
-			lines += ' '.repeat(deep) + selection.name?.value + `: ${values || value},\n`
+			const optional = this.options.makeNodesAsOptional ? '?' : '';
+			lines += ' '.repeat(deep) + selection.name?.value + optional + `: ${values || value},\n`
 		}
 		else {
 
@@ -194,7 +194,9 @@ export function extractType(selections, deep, rootTree, branchOfFields) {
 						: rootTree;
 					graphQType = scalarTypes[Array.isArray(types) ? types[0][fieldName] : types[fieldName]];
 					if (!graphQType) {
-						console.warn(`"${fieldName}" field has not found by parsing root type ${rootName}`);
+						this.options.verbose && console.warn(
+							`"${fieldName}" field has not found by parsing root type ${rootName}`
+						);
 					}
 				}
 				catch (e) {
@@ -210,7 +212,9 @@ export function extractType(selections, deep, rootTree, branchOfFields) {
 					graphQType = scalarTypes[subField];
 				}
 				else {
-					console.warn(`=> Unexpacted field "${fieldName}" in ${subType}. Definging from naming`);
+					this.options.verbose && console.warn(
+						`=> Unexpacted field "${fieldName}" in ${subType}. Definging from naming`
+					);
 				}
 			}
 
@@ -222,7 +226,7 @@ export function extractType(selections, deep, rootTree, branchOfFields) {
 					console.log(graphQType);
 				}
 				if ('userSettingsMutation' == subFieldName) {
-					console.log('userSettingsMutation');
+					this.options.verbose && console.log('userSettingsMutation');
 				}
 			}
 

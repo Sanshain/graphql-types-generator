@@ -109,7 +109,7 @@ module.exports = async function typesGenerate(
 		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
 		let _graTypes = {}
 		let [declTypes, typesFromFile] = await generator.getTypes(
-			filename, codeTypes, _graTypes,			
+			filename, codeTypes, _graTypes,
 		);
 		
 		

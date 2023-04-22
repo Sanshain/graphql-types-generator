@@ -40,6 +40,7 @@ export type BaseOptions = {
 	attachTypeName?: boolean,				// attach __template field
 	matchTypeNames?: boolean,				// attach type `QueryTypes` with all listed types
 	typeFromDescMark?: string,				// mark for descriptions overrided gql server types (`:::` by default)
+	makeNodesAsOptional?: boolean,		// make nodes as optional -default=false
 	useServerTypes?: boolean | {
 		port?: number,
 		host?: string
@@ -51,7 +52,9 @@ export type BaseOptions = {
 		// JSONField?: string
 	},
 	separateFileForArgumentsTypes?: string,
-	debug?: boolean
+
+	debug?: boolean,
+	verbose?: boolean
 }
 
 declare function typesGenerate(options: BaseOptions): Promise<void>;

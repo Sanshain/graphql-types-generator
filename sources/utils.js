@@ -62,10 +62,10 @@ class TypesGenerator{
 
 	/**
 	 * добавляет сгенерированные типы в codeTypes и возвращает ее
-	 * @param {*} filename - имя файла
-	 * @param {*} codeTypes - типы тайпскрипт в виде объекта
-	 * @param {*} graTypes - типы тайпскрипт в виде строк
-	 * @returns typescript code
+	 * @param {string} filename - имя файла
+	 * @param {string} codeTypes - типы тайпскрипт в виде объекта
+	 * @param {object} graTypes - типы тайпскрипт в виде строк
+	 * @returns {Promise<[Record<string, any>, string]>} typescript code
 	 */
 	async getTypes(filename, codeTypes, graTypes) {
 
@@ -144,12 +144,10 @@ class TypesGenerator{
 			 */			
 			//@ts-expect-error
 			let selections = definition?.selectionSet.selections;
-			
-			//@ts-expect-error
-			let serverType = Object.entries(this.serverTypes).find(([k, v]) => k == typeName)
-			
-			//@ts-expect-error
-			let genType = this.getType(selections, 0, serverType, null);
+						
+			let serverType = Object.entries(this.serverTypes || {}).find(([k, v]) => k == typeName)
+						
+			let genType = extractType.call(this, selections, 0, serverType, null);
 			if (this.options.attachTypeName){				
 				
 				//@ts-expect-error
@@ -192,11 +190,7 @@ class TypesGenerator{
 		) + '}'
 
 		return this.argTypesCode;
-	} 
-
-
-	
-	extractType = extractType;
+	} 	
 
 
 

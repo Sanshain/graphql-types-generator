@@ -3,7 +3,7 @@
 /**
  * @type {string}
  */
-export const schemaQuery = `
+exports.schemaQuery = `
  	query Queries{
 		__schema {
 			types {
