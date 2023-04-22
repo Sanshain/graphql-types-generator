@@ -53,7 +53,7 @@ class TypesGenerator{
 		this.options = options;
 		
 		if (options.rules){
-			if (!keyValidator.every(k => k in this.rules)){
+			if (!keyValidator.every(k => k in rules)){
 				throw new Error('All base types are not defined (string, bool, number)');
 			}
 		}

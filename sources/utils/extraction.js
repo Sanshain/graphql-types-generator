@@ -1,6 +1,6 @@
 //@ts-check
 
-const { scalarTypes } = require('./rules');
+const { scalarTypes, rules } = require('./rules');
 
 
 const any = 'any';  
@@ -231,13 +231,13 @@ exports.extractType = function extractType(selections, deep, rootTree, branchOfF
 			}
 
 			if (!graphQType || graphQType === any) {
-				if (this.rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)) {
+				if (rules.number.some(m => fieldName.endsWith(m) || m.toLowerCase() === fieldName)) {
 					graphQType = 'number'
 				}
-				if (this.rules.string.some(m => fieldName.startsWith(m.toLowerCase()) || fieldName.endsWith(m))) {
+				if (rules.string.some(m => fieldName.startsWith(m.toLowerCase()) || fieldName.endsWith(m))) {
 					graphQType = 'string'
 				}
-				else if (this.rules.bool.some(m => selection.name?.value.startsWith(m))) {
+				else if (rules.bool.some(m => selection.name?.value.startsWith(m))) {
 					graphQType = 'boolean'
 				}
 			}

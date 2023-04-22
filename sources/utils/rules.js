@@ -1,3 +1,5 @@
+//@ts-check
+
 /// for server approach 
 exports.browserTypes = {
 	ID: 'number',
@@ -8,7 +10,7 @@ exports.browserTypes = {
 
 /**
  * @description for naming approach 
- * @type {Exclude<Required<import('./main').BaseOptions['rules']>, undefined>}
+ * @type {Exclude<Required<import('../main').BaseOptions['rules']>, undefined>}
  */	
  exports.rules = {
 	/// endsWith:
@@ -18,7 +20,7 @@ exports.browserTypes = {
 	bool: ['is'],
 }	
 
-exports.scalarTypes = {
+let browserTypes = {
 	'String': 'string',
 	'Boolean': 'boolean',
 	'ID': 'number',
@@ -30,3 +32,7 @@ exports.scalarTypes = {
 	'Positive': 'number',
 	'Foreign': 'number',
 };	
+
+Object.keys(browserTypes).forEach(k => browserTypes[k + '!'] = browserTypes[k])
+
+exports.scalarTypes = browserTypes;
