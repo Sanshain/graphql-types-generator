@@ -335,7 +335,8 @@ class TypesGenerator{
 		let inputFields = queryOrMutation.args.map(param => [param.name, param.type?.name || 'any'])
 		// TODO logic: if a nested object...
 		let described = false;
-		const isNestedType = (this.options.allowOptionalNestedParams && queryOrMutation.args?.length == 1) 
+		 
+		const isNestedType = (!this.options.preventOptionalParams && queryOrMutation.args?.length == 1) 
 			? !scalarTypes[queryOrMutation.args[0].type?.name || queryOrMutation.args[0].type?.ofType?.name || '']
 			: false
 
@@ -354,11 +355,11 @@ class TypesGenerator{
 				// const optional = (!~typeName.indexOf('!') && !~forceRequireTypes.indexOf(typeName)) ? '?' : ''
 				// const optional = (described && !~typeName.indexOf('!') ) ? '?' : ''
 				// const optional = (isNestedType && !~typeName.indexOf('!') && !~forced.indexOf(typeName)) ? '?' : ''
-				const optional = (isNestedType && i && !~typeName.indexOf('!')) ? '?' : ''
+				const optional = (isNestedType && i && !~typeName.indexOf('!')) ? 'null | ' : ''
 				if (optional){
-					console.log('ok');
+					// console.log('ok');
 				}
-				return `${k}${optional}: ${scalarTypes[typeName] || (typeName || 'unknown').trim()}`
+				return `${k}: ${optional}${scalarTypes[typeName] || (typeName || 'unknown').trim()}`
 			})
 			.join(',\n    ') + '\n}';
 		this.mutationArgs += '\n' + typeDec + '\n';

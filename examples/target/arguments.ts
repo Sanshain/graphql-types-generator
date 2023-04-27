@@ -40,11 +40,11 @@ export type friendshipApplyArgs = {
 export type userSettingsMutationArgs = {
     id: number,
     firstName: string,
-    lastName?: string,
-    birthday?: string,
-    sex?: boolean,
-    placeId?: number,
-    placeType?: number
+    lastName: null | string,
+    birthday: null | string,
+    sex: null | boolean,
+    placeId: null | number,
+    placeType: null | number
 }
 
 export type userSettingsArgs = {
