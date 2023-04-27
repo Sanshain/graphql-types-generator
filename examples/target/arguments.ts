@@ -25,8 +25,8 @@ export type updateAccountArgs = {
 }
 
 export type postCreateArgs = {
-    value: string,
-    files: any
+    files: object,
+    value: string
 }
 
 export type likeApplyArgs = {
@@ -40,11 +40,11 @@ export type friendshipApplyArgs = {
 export type userSettingsMutationArgs = {
     id: number,
     firstName: string,
-    lastName: string,
-    birthday: string,
-    sex: boolean,
-    placeId: number,
-    placeTypeId: number
+    lastName?: string,
+    birthday?: string,
+    sex?: boolean,
+    placeId?: number,
+    placeType: number
 }
 
 export type userSettingsArgs = {

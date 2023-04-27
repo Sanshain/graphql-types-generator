@@ -13,7 +13,10 @@ exports.schemaQuery = `
 					args{
 						name,  
 						type{
-							name
+							name,
+							ofType{
+								name
+							}							
 						}
 					},						        
 					description
@@ -21,6 +24,9 @@ exports.schemaQuery = `
 						fields{								
 							name,
 							type{
+								ofType{
+									name
+								},
 								name,
 								kind,									
 								fields{

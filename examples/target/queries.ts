@@ -88,7 +88,14 @@ export type UserSettingsType = {
     __typename: "UserSettingsType",
 
     userSettings: {
+        username: string,
         firstName: string,
+        lastName: string,
+        sex: string,
+        birthday: string,
+        placeId: number,
+        country: string,
+        city: string,
     },
 };
 
@@ -266,7 +273,7 @@ export type PostType = {
         id: number,
         time: string,
         value: string,
-        files: any,
+        files: object,
         likesCount: number,
         rated: boolean,
     } [],

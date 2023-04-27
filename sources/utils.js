@@ -8,7 +8,7 @@ const { schemaQuery } = require('./utils/request')
 const gql = require('graphql-tag');
 
 
-const { rules, browserTypes, scalarTypes } = require('./utils/rules');
+const { rules, browserTypes, scalarTypes, forceRequireTypes: forced } = require('./utils/rules');
 
 const { extractType } = require('./utils/extraction');
 
@@ -35,6 +35,7 @@ class TypesGenerator{
 	argTypesCode = '';	
 	argMatches = {}
 	/**
+	 * @desc 
 	 * @type {string | any[]}
 	 */
 	argTypes = [];
@@ -247,12 +248,12 @@ class TypesGenerator{
 			// TODO get fields from type name like `get output fields from server side` for queries below
 			// via queryOrMutation.type?.name			
 
-			this.genInputTypes(mutation, typeFromDescMark);
+			this.attachInputTypes(mutation, typeFromDescMark);
 			argTypes.push(mutation.name);
 		}
 
 		this.argTypes = argTypes
-		argTypes.push('')
+		argTypes.push('')							// mutations and queries params delimiter
 
 		let rawQueries = this.rawQueries = this.rawSchema.find(t => t.name == 'Query')?.fields;
 		for (let key in rawQueries)
@@ -298,7 +299,7 @@ class TypesGenerator{
 
 				if (rawType.args && rawType.args.length){
 					
-					this.genInputTypes(rawType, typeFromDescMark);
+					this.attachInputTypes(rawType, typeFromDescMark);
 					argTypes.push(rawType.name);
 				}
 
@@ -319,7 +320,7 @@ class TypesGenerator{
 	 * @param {{ 
 	 * 	name: string; 
 	 * 	description: string | null; 									// string - for mutations, undefined - for queries
-	 * 	args: Array<{name?: string, type?: {name: string}}>; 
+	 * 	args: Array<{name?: string, type?: {name: string, ofType?: {name: string}}}>; 
 	 * 	type?: { 
 	 * 		fields?: unknown[] | undefined; 
 	 * 		kind: "OBJECT" | "LIST" | "SCALAR" | "NOT_NULL" | "Field"; 
@@ -329,18 +330,35 @@ class TypesGenerator{
 	 *  }} queryOrMutation
 	 * @param {string} typeFromDescMark
 	 */
-	genInputTypes(queryOrMutation, typeFromDescMark) {		
+	attachInputTypes(queryOrMutation, typeFromDescMark) {		
 
 		let inputFields = queryOrMutation.args.map(param => [param.name, param.type?.name || 'any'])
+		// TODO logic: if a nested object...
+		let described = false;
+		const isNestedType = queryOrMutation.args?.length == 1 
+			? !scalarTypes[queryOrMutation.args[0].type?.name || queryOrMutation.args[0].type?.ofType?.name || '']
+			: false
 
 		if (queryOrMutation.description && queryOrMutation.description.startsWith(typeFromDescMark)) {
+
 			console.log(`Types for "${queryOrMutation.name}" mutation generates from server side description`);
 			inputFields = queryOrMutation.description.substring(3).split('\n')
 				.filter(item => item.trim())
 				.map(item => item.trim().split(':'));
+
+			// described = true;
 		}
 		let typeDec = `export type ${queryOrMutation.name + 'Args'} = {\n    ` + inputFields
-			.map(([k, v]) => `${k}: ${scalarTypes[('' + v).trim()] || (v || 'unknown').trim()}`)
+			.map(([k, v]) => {
+				const typeName = (v + '').trim() || ''
+				// const optional = (!~typeName.indexOf('!') && !~forceRequireTypes.indexOf(typeName)) ? '?' : ''
+				// const optional = (described && !~typeName.indexOf('!') ) ? '?' : ''
+				const optional = (isNestedType && !~typeName.indexOf('!') && !~forced.indexOf(typeName)) ? '?' : ''
+				if (optional){
+					console.log('ok');
+				}
+				return `${k}${optional}: ${scalarTypes[typeName] || (typeName || 'unknown').trim()}`
+			})
 			.join(',\n    ') + '\n}';
 		this.mutationArgs += '\n' + typeDec + '\n';
 		

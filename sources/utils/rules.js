@@ -20,19 +20,31 @@ exports.browserTypes = {
 	bool: ['is'],
 }	
 
-let browserTypes = {
+let browserTypes = {	
+	'ID': 'number',	
+	'JSONString': 'object',						// any? 
+	'Positive': 'number',		
+	
+	'Foreign': 'number',
 	'String': 'string',
-	'Boolean': 'boolean',
-	'ID': 'number',
+	'Boolean': 'boolean',	
 	'Int': 'number',
 	'Integer': 'number',
-	'Date': 'string',
+	'Date': 'string',								// '0001-01-01'
 	'DateTime': 'string',
-	'JSONString': 'any',
-	'Positive': 'number',
-	'Foreign': 'number',
 };	
 
-Object.keys(browserTypes).forEach(k => browserTypes[k + '!'] = browserTypes[k])
+const baseGraphTypeKeys = Object.keys(browserTypes)
 
-exports.scalarTypes = browserTypes;
+baseGraphTypeKeys.forEach(k => browserTypes[k + '!'] = browserTypes[k])
+
+exports.forceRequireTypes = baseGraphTypeKeys.slice(0, 3).concat('any')
+
+/**
+ * @_type {typeof browserTypes & {[K in keyof typeof browserTypes as `${K}!`] : typeof browserTypes[K] }}
+ */
+//@ts-ignore
+let scalarTypes = browserTypes;
+
+exports.scalarTypes = scalarTypes;
+

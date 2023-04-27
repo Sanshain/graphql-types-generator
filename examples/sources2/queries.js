@@ -100,7 +100,14 @@ export const getPaginatedUsers = gql`
 export const userSettingsType = gql`
     query UserSettingsType {
         userSettings (id: $id) {
-            firstName
+            username,
+            firstName,
+            lastName,
+            sex,
+            birthday,
+            placeId,
+            country,
+            city
         }
     }
 `;
