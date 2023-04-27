@@ -44,7 +44,7 @@ export type userSettingsMutationArgs = {
     birthday?: string,
     sex?: boolean,
     placeId?: number,
-    placeType: number
+    placeType?: number
 }
 
 export type userSettingsArgs = {

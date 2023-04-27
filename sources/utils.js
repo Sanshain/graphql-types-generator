@@ -349,11 +349,12 @@ class TypesGenerator{
 			// described = true;
 		}
 		let typeDec = `export type ${queryOrMutation.name + 'Args'} = {\n    ` + inputFields
-			.map(([k, v]) => {
+			.map(([k, v], i) => {
 				const typeName = (v + '').trim() || ''
 				// const optional = (!~typeName.indexOf('!') && !~forceRequireTypes.indexOf(typeName)) ? '?' : ''
 				// const optional = (described && !~typeName.indexOf('!') ) ? '?' : ''
-				const optional = (isNestedType && !~typeName.indexOf('!') && !~forced.indexOf(typeName)) ? '?' : ''
+				// const optional = (isNestedType && !~typeName.indexOf('!') && !~forced.indexOf(typeName)) ? '?' : ''
+				const optional = (isNestedType && i && !~typeName.indexOf('!')) ? '?' : ''
 				if (optional){
 					console.log('ok');
 				}
