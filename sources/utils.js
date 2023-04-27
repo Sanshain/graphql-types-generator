@@ -335,7 +335,7 @@ class TypesGenerator{
 		let inputFields = queryOrMutation.args.map(param => [param.name, param.type?.name || 'any'])
 		// TODO logic: if a nested object...
 		let described = false;
-		const isNestedType = queryOrMutation.args?.length == 1 
+		const isNestedType = (this.options.allowOptionalNestedParams && queryOrMutation.args?.length == 1) 
 			? !scalarTypes[queryOrMutation.args[0].type?.name || queryOrMutation.args[0].type?.ofType?.name || '']
 			: false
 

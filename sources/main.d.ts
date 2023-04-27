@@ -41,6 +41,8 @@ export type BaseOptions = {
 	matchTypeNames?: boolean,				// attach type `QueryTypes` with all listed types
 	typeFromDescMark?: string,				// mark for descriptions overrided gql server types (`:::` by default)
 	makeNodesAsOptional?: boolean,		// make nodes as optional -default=false
+	allowOptionalNestedParams?: boolean,
+
 	useServerTypes?: boolean | {
 		port?: number,
 		host?: string
