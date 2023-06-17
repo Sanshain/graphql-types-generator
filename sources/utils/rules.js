@@ -22,15 +22,16 @@ exports.browserTypes = {
 
 let browserTypes = {	
 	'ID': 'number',	
-	'JSONString': 'object',						// any? 
-	'Positive': 'number',		
+	// 'JSONString': 'object',						// any? 
+	'JSONString': 'JSONString',					// any? 
+	'Positive': 'number',
 	
 	'Foreign': 'number',
 	'String': 'string',
 	'Boolean': 'boolean',	
 	'Int': 'number',
 	'Integer': 'number',
-	'Date': 'string',								// '0001-01-01'
+	'Date': 'string',								  // '0001-01-01'
 	'DateTime': 'string',
 };	
 

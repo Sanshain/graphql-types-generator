@@ -147,13 +147,20 @@ module.exports = async function typesGenerate(
 		codeTypes += `export type QueryTypes = {\n${Object.keys(graTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`
 	}
 
+	const branded = fs.readFileSync('./templates/branded.ts').toString() + '\n\n'	
+
+	codeTypes = branded + codeTypes;
+
 	if (options.separateFileForArgumentsTypes){
 		
 		fs.writeFile(targetFile, codeTypes, () => console.log(`\nQueries types generated to ${targetFile}!`));		
 
 		const argsTargetFile = path.join(process.cwd(), options.separateFileForArgumentsTypes);
+		
 		fs.writeFile(
-			argsTargetFile, generator.mutationArgs, () => console.log(`Arguments types generated to ${argsTargetFile}!`)
+			branded + argsTargetFile, 
+			generator.mutationArgs, 
+			() => console.log(`Arguments types generated to ${argsTargetFile}!`)
 		);		
 	}
 	else fs.writeFile(
