@@ -54,10 +54,10 @@ class TypesGenerator{
 		
 		if (options.rules) this.rules = { ...options.rules, ...rules}
 
-		if (options.branded === true || typeof options.branded === 'string'){
+		if (options.screentypes === true || typeof options.screentypes === 'string'){
 			this.scalarTypes = {...scalarTypes, ...brandedTypes};
 		}
-		else if (options.branded === false){
+		else if (options.screentypes === false){
 			this.scalarTypes = scalarTypes;
 		}
 		this.options = options;

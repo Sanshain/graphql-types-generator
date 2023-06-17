@@ -1,17 +1,14 @@
-/* Branded types: */
+/* Screen types: */
 
 declare const __brand: unique symbol
-type Branded<T, B=never> = T & { [__brand]?: B }
+type ScreenType<T, B=never> = T & { [__brand]?: B }
 
-type JSONstring = Branded<string, "JSONstring">
-type ID = Branded<number, "ID">
+type JSONstring = ScreenType<string, "JSONstring">
+type ID = ScreenType<number, "ID">
 /** yyyy-mm-dd */
-type DateString = Branded<string>
+type DateString = ScreenType<string>
 
-let s: string = ''
-let a: DateString = s
 
-let f: {a: ID} = {a: 1}
 
 /* Mutation Arguments types:*/
 
