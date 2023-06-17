@@ -54,7 +54,7 @@ class TypesGenerator{
 		
 		if (options.rules) this.rules = { ...options.rules, ...rules}
 
-		if (options.branded === true || options.branded === undefined){
+		if (options.branded === true || typeof options.branded === 'string'){
 			this.scalarTypes = {...scalarTypes, ...brandedTypes};
 		}
 		else if (options.branded === false){

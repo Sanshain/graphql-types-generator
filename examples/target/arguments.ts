@@ -1,13 +1,5 @@
 /* Branded types: */
 
-declare const __brand: unique symbol
-type Branded<T, B=never> = T & { [__brand]?: B }
-
-type JSONstring = Branded<string, "JSONstring">
-type ID = Branded<string, "ID">
-/** yyyy-mm-dd */
-type DateString = Branded<string>
-
 
 
 /* Mutation Arguments types:*/
@@ -36,7 +28,7 @@ export type updateAccountArgs = {
 
 export type postCreateArgs = {
     value: string,
-    files: JSONstring
+    files: string
 }
 
 export type likeApplyArgs = {
@@ -48,13 +40,13 @@ export type friendshipApplyArgs = {
 }
 
 export type userSettingsMutationArgs = {
-    id: ID,
+    id: number,
     firstName: string,
     lastName: null | string,
-    birthday: null | DateString,
+    birthday: null | string,
     sex: null | boolean,
     placeId: null | number,
-    placeType: null | ID
+    placeType: null | number
 }
 
 export type userSettingsArgs = {

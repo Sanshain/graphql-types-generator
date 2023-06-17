@@ -34,7 +34,7 @@ async function main() {
 		target: './examples/target/queries.ts',
 		separateFileForArgumentsTypes: './examples/target/arguments.ts',	// separate arguments types from response types
 		attachTypeName: true,
-		branded: true,
+		// branded: true,
 
 		
 		debug: true,									// output optional verbose info to termanal

@@ -68,6 +68,8 @@ module.exports = async function typesGenerate(
 		options || {}
 	);
 
+	options.branded = options.branded === undefined ? false : options.branded;
+
 	const generator = new TypesGenerator(options)
 
 	options.files = options.filename ? options.files?.concat([options.filename]) : options.files
@@ -147,11 +149,11 @@ module.exports = async function typesGenerate(
 		codeTypes += `export type QueryTypes = {\n${Object.keys(graTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`
 	}
 
-	if (options.branded === undefined || options.branded === true){
+	if (options.branded === true){
 		options.branded = fs.readFileSync(path.join(__dirname, './templates/branded.ts')).toString() + '\n\n'	
 	}
 	else if(options.branded === false){
-		options.branded = ''
+		options.branded = ''		// disable
 	}
 	else if(options.branded === ''){
 		// keep branded types in output code w/o attached declaration 
