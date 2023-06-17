@@ -26,22 +26,34 @@ export type Schema = {
 
 export type BaseOptions = {
 
-	// files options:
 
-	filename: string,							// source filename	
-	files?: Array<string>, 					// or source file names
-	declarateSource?: Array<string>,		// create *.d.ts files for according sources with QueryString<`$TypeName`> for each query
-	declTemplate?: string,					// file for target template
+	/// FILES OPTIONS:
+
+	/** source filename	 */
+	filename: string,
+	/** or source file names */
+	files?: Array<string>,
+	/** create *.d.ts files for according sources with QueryString<`$TypeName`> for each query */
+	declarateSource?: Array<string>,		
+	/** file for target template */
+	declTemplate?: string,
 	dirname?: string, 		// ?
-	target?: string,							// target file name	
+	/** target file name */
+	target?: string,
 
-	// types generate options:
 
-	attachTypeName?: boolean,				// attach __template field
-	matchTypeNames?: boolean,				// attach type `QueryTypes` with all listed types
-	typeFromDescMark?: string,				// mark for descriptions overrided gql server types (`:::` by default)
-	makeNodesAsOptional?: boolean,		// make nodes as optional -default=false
+	/// TYPES GENERATE OPTIONS:
+
+	/** attach __template field */
+	attachTypeName?: boolean,	
+	/** attach type `QueryTypes` with all listed types */
+	matchTypeNames?: boolean,
+	/** mark for descriptions overrided gql server types (@default = `:::`) */
+	typeFromDescMark?: string,
+	/** make nodes as optional; @default=false */
+	makeNodesAsOptional?: boolean,
 	preventOptionalParams?: boolean,
+	/** set human understandable type names for specific graphql types (recommended) */
 	branded?: boolean | '' | string
 
 	useServerTypes?: boolean | {
@@ -55,6 +67,9 @@ export type BaseOptions = {
 		// JSONField?: string
 	},
 	separateFileForArgumentsTypes?: string,
+
+	
+	/// DEV OPTIONS:
 
 	debug?: boolean,
 	verbose?: boolean
