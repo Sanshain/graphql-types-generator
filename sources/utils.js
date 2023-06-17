@@ -8,7 +8,7 @@ const { schemaQuery } = require('./utils/request')
 const gql = require('graphql-tag');
 
 
-const { rules, browserTypes, scalarTypes, forceRequireTypes: forced } = require('./utils/rules');
+const { rules, browserTypes, scalarTypes, brandedTypes, forceRequireTypes: forced } = require('./utils/rules');
 
 const { extractType } = require('./utils/extraction');
 
@@ -21,6 +21,8 @@ class TypesGenerator{
 	 * @type {{[key: string]: object}?} - серверные типы с описанием
 	 */
 	serverTypes = null;
+	
+	scalarTypes = scalarTypes;
 
 	/**
 	 * @type {{name: string, type: string| null}[]}?} - стор соответствий подзапросов их серверным типам
@@ -51,6 +53,13 @@ class TypesGenerator{
 		let keyValidator = Object.keys(rules);
 		
 		if (options.rules) this.rules = { ...options.rules, ...rules}
+
+		if (options.branded === true || options.branded === undefined){
+			this.scalarTypes = {...scalarTypes, ...brandedTypes};
+		}
+		else if (options.branded === false){
+			this.scalarTypes = scalarTypes;
+		}
 		this.options = options;
 		
 		if (options.rules){
@@ -337,7 +346,7 @@ class TypesGenerator{
 		let described = false;
 		 
 		const isNestedType = (!this.options.preventOptionalParams && queryOrMutation.args?.length == 1) 
-			? !scalarTypes[queryOrMutation.args[0].type?.name || queryOrMutation.args[0].type?.ofType?.name || '']
+			? !this.scalarTypes[queryOrMutation.args[0].type?.name || queryOrMutation.args[0].type?.ofType?.name || '']
 			: false
 
 		if (queryOrMutation.description && queryOrMutation.description.startsWith(typeFromDescMark)) {
@@ -349,6 +358,8 @@ class TypesGenerator{
 
 			// described = true;
 		}
+
+		const self = this;
 		let typeDec = `export type ${queryOrMutation.name + 'Args'} = {\n    ` + inputFields
 			.map(([k, v], i) => {
 				const typeName = (v + '').trim() || ''
@@ -359,7 +370,7 @@ class TypesGenerator{
 				if (optional){
 					// console.log('ok');
 				}
-				return `${k}: ${optional}${scalarTypes[typeName] || (typeName || 'unknown').trim()}`
+				return `${k}: ${optional}${self.scalarTypes[typeName] || (typeName || 'unknown').trim()}`
 			})
 			.join(',\n    ') + '\n}';
 		this.mutationArgs += '\n' + typeDec + '\n';

@@ -42,6 +42,7 @@ export type BaseOptions = {
 	typeFromDescMark?: string,				// mark for descriptions overrided gql server types (`:::` by default)
 	makeNodesAsOptional?: boolean,		// make nodes as optional -default=false
 	preventOptionalParams?: boolean,
+	branded?: boolean | '' | string
 
 	useServerTypes?: boolean | {
 		port?: number,

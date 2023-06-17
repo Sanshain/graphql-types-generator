@@ -22,8 +22,9 @@ exports.browserTypes = {
 
 let browserTypes = {	
 	'ID': 'number',	
+
 	// 'JSONString': 'object',						// any? 
-	'JSONString': 'JSONString',					// any? 
+	'JSONString': 'string',							// any? 
 	'Positive': 'number',
 	
 	'Foreign': 'number',
@@ -34,6 +35,16 @@ let browserTypes = {
 	'Date': 'string',								  // '0001-01-01'
 	'DateTime': 'string',
 };	
+
+const brandedTypes = {
+	'ID': 'ID',	
+	'JSONString': 'JSONstring',					// any? 
+	'Date': 'DateString',							// '0001-01-01'
+}
+
+exports.brandedTypes = brandedTypes;
+
+// browserTypes = Object.assign(browserTypes, brandedTypes);
 
 const baseGraphTypeKeys = Object.keys(browserTypes)
 

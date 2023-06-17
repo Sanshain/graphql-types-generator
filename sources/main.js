@@ -147,19 +147,39 @@ module.exports = async function typesGenerate(
 		codeTypes += `export type QueryTypes = {\n${Object.keys(graTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`
 	}
 
-	const branded = fs.readFileSync('./templates/branded.ts').toString() + '\n\n'	
+	if (options.branded === undefined || options.branded === true){
+		options.branded = fs.readFileSync(path.join(__dirname, './templates/branded.ts')).toString() + '\n\n'	
+	}
+	else if(options.branded === false){
+		options.branded = ''
+	}
+	else if(options.branded === ''){
+		// keep branded types in output code w/o attached declaration 
+		// implies that user will define it in global
+	}
 
-	codeTypes = branded + codeTypes;
+	codeTypes = options.branded + codeTypes;
 
 	if (options.separateFileForArgumentsTypes){
 		
+		if (options.branded && options.verbose){
+			console.warn(
+				'with `separateFileForArgumentsTypes` recommend set `options.branded` (by default is true) to \'\'\
+				and redefine the appropriate branded types in global type space (or link include tsconfig option to \
+				`node_modules/graphql-types-generator/sources/templates/branded.ts)`'
+			)
+			// or /// <reference lib="node_modules/graphql-types-generator/sources/templates/branded" />
+		}
+
 		fs.writeFile(targetFile, codeTypes, () => console.log(`\nQueries types generated to ${targetFile}!`));		
 
 		const argsTargetFile = path.join(process.cwd(), options.separateFileForArgumentsTypes);
 		
+		options.branded = '/* Branded types: */\n\n' + options.branded
+
 		fs.writeFile(
-			branded + argsTargetFile, 
-			generator.mutationArgs, 
+			argsTargetFile,
+			options.branded + generator.mutationArgs,
 			() => console.log(`Arguments types generated to ${argsTargetFile}!`)
 		);		
 	}
