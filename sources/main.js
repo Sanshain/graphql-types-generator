@@ -153,7 +153,10 @@ module.exports = async function typesGenerate(
 		options.screentypes = fs.readFileSync(path.join(__dirname, './templates/screentypes.ts')).toString() + '\n\n'	
 	}
 	else if(options.screentypes === false){
-		options.screentypes = ''		// disable
+		options.screentypes = ''						// disable (look up TypesGen constructor)
+	}
+	else if (typeof options.screentypes === 'object'){
+		options.screentypes = ''						// the same as next
 	}
 	else if(options.screentypes === ''){
 		// keep branded types in output code w/o attached declaration 
@@ -194,8 +197,7 @@ module.exports = async function typesGenerate(
 		targetFile, codeTypes + generator.mutationArgs, () => {
 			console.log(`\n\nOutputs generated to ${foreColor}${targetFile}${"\x1b[0m"}!`)
 		}
-	);	
-	
+	);		
 }
 
 

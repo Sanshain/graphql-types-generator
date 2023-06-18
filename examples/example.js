@@ -34,7 +34,12 @@ async function main() {
 		target: './examples/target/queries.ts',
 		separateFileForArgumentsTypes: './examples/target/arguments.ts',	// separate arguments types from response types
 		attachTypeName: true,
-		screentypes: true,
+		// screentypes: true,
+		// screentypes: '',
+		// screentypes: false,
+		screentypes: {
+			number: 'Number'
+		},
 
 		verbose: true,
 		debug: true,									// output optional verbose info to termanal

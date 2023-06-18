@@ -54,7 +54,7 @@ export type BaseOptions = {
 	makeNodesAsOptional?: boolean,
 	preventOptionalParams?: boolean,
 	/** set human understandable type names for specific graphql types (recommended) */
-	screentypes?: boolean | '' | string
+	screentypes?: boolean | '' | string | object
 
 	useServerTypes?: boolean | {
 		port?: number,

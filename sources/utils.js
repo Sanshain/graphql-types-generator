@@ -54,11 +54,14 @@ class TypesGenerator{
 		
 		if (options.rules) this.rules = { ...options.rules, ...rules}
 
-		if (options.screentypes === true || typeof options.screentypes === 'string'){
+		if (options.screentypes === true || typeof options.screentypes === 'string' /* '' */){
 			this.scalarTypes = {...scalarTypes, ...brandedTypes};
 		}
+		else if (typeof options.screentypes === 'object'){
+			this.scalarTypes = {...scalarTypes, ...options.screentypes};
+		}
 		else if (options.screentypes === false){
-			this.scalarTypes = scalarTypes;
+			// this.scalarTypes = scalarTypes;
 		}
 		this.options = options;
 		
