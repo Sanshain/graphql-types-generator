@@ -11382,12 +11382,13 @@ class TypesGenerator$1{
 		
 		if (options.rules) this.rules = { ...options.rules, ...rules};
 
-		if (options.screentypes === true || typeof options.screentypes === 'string'){
+		if (options.screentypes === true || typeof options.screentypes === 'string' /* '' */){
 			this.scalarTypes = {...scalarTypes, ...brandedTypes};
 		}
-		else if (options.screentypes === false){
-			this.scalarTypes = scalarTypes;
+		else if (typeof options.screentypes === 'object'){
+			this.scalarTypes = {...scalarTypes, ...options.screentypes};
 		}
+		else if (options.screentypes === false);
 		this.options = options;
 		
 		if (options.rules){
@@ -11895,39 +11896,48 @@ var main = async function typesGenerate(
 		options.screentypes = fs__default['default'].readFileSync(path__default['default'].join(__dirname, './templates/screentypes.ts')).toString() + '\n\n';	
 	}
 	else if(options.screentypes === false){
-		options.screentypes = '';		// disable
+		options.screentypes = '';						// disable (look up TypesGen constructor)
+	}
+	else if (typeof options.screentypes === 'object'){
+		options.screentypes = '';						// the same as next
 	}
 	else if(options.screentypes === '');
 
-	codeTypes = options.screentypes + codeTypes;
+	codeTypes = options.screentypes + codeTypes;	
+
+	const foreColor = "\x1b[36m";
 
 	if (options.separateFileForArgumentsTypes){
 		
 		if (options.screentypes && options.verbose){
-			console.warn(
-				'with `separateFileForArgumentsTypes` recommend set `options.branded` (by default is true) to \'\'\
-				and redefine the appropriate branded types in global type space (or link include tsconfig option to \
-				`node_modules/graphql-types-generator/sources/templates/screentypes.ts)`'
+			console.warn('\x1b[35m' +
+				'with `separateFileForArgumentsTypes` and `options.branded` both we recommend set `options.branded` to ' +
+				'\'\' and redefine the appropriate branded types in global type space (or link include tsconfig option ' +
+				'to `node_modules/graphql-types-generator/sources/templates/screentypes.ts)`' + '\x1b[0m'
 			);
 			// or /// <reference lib="node_modules/graphql-types-generator/sources/templates/branded" />
 		}
 
-		fs__default['default'].writeFile(targetFile, codeTypes, () => console.log(`\nQueries types generated to ${targetFile}!`));		
+		fs__default['default'].writeFileSync(targetFile, codeTypes);					
 
-		const argsTargetFile = path__default['default'].join(process.cwd(), options.separateFileForArgumentsTypes);
-		
+		console.log(`\nQueries types generated to ${foreColor}${targetFile}${"\x1b[0m"}!`);
+
+
+		const argsTargetFile = path__default['default'].join(process.cwd(), options.separateFileForArgumentsTypes);		
 		options.screentypes = options.screentypes ? ('/* Screen types: */\n\n' + options.screentypes) : '';
-
-		fs__default['default'].writeFile(
+		
+		fs__default['default'].writeFileSync(
 			argsTargetFile,
-			options.screentypes + generator.mutationArgs,
-			() => console.log(`Arguments types generated to ${argsTargetFile}!`)
+			options.screentypes + generator.mutationArgs
 		);		
+
+		console.log(`Arguments types generated to ${foreColor}${argsTargetFile}${"\x1b[0m"}!`);
 	}
 	else fs__default['default'].writeFile(
-		targetFile, codeTypes + generator.mutationArgs, () => console.log(`\n\nOutputs generated to ${targetFile}!`)
-	);	
-	
+		targetFile, codeTypes + generator.mutationArgs, () => {
+			console.log(`\n\nOutputs generated to ${foreColor}${targetFile}${"\x1b[0m"}!`);
+		}
+	);		
 };
 
 //@ts-check
@@ -11960,7 +11970,8 @@ params = {
 	'-p': 'useServerTypes.port',
 	'-h': 'useServerTypes.host',
 	'--ds': 'declarateSource',
-	'--m': 'matchTypeNames'
+	'--m': 'matchTypeNames',
+	'--st': 'screentypes'
 };
 
 /*

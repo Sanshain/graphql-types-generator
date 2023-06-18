@@ -28,7 +28,8 @@ params = {
 	'-p': 'useServerTypes.port',
 	'-h': 'useServerTypes.host',
 	'--ds': 'declarateSource',
-	'--m': 'matchTypeNames'
+	'--m': 'matchTypeNames',
+	'--st': 'screentypes'
 }
 
 /*
