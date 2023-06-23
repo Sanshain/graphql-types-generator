@@ -98,7 +98,7 @@ class TypesGenerator{
 		// let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 		let gqls = Array.from(
 			// gqlDe.matchAll(/(\/\*[\s\S]+?\*\/)?\n?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
-			gqlDefs.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?export (?:const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
+			gqlDefs.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?^export (?:const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
 			// gqlDe.matchAll(
 			// 	/(\/\*[\s\S]*?\*\/\r?\n)?export (?:const|let) ([\w_\d]+)\s?= gql`(\s*(?:query|mutation)\s*\w+\s*\{\s*(\w+)[^`]*?)`/gi
 			// ),
@@ -120,7 +120,13 @@ class TypesGenerator{
 				// var definition = gql.gql(query).definitions.slice(-1)[0]
 			}
 			catch(ex){
-				console.warn('Detected wrong gql syntax. Check comments'); continue;
+				if (ex.message === 'Syntax Error: Cannot parse the unexpected character "/".'){
+					console.warn(`Detected wrong gql syntax with slash on ${queryName}`);
+				}
+				else{
+					console.warn(`Detected wrong gql syntax: '${ex.message}' on ${queryName}`);
+				}				
+				 continue;
 			}
 
 			// console.log('-');

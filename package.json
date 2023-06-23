@@ -9,7 +9,7 @@
 		"test": "node ./examples/example.js",
 		"build": "rollup -c",
 		"codegen": "graphql-codegen",
-		"init": "node ./sources/main"
+		"cli-test": "node ./cli-runner.js"
 	},
 	"bin": {
 		"types-gen": "./bin/cli-runner"

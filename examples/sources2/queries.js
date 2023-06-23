@@ -113,6 +113,28 @@ export const userSettingsType = gql`
 `;
 
 
+export const getMessages = gql`
+	query uploadMessages(id: $id, page: $page){
+		messages{
+			id,
+			author,				
+			time,
+			value,
+			files,
+			replyTo{
+				id,
+				time,					
+				value,					
+				files,
+				author
+			},
+			likesCount,	
+			rated,
+		}	
+	}
+`;
+
+
 /**
  * via relay variation:
  */
