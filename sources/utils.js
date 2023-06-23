@@ -98,7 +98,7 @@ class TypesGenerator{
 		// let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 		let gqls = Array.from(
 			// gqlDe.matchAll(/(\/\*[\s\S]+?\*\/)?\n?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
-			gqlDefs.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?^export (?:const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
+			gqlDefs.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?^export (?:const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/gm),
 			// gqlDe.matchAll(
 			// 	/(\/\*[\s\S]*?\*\/\r?\n)?export (?:const|let) ([\w_\d]+)\s?= gql`(\s*(?:query|mutation)\s*\w+\s*\{\s*(\w+)[^`]*?)`/gi
 			// ),
