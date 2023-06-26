@@ -36,3 +36,13 @@ query DialogInfo($id: Int) {
 		}
 	}
 }
+
+
+mutation SettingsMutationPayload {
+	userSettingsMutation(input: {id: 1, sex: false, placeId: 1, placeType: 25, firstName: ""}){
+		profile{
+				id,
+				firstName
+		}
+	}
+} 

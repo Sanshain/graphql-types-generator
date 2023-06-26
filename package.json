@@ -1,10 +1,10 @@
 {
 	"name": "graphql-types-generator",
-	"version": "2.0.1",
+	"version": "2.1.0b",
 	"description": "Generates typescript types from raw graphql queries, based on server types and the most common naming of variables of certain types",
 	"main": "./sources/main.js",
 	"types": "./sources/main.d.ts",
-	"homepage": "https://github.com/Sanshain/graphql-types-generator",	
+	"homepage": "https://github.com/Sanshain/graphql-types-generator",
 	"scripts": {
 		"test": "node ./examples/example.js",
 		"build": "rollup -c",
@@ -26,6 +26,8 @@
 		"graphql-tag": "^2.12.5"
 	},
 	"devDependencies": {
+		"@graphql-codegen/cli": "^4.0.1",
+		"@graphql-codegen/typescript-operations": "^4.0.1",
 		"rollup": "^2.53.2",
 		"rollup-plugin-commonjs": "^10.1.0",
 		"rollup-plugin-node-resolve": "^5.2.0"
@@ -39,6 +41,6 @@
 		"@graphql-codegen/cli": "^1.21.7",
 		"@graphql-codegen/core": "^1.17.10",
 		"@graphql-codegen/typescript": "^1.23.0",
-		"@graphql-codegen/typescript-operations": "^3.0.2"		
+		"@graphql-codegen/typescript-operations": "^3.0.2"
 	}
 }
