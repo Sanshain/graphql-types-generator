@@ -117,7 +117,7 @@ export const GET_DIALOGS_INIT = gql`
 ```ts
 export type profileInfo = {
    users: Array<{
-      username: any,
+      username: string,
       firstName: string,
    }>,
    dialogs: Array<{
