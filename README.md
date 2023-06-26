@@ -9,9 +9,34 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
 #### But not only that. This package can do a little more little joys:
 
 - **binding output and input graphql types** - `@graphql-codegen/typescript-operations` is able to generate `output types` and `incoming types` based on graphql types. And it's actually very cool, but these remain for each separated case two independent types, and some more work needs to be done to link them. This work can be done manually or with the help of an additional script that you will have to write. **graphql-types-generator** does this work for you via one of two ways:
-   - with the `declarateSource` option *(creates `.d.ts` file with generics directly linking arguments to types)*
-   - using the `matchTypeNames` option, *which creates a special type of relations.*
+   - with the `declarateSource` option. *Creates `.d.ts` file with generics directly linking arguments to types*:
+      ```ts
+      export const someQueryVar: QueryString<OutputType, InputType>
+      ```
+   - using the `matchTypeNames` option, *which creates a special type of relations.*:
+     ```ts
+      export type ArgTypes = {
+          // ...
+          OutputType: InputType,      
+      }
+     ```
 - **branded types for unknown types** - in the case, when graphql server does not provide any data about type (`codegen` in this case simply substitutes `any` type for the fields (possible to changed via `defaultScalarType` option to another, like `unknown` or `Object`, for example, but no more)) **graphql-types-generator** generates appropriate human-readable branded types. A trifle, but nice.
+
+     #### codegen:
+
+     ```ts
+      type SomeType = {
+         errors?: any
+      }
+     ```
+
+     #### graphql-types-generator
+
+     ```ts
+      type SomeType = {
+         errors?: ExpectedErrorType
+      }
+     ```
 - **generates types directly from javascript code** - generates types directly from javascript code, which avoids code duplication, whereas **codegen** is designed for the `* format.graphql` files, for generating javascript code from which a separate package is needed.
 - **generate types for unknown types** - the possibility to define types, about which server dpusn't give any data. This is very rare case. Unlike the previous paragraphs, I do not attribute it to the advantages, rather to the specificity of the current package.
 - has possibility to specify more tiny type for types generation via specify naming rules or server type description (look up `typeFromDescMark` option). Its may be usefull for example for Unions of some fixed strings or numbers instead of base scalar types or using string template literal in the types. That maky possible use the types as generics for more typing covering
@@ -70,7 +95,7 @@ async function main() {
 main();
 ```
 
-# How it works?
+# How it works by rules?
 
 By default (`useServerTypes` by default always is true) it expects server on `http://127.0.0.1:8000/graphql` and generates types based on types provided by this one. If some primitive type in not provided by server, it generates the type based on naming rule. If the server doesn't exists, it returns warning about an server unavailability and generates types purely based on naming rules. By default the rules look so:
 
