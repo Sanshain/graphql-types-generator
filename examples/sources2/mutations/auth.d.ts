@@ -26,13 +26,13 @@ type QueryString<T, A=never> = `
 
 
 
-export const register: QueryString<Register>;
+export const register: QueryString<Register, registerArgs>;
 
 
-export const SIGN_IN: QueryString<SignInfo>;
+export const SIGN_IN: QueryString<SignInfo, tokenAuthArgs>;
 
 
-export const SIGN_UP: QueryString<SignUpInfo>;
+export const SIGN_UP: QueryString<SignUpInfo, registerArgs>;
 
 
 export const PASS_RESET: QueryString<PassResetInfo>;
@@ -41,7 +41,7 @@ export const PASS_RESET: QueryString<PassResetInfo>;
  *  $token - verifying token
  */
 
-export const ACCOUNT_VERIFY: QueryString<AccountVerifyingInfo>;
+export const ACCOUNT_VERIFY: QueryString<AccountVerifyingInfo, verifyAccountArgs>;
 
 
 export const SIGN_OUT: QueryString<SignOutInfo>;

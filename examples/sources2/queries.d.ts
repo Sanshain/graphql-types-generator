@@ -37,7 +37,7 @@ export const GetProfileInfo: QueryString<ProfileInfo>;
  * just one dialog initial
  */
 
-export const get_DialogInit: QueryString<DialogInfo>;
+export const get_DialogInit: QueryString<DialogInfo, dialogArgs>;
 
 /**
  * paginatedUsers(filter:"{'exclude' : $exclude, 'icontains': '$icontains', 'only_friends': $only_friends}")
@@ -47,10 +47,10 @@ export const get_DialogInit: QueryString<DialogInfo>;
  * filter:"{'exclude' : {'id__in': [1,2,5]}, 'icontains': 'Bob1', 'only_friends': 1}"
  */
 
-export const getPaginatedUsers: QueryString<PaginatedUsers>;
+export const getPaginatedUsers: QueryString<PaginatedUsers, paginatedUsersArgs>;
 
 
-export const userSettingsType: QueryString<UserSettingsType>;
+export const userSettingsType: QueryString<UserSettingsType, userSettingsArgs>;
 
 
 export const getMessages: QueryString<uploadMessages>;

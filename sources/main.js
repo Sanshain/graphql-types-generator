@@ -152,7 +152,7 @@ module.exports = async function typesGenerate(
 
 				declContent += Object.entries(declTypes).map(
 					([k,v]) => {
-						const args = ~typesWithArgs.indexOf(v + 'Args') ? `, ${v}Args` : ''
+						const args = generator.argMatches[v.typeName] ? `, ${generator.argMatches[v.typeName]}` : '';						
 						return `\n${v.comment || ''}\nexport const ${k}: QueryString<${v.typeName}${args}>;\n`
 					}
 				).join('')
