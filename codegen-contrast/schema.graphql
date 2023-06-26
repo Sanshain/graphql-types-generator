@@ -1,0 +1,38 @@
+mutation Register {
+	register(email: "", username: "$username", password1: "$password1", password2: "$password1"){
+		success,
+		errors,
+		token
+	}
+}
+
+query DialogInfo($id: Int) {
+	dialog(id: $id){
+		id,
+		title,
+		founder {
+			id
+		},			
+		users{
+			id,			
+			name,
+			image,     
+		},
+		messagesList{
+			id,
+			author,				
+			time,
+			value,
+			files,
+			replyTo{
+				id,
+				time,					
+				value,					
+				files,
+				author
+			},
+			likesCount,	
+			rated,
+		}
+	}
+}

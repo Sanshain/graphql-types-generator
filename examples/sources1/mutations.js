@@ -3,13 +3,12 @@ import gql from "./graphql-tag";
 
 
 export const SIGN_IN = gql`
-	mutation {
+	mutation SignInfo {
 		tokenAuth(username: $username, password: $password) {
 			success,
 			errors,
 			unarchiving,
 			token,    
-			unarchiving,
 			user {
 				id,
 				username,
@@ -18,9 +17,8 @@ export const SIGN_IN = gql`
 	}
 `;
 
-
 export const SIGN_UP = gql`
-	mutation {
+	mutation SignupInfo {
 		register(
 			email: $email,
 			username: $username,
@@ -37,7 +35,7 @@ export const SIGN_UP = gql`
 
 
 export const PASS_RESET = gql`
-	mutation {
+	mutation ResetAction {
 		passwordReset(
 			token: $token,
 			newPassword1: $password1,
@@ -54,7 +52,7 @@ export const PASS_RESET = gql`
  *  $token - verifying token
  */
 export const ACCOUNT_VERIFY = gql`
-	mutation {
+	mutation VerifyInfo {
 		verifyAccount(token: $token) {
 			success,
 			errors
@@ -64,7 +62,7 @@ export const ACCOUNT_VERIFY = gql`
 
 
 export const SIGN_OUT = gql`
-	mutation {
+	mutation SignoutAction {
 		revokeToken(
 			token: $token
 		) {

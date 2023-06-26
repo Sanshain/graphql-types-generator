@@ -5,13 +5,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "pwa-node",
+			"name": "cli test",
+			"program": "${workspaceFolder}/examples/example.js",
+			// "program": "${workspaceFolder}/main.js",
 			"request": "launch",
-			"name": "Launch Program",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\start.js"
+			"type": "node",
+			// "args": ["-s", "./examples/queries.js"]
 		}
 	]
 }

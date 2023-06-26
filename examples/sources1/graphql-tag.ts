@@ -1,11 +1,9 @@
 // export const gql = (args, ...v) => args.reduce((p, n, i) => p + v[i-1] + n)
 
-import { profileInfo } from "./queries";
-
-
-
 /**
  * Заглушка для graphql-tag
+ * en: 
+ * Stub for the graphql tag (in ideal world all link to this one should be cut by builder)
  * 
  * @param stroke : шаблонная строка (на основе тегового шаблона);
  * @param args : аргументы шаблонной строки;
