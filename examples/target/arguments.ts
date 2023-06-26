@@ -1,30 +1,46 @@
 /* Screen types: */
 
-declare const __brand: unique symbol
-type ScreenType<T, B=never> = T & { [__brand]?: B }
+import "../../sources/templates/screentypes"
 
-type JSONstring = ScreenType<string, "JSONstring">
-type ID = ScreenType<number, "ID">
-/** yyyy-mm-dd */
-type DateString = ScreenType<string>
+type ExpectedErrorType = ScreenType<Object>
 
 
 
 /* Mutation Arguments types:*/
 
+export type userSettingsArgs = {
+    id: number
+}
+
+export type userArgs = {
+    id: number
+}
+
+export type paginatedUsersArgs = {
+    filter: string
+}
+
+export type postsArgs = {
+    user: number
+}
+
+export type dialogArgs = {
+    id: number
+}
+
 export type registerArgs = {
-    email: any,
-    username: any,
-    password1: any,
-    password2: any
+    email: string,
+    username: string,
+    password1: string,
+    password2: string
 }
 
 export type verifyAccountArgs = {
-    token: any
+    token: string
 }
 
 export type tokenAuthArgs = {
-    password: any,
+    password: string,
     email: string,
     username: string
 }
@@ -57,24 +73,26 @@ export type userSettingsMutationArgs = {
     placeType: null | ID
 }
 
-export type userSettingsArgs = {
-    id: number
-}
-
-export type userArgs = {
-    id: number
-}
-
-export type postsArgs = {
-    user: number
-}
-
-export type dialogArgs = {
-    id: number
-}
-
 
 export type ArgTypes = {
     undefined: never,
 
+    DialogInfo: dialogArgs,
+    PaginatedUsers: paginatedUsersArgs,
+    
+    UserSettingsType: userSettingsArgs,
+    
+    Register: registerArgs,
+    SignInfo: tokenAuthArgs,
+    
+    SignUpInfo: registerArgs,
+    AccountVerifyingInfo: verifyAccountArgs,
+    VerifyAccount: verifyAccountArgs,
+    PostMutation: postCreateArgs,
+    LikeMutation: likeApplyArgs,
+    FriendshipMutation: friendshipApplyArgs,
+    SettingsMutationPayload: userSettingsMutationArgs,
+    UserType: userArgs,
+    PostType: postsArgs,
+    DialogType: dialogArgs,
 }

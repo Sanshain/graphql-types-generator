@@ -24,9 +24,9 @@ async function main() {
 		/// OR generate types based on queries described at the following files:
 		
 		filename: path.resolve(basePath, './sources2/autoqueries.js'),
-		files: [
-			...sourceFiles,
-			'./examples/sources2/autoqueries.js',			
+		files: [			
+			...sourceFiles,						
+			'./examples/sources2/autoqueries.js',
 		],
 		
 

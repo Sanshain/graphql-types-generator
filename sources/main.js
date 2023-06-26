@@ -15,6 +15,7 @@ const globby = require('globby');
 // const glob = require("glob")
 // import { TypesGenerator } from './utils';
 const { TypesGenerator } = require('./utils');
+const { unknownTypes } = require('./utils/extraction');
 
 
 // const __dirname = path.resolve(path.dirname(''));
@@ -38,7 +39,7 @@ module.exports = async function typesGenerate(
 	// 	number: ['Id']
 	// } 	
 
-	let graTypes = {};
+	let graphTypes = {};
 	let codeTypes = '';	
 	options = Object.assign(
 		{
@@ -109,11 +110,12 @@ module.exports = async function typesGenerate(
 	for (const filename of filenames) {
 		
 		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
-		let _graTypes = {}
+		let _graphTypesInfo = {}
 		let [declTypes, typesFromFile] = await generator.getTypes(
-			filename, codeTypes, _graTypes,
+			filename, codeTypes, _graphTypesInfo,
 		);
 		
+		generator.existingTypes = [...generator.existingTypes, ...Object.keys(declTypes)]
 		
 		if (declTemplate && options.declarateSource?.includes(filename)){
 			const declFile = filename.split('.').slice(0, -1).join('.') + '.d.ts';			
@@ -127,7 +129,7 @@ module.exports = async function typesGenerate(
 				() => console.log(`>> Declaration success generated >> ${declFile}`));		
 		}
 		
-		graTypes = {...graTypes, ..._graTypes};
+		graphTypes = {...graphTypes, ..._graphTypesInfo};
 		codeTypes = typesFromFile;
 	}
 	
@@ -146,11 +148,23 @@ module.exports = async function typesGenerate(
 	if (options.matchTypeNames){
 		codeTypes += '\n\n/*\n* `QueryTypes` - may be need for more flexible types management on client side \n*' +
 					'\n* (optional: controlled by `matchTypeNames` option)\n*/\n'		
-		codeTypes += `export type QueryTypes = {\n${Object.keys(graTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`
+		codeTypes += `export type QueryTypes = {\n${Object.keys(graphTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`
 	}
 
 	if (options.screentypes === true){
-		options.screentypes = fs.readFileSync(path.join(__dirname, './templates/screentypes.ts')).toString() + '\n\n'	
+
+		options.screentypes = fs.readFileSync(path.join(__dirname, './templates/screentypes.ts')).toString() + '\n\n'
+		
+		const installedLib = 'node_modules/graphql-types-generator';
+		if (fs.existsSync(path.join(process.cwd(), `${installedLib}/sources/templates/screentypes.ts`))){
+			options.screentypes = `import "${installedLib}/sources/templates/screentypes"`;
+		}
+		else if(fs.existsSync(path.join(process.cwd(), `sources/templates/screentypes.ts`))){
+			options.screentypes = `import "../../sources/templates/screentypes"`
+		}
+		
+		options.screentypes += '\n\n' + Object.values(unknownTypes).join('\n') + '\n\n'
+
 	}
 	else if(options.screentypes === false){
 		options.screentypes = ''						// disable (look up TypesGen constructor)
@@ -163,7 +177,7 @@ module.exports = async function typesGenerate(
 		// implies that user will define it in global
 	}
 
-	codeTypes = options.screentypes + codeTypes;	
+	codeTypes = options.screentypes + codeTypes;		
 
 	const foreColor = "\x1b[36m"
 
@@ -175,7 +189,7 @@ module.exports = async function typesGenerate(
 				'\'\' and redefine the appropriate branded types in global type space (or link include tsconfig option ' +
 				'to `node_modules/graphql-types-generator/sources/templates/screentypes.ts)`' + '\x1b[0m'
 			)
-			// or /// <reference lib="node_modules/graphql-types-generator/sources/templates/branded" />
+			// or /// <reference lib="node_modules/graphql-types-generator/sources/templates/screentypes" />
 		}
 
 		fs.writeFileSync(targetFile, codeTypes);					

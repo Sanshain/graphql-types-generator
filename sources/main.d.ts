@@ -16,7 +16,15 @@ export type Schema = {
 						fields?: Array<unknown>,
 						kind: 'OBJECT' | 'LIST' | 'SCALAR' | 'NOT_NULL' | 'Field',
 						name?: string,
-						ofType?: { name: string }
+						ofType?: { 
+							name: string, 
+							ofType?: {
+								name: string,
+								ofType?: {
+									name: string
+								}								
+							}
+						}
 					}
 				}>
 			}>
@@ -44,9 +52,9 @@ export type BaseOptions = {
 
 	/// TYPES GENERATE OPTIONS:
 
-	/** attach __template field */
+	/** @description attach __template field */
 	attachTypeName?: boolean,	
-	/** attach type `QueryTypes` with all listed types */
+	/** @description attach type `QueryTypes` with all listed types */
 	matchTypeNames?: boolean,
 	/** mark for descriptions overrided gql server types (@default = `:::`) */
 	typeFromDescMark?: string,
@@ -54,7 +62,8 @@ export type BaseOptions = {
 	makeNodesAsOptional?: boolean,
 	preventOptionalParams?: boolean,
 	/** set human understandable type names for specific graphql types (recommended) */
-	screentypes?: boolean | '' | string | object
+	screentypes?: boolean | '' | string | object,
+	unknownTypesAsIs?: boolean,
 
 	useServerTypes?: boolean | {
 		port?: number,

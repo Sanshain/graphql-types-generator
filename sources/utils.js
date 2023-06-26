@@ -10,6 +10,7 @@ const gql = require('graphql-tag');
 
 const { rules, browserTypes, scalarTypes, brandedTypes, forceRequireTypes: forced } = require('./utils/rules');
 
+const { generateTypeFromRules, unknownTypeApply } = require('./utils/extraction');
 const { extractType } = require('./utils/extraction');
 
 
@@ -32,6 +33,10 @@ class TypesGenerator{
 	 * @type {string[]} - список типов
 	 */
 	rootTypes = []
+	/**
+	 * @type {string[]}
+	 */
+	existingTypes = []
 
 	
 	argTypesCode = '';	
@@ -77,23 +82,13 @@ class TypesGenerator{
 	 * добавляет сгенерированные типы в codeTypes и возвращает ее
 	 * @param {string} filename - имя файла
 	 * @param {string} codeTypes - типы тайпскрипт в виде объекта
-	 * @param {object} graTypes - типы тайпскрипт в виде строк
+	 * @param {object} _graphTypes - типы тайпскрипт в виде строк
 	 * @returns {Promise<[Record<string, any>, string]>} typescript code
 	 */
-	async getTypes(filename, codeTypes, graTypes) {
+	async getTypes(filename, codeTypes, _graphTypes) {
 
-		let declTypes = {}
+		const declTypes = {}
 
-		if (this.serverTypes === null) {
-			try{
-				await this.getSchemaTypes();		
-			}
-			catch(ex){
-				this.serverTypes = {}
-				console.warn(`Attention: graphql server unavalible! Types will be generated via field namings\n`);
-			}
-		}
-		
 		let gqlDefs = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		// let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
 		let gqls = Array.from(
@@ -105,7 +100,17 @@ class TypesGenerator{
 			m => {
 				return [m[1], m[2], m[3]]
 			}
-		)
+		)		
+
+		if (this.serverTypes === null) {
+			try{
+				await this.getSchemaTypes();		
+			}
+			catch(ex){
+				this.serverTypes = {}
+				console.warn(`Attention: graphql server unavalible! Types will be generated via field namings\n`);
+			}
+		}	
 		
 		console.log(`\n# ${gqls.length} types detected in "${filename}": \n`);
 
@@ -135,9 +140,9 @@ class TypesGenerator{
 			if (typeName == 'undefined'){ 
 				// TODO somethong with this one: (works fine, but what`s wrong?)
 				this.options.debug && console.warn(`! >> ${queryName} definition name is not recognized`);
+				// this.options.verbose && console.warn(`  ---> Warning: detected undefined query name in ${filename}`)
 				continue;
 			}
-			typeName === 'undefined' && console.warn(`  ---> Warning: detected undefined query name in ${filename}`);
 
 			typeName && console.log(typeName);
 
@@ -165,9 +170,11 @@ class TypesGenerator{
 			let selections = definition?.selectionSet.selections;
 						
 			let serverType = Object.entries(this.serverTypes || {}).find(([k, v]) => k == typeName)
-						
-			let genType = extractType.call(this, selections, 0, serverType, null);
-			if (this.options.attachTypeName){				
+				
+			// this.rawSchema.find(tp => tp.name === typeName).fields.reduce((acc, field) => ({...acc, [field.name]: scalarTypes[field.type.name] || field.type.name}), {})			
+
+			let genType = extractType.call(this, selections, 0, null, serverType);
+			if (this.options.attachTypeName){
 				
 				//@ts-expect-error
 				let argTypes = selections.map((s) => s.name.value)
@@ -185,7 +192,7 @@ class TypesGenerator{
 			let typeString = `\n\nexport type ${typeName} = {\n${genType.lines}};`;
 
 			codeTypes += typeString;
-			graTypes[typeName] = genType;
+			_graphTypes[typeName] = genType;
 			declTypes[queryName] = {typeName, comment};
 		}
 
@@ -211,49 +218,194 @@ class TypesGenerator{
 		return this.argTypesCode;
 	} 	
 
-
+	/**
+	 * @param {string} name
+	 */
+	_isPlural(name){
+		return name.slice(-1) == 's' || name.slice(-3) === 'Set'
+	}
 
 	/**
-	 * @param {{ selectionSet: { selections: any[]; }; name: { value: string | number; }; }} selection
-	 * @param {{ [x: string]: { [x: string]: any; }; }} _gpaType
+	 * @param {{selectionSet: {selections: readonly any[];};name?: {value: string | number;};}} selection
+	 * @param {{[x: string]: {[x: string]: any;};}} _gpaphType
+	 * @param {number} offset
 	 * @param {string} _lines
 	 */
-	getServerType(selection, _gpaType, _lines) {
+	getServerType(selection, _gpaphType, _lines, offset) {
 
-		let fields = selection.selectionSet.selections.map(f => f.name.value);
-		let selectionType = (this.serverTypes || [])[selection.name?.value];
+		const selectionName = selection.name?.value;
+		if (!selectionName){
+			return ''
+		}
+
+		let fields = selection.selectionSet.selections.map(f => ({
+			name: f.name.value, 
+			selection: f.selectionSet ? f: undefined
+		}));
+		let selectionType = (this.serverTypes || [])[selectionName] 
 		let isArray = Array.isArray(selectionType);
-		if (isArray)
-			_gpaType[selection.name.value] = [];
+		if (isArray) _gpaphType[selectionName] = [];
+
+		const self = this;
 
 		for (const field of fields) {
-			if (!isArray) {
-				// this.serverTypes[field.slice(0, -1)]
-				let fieldType = selectionType[field];
-				let tsType = browserTypes[fieldType] || fieldType.toLowerCase();
-				_gpaType[field] = tsType;
-				_lines += ' '.repeat(8) + `${field}:${tsType},\n`;
+			
+			const fieldType = isArray ? selectionType[0][field.name] : selectionType[field.name];
+			const baseIndent = ' '.repeat(offset)
+
+			if (!field.selection){											//  && typeof fieldType === 'string'				
+				var tsType =  scalarTypes[fieldType] || 'unknown'  // // this.serverTypes[field.slice(0, -1)]
+				if (tsType === 'unknown'){
+					if (typeof fieldType === 'string') tsType = unknownTypeApply(this.options, fieldType);
+					else{
+						console.warn('\x1b[31m', '>> Wrong gql query: ',
+							`field '${selectionName}.${field.name}' must have selection of subfields`,
+						'\x1b[31m');
+						tsType = 'unknown';
+						// const fields = Object.entries(fieldType).map(
+						// 	([k, tp]) => `${k}: ${scalarTypes[tp] || ('any' + (self._isPlural(k) ? '[]' : ''))}`
+						// ).join('; ')
+						// tsType = `{${fields}}`;
+					}
+				}
+				_lines += baseIndent + `${field.name}: ${tsType},\n`;
 			}
-			else {
-				let fieldType = selectionType[0][field];
-				let tsType = browserTypes[fieldType] || fieldType.toLowerCase();
-				_gpaType[selection.name.value][field] = tsType;
-				_lines += ' '.repeat(8) + `${field}:${tsType},\n`;
+			else if (typeof fieldType === 'object'){				
+				tsType = getSubType(field.selection, fieldType);			
+				
+				_lines += baseIndent + `${field.name}: {\n${toLines(tsType, offset + 4).join('\n')}\n${baseIndent}},\n`
 			}
+			else if(typeof fieldType == 'string' && fieldType !== 'object[]'){
+
+				tsType = extractSubType(field.selection, fieldType)
+				
+				_lines += baseIndent + `${field.name}: {\n${toLines(tsType, offset + 4).join('\n')}\n${baseIndent}}[],\n`
+			}
+			else if(fieldType === 'object[]'){
+				tsType = generateSubType(field.selection); console.warn(`Cann't detect server type for ${selectionName}.${field.name}`)
+
+				_lines += baseIndent + `${field.name}: {\n${toLines(tsType, offset + 4).join('\n')}\n${baseIndent}},\n`								
+			}
+			else{
+				debugger
+			}
+
+			if (isArray) _gpaphType[selectionName][field.name] = tsType;				
+			else _gpaphType[field.name] = tsType;
+
+			// _lines += ' '.repeat(8) + `${field.name}: ${tsType},\n`;
 
 		}
 		return _lines;
+
+
+
+		/**
+		 * @param {{selectionSet: {selections: any[]}}} field
+		 * @returns {object}
+		 */
+		 function generateSubType(field) {
+			const subFields = field.selectionSet.selections.map(f => ({
+				name: f.name.value,
+				selection: f.selectionSet ? f: undefined
+			}));
+			const _fields = subFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
+				acc[subField.name] = subField.selection
+						? generateSubType(subField.selection)
+						: generateTypeFromRules(subField.name)
+				return acc;
+			}, {});
+			return _fields;
+		}
+		
+		
+		/**
+		 * @param {{selectionSet: {selections: any[]}}} field
+		 * @param {{ [x: string]: string | object; }} fieldType
+		 * @returns {object}
+		 */
+		function getSubType(field, fieldType) {
+			const declaredFields = field.selectionSet.selections.map(f => ({
+				name: f.name.value,
+				selection: f.selectionSet ? f: undefined
+			}));
+			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
+				acc[subField.name] = typeof fieldType[subField.name] === 'string'
+						? scalarTypes[fieldType[subField.name]]
+						: getSubType(subField.selection, fieldType[subField.name])
+				return acc;
+			}, {});
+			return _fields;
+		}
+
+
+		/**
+		 * @param {{selectionSet: {selections: any[];};}} selection
+		 * @param {string} fieldType
+		 */
+		function extractSubType(selection, fieldType) {				
+
+			const fieldTypeName = ~fieldType.indexOf('[]') ? fieldType.slice(0, -2) : fieldType;
+
+			const graphType = self.rawSchema?.find(tp => tp.name == fieldTypeName)
+			const subFields = graphType?.fields?.reduce((acc, f) => {
+				return {
+					[f.name]: f.type.name || f.type.ofType?.name || f.type.ofType?.ofType?.ofType?.name,
+					...acc
+				}
+			}, {})
+			if (!subFields){
+				return 'Object[]'
+			}			
+
+			const declaredFields = selection.selectionSet.selections.map(f => ({
+				name: f.name.value,
+				selection: f.selectionSet ? f: undefined
+			}));
+			
+			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
+				const fieldType = subFields[subField.name]
+				acc[subField.name] = scalarTypes[fieldType] && !subField.selection
+						? scalarTypes[fieldType]
+						: extractSubType(subField.selection, fieldType)
+				return acc;
+			}, {});
+			return _fields;
+		}		
+
+		/**
+		 * @param {{ [x: string]: any; }} _tsType
+		 * @param {number} _offset
+		 * @return {string[]}
+		 */
+		function toLines(_tsType, _offset){
+			return Object.keys(_tsType).map(function(key){
+				if (typeof _tsType[key] == 'string'){
+					return ' '.repeat(_offset) + `${key}: ${_tsType[key]},`;
+				}
+				else if(_tsType[key]){			
+					const indent = ' '.repeat(_offset)				
+					return `${indent}${key}: {\n${toLines(tsType[key], _offset + 4).join('\n')}\n${indent}}`
+				}
+				else{
+					debugger
+					return ' '.repeat(_offset) + `${key}: unexpected,`;
+				}
+			})
+		}		
 	}
 
 	async getSchemaTypes(){
 		
 		let serverTypes = {}		
 
-		/** 
-		 * @type {Awaited<ReturnType<TypesGenerator['typesRequest']>> }
-		 * */
-		let rawSchema = await this.typesRequest(schemaQuery);	
-		this.rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
+		if (!this.rawSchema){
+			/** 
+			 * @type {Awaited<ReturnType<TypesGenerator['typesRequest']>> }
+			 * */
+			let rawSchema = await this.typesRequest(schemaQuery);	
+			this.rawSchema = rawSchema.data.__schema.types.filter(t => !t.name.startsWith('__'));
+		}
 		let mutationTypes = this.rawSchema.find(t => t.name == 'Mutation')?.fields || [];
 
 		this.mutationTypes = {}
@@ -263,34 +415,41 @@ class TypesGenerator{
 		for (const mutation of mutationTypes) {	
 			
 			this.mutationTypes[mutation.name] = mutation;
+			// const mutationTypeFields = ''
+			
 			// TODO get fields from type name like `get output fields from server side` for queries below
 			// via queryOrMutation.type?.name			
 
-			this.attachInputTypes(mutation, typeFromDescMark);
+			// this.attachInputTypes(mutation, typeFromDescMark);
 			argTypes.push(mutation.name);
 		}
 
 		this.argTypes = argTypes
 		argTypes.push('')							// mutations and queries params delimiter
 
-		let rawQueries = this.rawQueries = this.rawSchema.find(t => t.name == 'Query')?.fields;
-		for (let key in rawQueries)
+		let rawQueries = this.rawQueries = this.rawSchema.find(t => t.name == 'Query')?.fields?.concat(mutationTypes);
+		for (let rawType of rawQueries || [])
 		{
-			const rawType = rawQueries[key];						
-			let type = rawType.type.name || rawType.type.ofType?.name;	
-			type = type || (rawType.name.endsWith('s') 				
-				? rawQueries.find(t => t.name == rawType.name.slice(0, -1))?.type.name
-				: 'unknown[]'
-			);						
+			let type = rawType.type.name 
+				|| rawType.type.ofType?.name 
+				|| rawType.type.ofType?.ofType?.name 
+			type = type || (rawType.type.kind === 'LIST' && rawType.name.endsWith('s')
+					? rawQueries?.find(t => t.name == rawType.name.slice(0, -1))?.type.name
+					: 'unknown[]');
 
 			if (type){
 
 				/// try get output fields from server side:
 
 				let tsType = {}
-				for (const field of (this.rawSchema.find(t => type == t.name)?.fields || [])) {
+				const typeFields = this.rawSchema.find(t => type == t.name)?.fields;
+				for (const field of (typeFields || [])) {
 
-					tsType[field.name] = field.type.name || field.type.ofType?.name;
+					tsType[field.name] = field.type.name || field.type.ofType?.name 
+					if (!tsType[field.name]){
+						// tsType[field.name] = field.type.ofType?.ofType?.ofType?.name 
+						// console.log(`**${field.name}`);
+					}
 					if (!~['Int', 'String', 'Boolean', 'ID', 'DateTime', 'Date'].indexOf(tsType[field.name])){
 						const subType = this.rawSchema.find(w => w.name == tsType[field.name]);
 						if (subType && subType.fields && subType.fields.length) {
@@ -300,7 +459,14 @@ class TypesGenerator{
 							}
 						}
 					}
-					tsType[field.name] = tsType[field.name] || 'object[]';
+					
+					if (!tsType[field.name]) {						
+						const foreignType = field.type.ofType?.ofType?.ofType?.name;
+						if (foreignType) tsType[field.name] = foreignType + '[]'
+						else{
+							tsType[field.name] = 'object[]'
+						}
+					}
 					// tsType[type] = field.type.name || field.type.ofType.name;
 				}
 
@@ -309,9 +475,9 @@ class TypesGenerator{
 				// }				
 				// serverTypes[rawType.name] = rawType.type.name 
 				// serverTypes[type] = rawType.type.kind !== 'LIST' // rawType.type.name 
-				serverTypes[rawType.name] = rawType.type.kind !== 'LIST' // rawType.type.name 
-					? tsType
-					: [tsType]
+				serverTypes[rawType.name] = rawType.type.kind === 'LIST' // rawType.type.name 
+					? [tsType]
+					: tsType
 				
 				/// args: 
 
@@ -322,11 +488,19 @@ class TypesGenerator{
 				}
 
 			}
+			else{
+				// rawQueries.map(k => ({[k.name]: k.type.name, type: k.type.kind, fields: k.type.fields}))
+				// => all lists: type.name is null, type.fields is null, type.ofType[name, fields] is null
+				// const typeFields = type 
+				// 	? this.rawSchema.find(t => type == t.name)?.fields
+				// 	: rawType.type.fields		
+				debugger		
+			}
 		}
 
 		// rawSchema.filter(t => ~Object.values(serverTypes).indexOf(t.name))
 		
-		this.verbose && console.log(rawSchema);
+		this.verbose && console.log(this.rawSchema);
 
 		this.serverTypes = serverTypes;
 		//@ts-expect-error
@@ -348,15 +522,20 @@ class TypesGenerator{
 	 *  }} queryOrMutation
 	 * @param {string} typeFromDescMark
 	 */
-	attachInputTypes(queryOrMutation, typeFromDescMark) {		
+	attachInputTypes(queryOrMutation, typeFromDescMark) {
 
-		let inputFields = queryOrMutation.args.map(param => [param.name, param.type?.name || 'any'])
+		
 		// TODO logic: if a nested object...
 		let described = false;
 		 
 		const isNestedType = (!this.options.preventOptionalParams && queryOrMutation.args?.length == 1) 
 			? !this.scalarTypes[queryOrMutation.args[0].type?.name || queryOrMutation.args[0].type?.ofType?.name || '']
 			: false
+
+
+		let inputFields = queryOrMutation.args.map(param => [
+			param.name, param.type?.name || param.type?.ofType?.name || 'any'
+		])
 
 		if (queryOrMutation.description && queryOrMutation.description.startsWith(typeFromDescMark)) {
 

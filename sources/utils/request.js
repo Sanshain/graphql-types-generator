@@ -25,7 +25,13 @@ exports.schemaQuery = `
 							name,
 							type{
 								ofType{
-									name
+									name,
+									ofType {
+										name,
+										ofType{
+										  name
+										}
+									}
 								},
 								name,
 								kind,									
@@ -42,7 +48,13 @@ exports.schemaQuery = `
 						kind,				
 						name,          
 						ofType {
-							name					  
+							name,
+							ofType{
+								ofType{
+									name
+								} 								
+								name
+							}											  
 						}
 					}
 				}

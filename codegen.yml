@@ -5,5 +5,5 @@ generates:
       - typescript
       - typescript-operations
     documents:
-      - "./codegen-contrast/queries-to-codegen.js"
+      - ./codegen-contrast/queries-to-codegen.js
       - ./codegen-contrast/schema.graphql

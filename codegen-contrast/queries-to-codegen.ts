@@ -33,3 +33,15 @@ export const get_DialogInit = gql`
 		}
 	}
 `;
+
+//@ts-ignore
+export const SIGN_OUT = gql`
+	mutation SignOutInfo {
+		revokeToken(
+			token: ''
+		) {
+			success,
+			errors
+		}
+	}
+`

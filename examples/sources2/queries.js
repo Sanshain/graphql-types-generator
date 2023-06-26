@@ -59,7 +59,7 @@ export const get_DialogInit = gql`
 				name,
 				image,     
 			},
-			messages{
+			messagesList{
 				id,
 				author,				
 				time,
@@ -114,8 +114,8 @@ export const userSettingsType = gql`
 
 
 export const getMessages = gql`
-	query uploadMessages(id: $id, page: $page){
-		messages{
+	query uploadMessages{
+		messages(id: $id, page: $page){
 			id,
 			author,				
 			time,
