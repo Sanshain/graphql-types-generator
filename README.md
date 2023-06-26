@@ -1,9 +1,15 @@
+## graphql-types-generator
 
-*This is a project written by a fan in a hurry to help in the development of the frontend.*
+An Alternative type generator for graphql client
 
-# Why graphql-types-generator?
+### Features: 
 
-The generally accepted method and considered correct is the generation of typescript types from graphql types. [graphql-code-generator](https://www.graphql-code-generator.com/) does something like this. But this does not get rid of writing the queries themselves. This is an alternative undependent solution born in the pet project, which uses the most common variable names for the corresponding types to generate (to some extent similar to the Hungarian notation) or refine them along with generation based on types provided by the server. For example, fields including `title` or `name` are almost always - of the string type; fields starting with `is` are almost always ` boolean`, `id` is almost always a number, and so on. 
+A direct alternative to this package is only a combination of @graphql-codegen/typescript and @graphql-codegen/typescript-operations. So, if you want, you can consider it two in one. But not only that. This package can do a little more little more little joys:
+
+- **binding graphql types and its input (variables) types** - @graphql-codegen/typescript-operations is able to generate types and incoming types based on graphql types. And it's actually very cool. But these remain two independent types, and some more work needs to be done to link them. This work can be done manually or with the help of an additional script that you will have to write. **graphql-types-generator** does this work for you in one of two ways: with the `declarateSource` option (allows you to create `.d.ts` file with generics directly linking arguments to types) or using the `matchTypeNames` option, which creates a special type of relations.
+- **branded types for unknown types** - in the case of undefined types, when the server does not provide any information about the type (codegen in this case simply substitutes `any` type for the fields by default (possible to changed via `defaultScalarType` option to another, type like `unknown` or `Object` for example, but no more)) **graphql-types-generator** generates appropriate human-readable branded types. A trifle, but nice.
+- **generates types directly from javascript code** - generates types directly from javascript code, which avoids code duplication, whereas **codegen** is designed for the `* format.graphql` files, for generating javascript code from which a separate package is needed.
+- **generate types for unknown types** - the possibility to define types, about which server dpusn't give any data. This is very rare case. Unlike the previous paragraphs, I do not attribute it to the advantages, rather to the specificity of the current package.
 
 ## Frequently asked questions
 
