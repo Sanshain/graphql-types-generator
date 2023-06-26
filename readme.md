@@ -143,16 +143,16 @@ rules = {
 
 ```js
 export const GET_DIALOGS_INIT = gql`
-   query profileInfo {
-      users {
-         username,
+    query profileInfo {
+        users {
+            username,
             firstName
-      },
-      dialogs{
-         id,
-         title
-      }
-   }
+        },
+        dialogs{
+            id,
+            title
+        }
+    }
 `;
 ```
 
