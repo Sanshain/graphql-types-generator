@@ -31,7 +31,8 @@ type QueryString<T, A=never> = `
  * =- firstName,
  */
 
-export const GetProfileInfo: QueryString<ProfileInfo>;
+export let GetProfileInfo: QueryString<ProfileInfo> = `
+    query `
 
 /**
  * just one dialog initial
@@ -53,4 +54,5 @@ export const getPaginatedUsers: QueryString<PaginatedUsers>;
 export const userSettingsType: QueryString<UserSettingsType>;
 
 
-export const getMessages: QueryString<uploadMessages>;
+export const getMessages: QueryString<uploadMessages> = `
+	query `;

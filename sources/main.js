@@ -117,16 +117,55 @@ module.exports = async function typesGenerate(
 		
 		generator.existingTypes = [...generator.existingTypes, ...Object.keys(declTypes)]
 		
-		if (declTemplate && options.declarateSource?.includes(filename)){
+		if (options.declarateSource?.includes(filename)){
 			const declFile = filename.split('.').slice(0, -1).join('.') + '.d.ts';			
 
+			let declContent = ''
+			if (options.matchTypeNames) {
+				declContent = declTemplate + Object.entries(declTypes).map(
+					([k,v]) => `\n${v.comment || ''}\nexport const ${k}: QueryString<'${v.typeName}'>;\n`
+				).join('')				
+			}
+			else if (Array.isArray(generator.argTypes)){
+				// generate imports
+				const typesWithArgs = Array.from(new Set(generator.argTypes.filter(Boolean))).map(a => a + 'Args');
+				const argsFile = path.relative(path.dirname(declFile), options.separateFileForArgumentsTypes || options.target)
+					.replace(/\\/g, '/')
+					.replace(/(.d)?.ts$/gm, '');
+
+				const argsImports = `import {\n\t${typesWithArgs.join(',\n\t')} \n} from '${argsFile}'`
+
+				const typeNames = Object.values(declTypes).map(f => f.typeName);
+				const typesFile = path.relative(path.dirname(declFile), options.target)
+					.replace(/\\/g, '/')
+					.replace(/(.d)?.ts$/gm, '');												
+					
+				const typesImports = `import { ${typeNames.join(', ')} } from '${typesFile}'`
+
+				const uniqueKeyArgs = `export declare const queryArgs: unique symbol\n`
+				const uniqueKeyType = `export declare const queryType: unique symbol\n`
+				
+				declContent = typesImports + '\n\n' + argsImports + '\n\n' + '\n\n\n' + uniqueKeyArgs + uniqueKeyType
+				declContent += "type QueryString<T, A=never> = `\n    ${'mutation'|'query'} ${string}`" + 
+					" & {[queryArgs]?: A}" +
+					" & {[queryType]?: T}\n\n" 
+
+				declContent += Object.entries(declTypes).map(
+					([k,v]) => {
+						const args = ~typesWithArgs.indexOf(v + 'Args') ? `, ${v}Args` : ''
+						return `\n${v.comment || ''}\nexport const ${k}: QueryString<${v.typeName}${args}>;\n`
+					}
+				).join('')
+			}
+			else{
+				debugger
+			}
+			
 			fs.writeFile(
-				declFile, 
-				declTemplate + Object.entries(declTypes).map(
-						([k,v]) => `\n${v.comment || ''}\nexport const ${k}: QueryString<'${v.typeName}'>;\n`
-					)
-					.join(''), 
-				() => console.log(`>> Declaration success generated >> ${declFile}`));		
+				declFile, declContent, () => console.log(
+					`>> Declaration success generated >> ${'\x1b[34m'}${declFile}${resetColor}`
+				)
+			);
 		}
 		
 		graphTypes = {...graphTypes, ..._graphTypesInfo};
@@ -143,7 +182,10 @@ module.exports = async function typesGenerate(
 
 
 	// generator.mutationArgs += `\n\n\n${generator.argTypesCode}`
-	generator.mutationArgs += `\n\n${generator.getArgumentMatchesType()}`
+
+	if (options.matchTypeNames){
+		generator.mutationArgs += `\n\n${generator.getArgumentMatchesType()}`
+	}	
 
 	if (options.matchTypeNames){
 		codeTypes += '\n\n/*\n* `QueryTypes` - may be need for more flexible types management on client side \n*' +
@@ -179,7 +221,8 @@ module.exports = async function typesGenerate(
 
 	codeTypes = options.screentypes + codeTypes;		
 
-	const foreColor = "\x1b[36m"
+	const foreColor = "\x1b[32m"
+	const resetColor = "\x1b[0m"
 
 	if (options.separateFileForArgumentsTypes){
 		

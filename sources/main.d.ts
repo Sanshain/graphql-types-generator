@@ -47,7 +47,7 @@ export type BaseOptions = {
 	declTemplate?: string,
 	dirname?: string, 		// ?
 	/** target file name */
-	target?: string,
+	target: string,
 
 
 	/// TYPES GENERATE OPTIONS:
@@ -63,6 +63,7 @@ export type BaseOptions = {
 	preventOptionalParams?: boolean,
 	/** set human understandable type names for specific graphql types (recommended) */
 	screentypes?: boolean | '' | string | object,
+
 	unknownTypesAsIs?: boolean,
 
 	useServerTypes?: boolean | {

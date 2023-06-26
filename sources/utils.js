@@ -139,12 +139,14 @@ class TypesGenerator{
 			const typeName = definition?.name?.value || 'undefined';
 			if (typeName == 'undefined'){ 
 				// TODO somethong with this one: (works fine, but what`s wrong?)
-				this.options.debug && console.warn(`! >> ${queryName} definition name is not recognized`);
+				(this.options.debug || this.options.verbose) && console.warn("\x1b[33m",
+					`! >> ${queryName} definition name is not recognized`,
+				"\x1b[0m");
 				// this.options.verbose && console.warn(`  ---> Warning: detected undefined query name in ${filename}`)
 				continue;
 			}
 
-			typeName && console.log(typeName);
+			typeName && console.log("\x1b[36m", typeName, "\x1b[0m");
 
 			// let serverType = Object.entries(this.serverTypes).find(([k, v]) => k == typeName)
 			// if (serverType){
@@ -260,7 +262,7 @@ class TypesGenerator{
 					else{
 						console.warn('\x1b[31m', '>> Wrong gql query: ',
 							`field '${selectionName}.${field.name}' must have selection of subfields`,
-						'\x1b[31m');
+						'\x1b[0m');
 						tsType = 'unknown';
 						// const fields = Object.entries(fieldType).map(
 						// 	([k, tp]) => `${k}: ${scalarTypes[tp] || ('any' + (self._isPlural(k) ? '[]' : ''))}`
@@ -538,8 +540,9 @@ class TypesGenerator{
 		])
 
 		if (queryOrMutation.description && queryOrMutation.description.startsWith(typeFromDescMark)) {
-
-			console.log(`Types for "${queryOrMutation.name}" mutation generates from server side description`);
+			if (this.options.verbose){
+				console.log(`Types for "${queryOrMutation.name}" mutation generates from server side description`);
+			}
 			inputFields = queryOrMutation.description.substring(3).split('\n')
 				.filter(item => item.trim())
 				.map(item => item.trim().split(':'));

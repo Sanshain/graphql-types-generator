@@ -147,9 +147,6 @@ exports.extractType = function extractType(selections, deep, branchOfFields, par
 					}					
 				}
 				
-				if ('userSettingsMutation' == subFieldName) {
-					this.options.verbose && console.log('userSettingsMutation');
-				}
 			}
 
 			if (this.options.useServerTypes && this.options.verbose && graphQType === anyType){
@@ -234,7 +231,9 @@ exports.extractType = function extractType(selections, deep, branchOfFields, par
 		}
 		else if (!_lines) {
 			if (this.options.useServerTypes) {
-				console.warn(`! Server type associated with name \`${selection.name?.value}\` doesn't found`);
+				console.warn(!this.options.debug ? '\x1b[33m': '\x1b[31m',
+					`> Server type associated with name \`${selection.name?.value}\` doesn't found`,
+				'\x1b[0m');
 			}
 			({ _gpaType: compositeType[selection.name?.value + ''], lines: _lines, isNestedList } = extractType.call(this,
 				selection.selectionSet.selections,

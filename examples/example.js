@@ -17,7 +17,7 @@ async function main() {
 	await typesGenerate({
 		
 		declTemplate: './examples/template.d.ts',	
-		
+		matchTypeNames: false,
 		
 		// filename: path.resolve(basePath, './sources1/queries.js'),		// the same as files
 
@@ -30,7 +30,7 @@ async function main() {
 		],
 		
 
-		// declarateSource: sourceFiles,			// generates d.ts with QueryString declarations to the following files:
+		declarateSource: sourceFiles,			// generates d.ts with QueryString declarations to the following files:
 		target: './examples/target/queries.ts',
 		separateFileForArgumentsTypes: './examples/target/arguments.ts',	// separate arguments types from response types
 		attachTypeName: true,
@@ -42,7 +42,7 @@ async function main() {
 		// },
 
 		verbose: true,
-		debug: true,									// output optional verbose info to termanal
+		// debug: true,									// output optional verbose info to termanal
 	});	
 }
 
