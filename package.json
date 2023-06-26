@@ -1,6 +1,6 @@
 {
 	"name": "graphql-types-generator",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Generates typescript types from raw graphql queries, based on server types and the most common naming of variables of certain types",
 	"main": "./sources/main.js",
 	"types": "./sources/main.d.ts",

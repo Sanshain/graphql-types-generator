@@ -17,8 +17,6 @@ import {
 } from '../target/arguments'
 
 
-
-
 export declare const queryArgs: unique symbol
 export declare const queryType: unique symbol
 type QueryString<T, A=never> = `

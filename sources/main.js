@@ -144,11 +144,13 @@ module.exports = async function typesGenerate(
 
 				const uniqueKeyArgs = `export declare const queryArgs: unique symbol\n`
 				const uniqueKeyType = `export declare const queryType: unique symbol\n`
-				
-				declContent = typesImports + '\n\n' + argsImports + '\n\n' + '\n\n\n' + uniqueKeyArgs + uniqueKeyType
-				declContent += "type QueryString<T, A=never> = `\n    ${'mutation'|'query'} ${string}`" + 
+				const queryTypeDecl = "type QueryString<T, A=never> = `\n    ${'mutation'|'query'} ${string}`" + 
 					" & {[queryArgs]?: A}" +
-					" & {[queryType]?: T}\n\n" 
+					" & {[queryType]?: T}\n\n" 		
+					
+				declTemplate = declContent || (uniqueKeyArgs + uniqueKeyType + queryTypeDecl)
+				
+				declContent = typesImports + '\n\n' + argsImports + '\n\n\n' + declTemplate
 
 				declContent += Object.entries(declTypes).map(
 					([k,v]) => {

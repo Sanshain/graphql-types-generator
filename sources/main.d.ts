@@ -54,7 +54,10 @@ export type BaseOptions = {
 
 	/** @description attach __template field */
 	attachTypeName?: boolean,	
-	/** @description attach type `QueryTypes` with all listed types */
+	/** 
+	 * @description attach type `QueryTypes` with all listed types 
+	 * @deprecated
+	 */
 	matchTypeNames?: boolean,
 	/** mark for descriptions overrided gql server types (@default = `:::`) */
 	typeFromDescMark?: string,
