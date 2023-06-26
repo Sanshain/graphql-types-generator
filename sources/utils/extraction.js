@@ -266,7 +266,7 @@ exports.extractType = function extractType(selections, deep, branchOfFields, par
 }
 
 /**
- * @param {import('./../main.d').BaseOptions} options
+ * @param {import('./../main').BaseOptions} options
  * @param {string} GraphType
  */
 function unknownTypeApply(options, GraphType) {
