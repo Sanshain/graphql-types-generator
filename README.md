@@ -4,63 +4,20 @@ An Alternative type generator for graphql client
 
 ### Features: 
 
-A direct alternative to this package is only a combination of `@graphql-codegen/typescript` and `@graphql-codegen/typescript-operations`. So, if you want, you can consider it two in one. But not only that. This package can do a little more little joys:
+A direct alternative to this package is only a combination of `@graphql-codegen/typescript` and `@graphql-codegen/typescript-operations`. So, if you want, you can consider it two in one. 
 
-- **binding output and input graphql types** - `@graphql-codegen/typescript-operations` is able to generate `output types` and `incoming types` based on graphql types. And it's actually very cool. But these remain for each separated cases two independent types, and some more work needs to be done to link them. This work can be done manually or with the help of an additional script that you will have to write. **graphql-types-generator** does this work for you in one of two ways: with the `declarateSource` option (allows you to create `.d.ts` file with generics directly linking arguments to types) or using the `matchTypeNames` option, which creates a special type of relations.
-- **branded types for unknown types** - in the case of undefined types, when the server does not provide any information about the type (codegen in this case simply substitutes `any` type for the fields by default (possible to changed via `defaultScalarType` option to another, type like `unknown` or `Object` for example, but no more)) **graphql-types-generator** generates appropriate human-readable branded types. A trifle, but nice.
+#### But not only that. This package can do a little more little joys:
+
+- **binding output and input graphql types** - `@graphql-codegen/typescript-operations` is able to generate `output types` and `incoming types` based on graphql types. And it's actually very cool, but these remain for each separated case two independent types, and some more work needs to be done to link them. This work can be done manually or with the help of an additional script that you will have to write. **graphql-types-generator** does this work for you via one of two ways:
+   - with the `declarateSource` option *(creates `.d.ts` file with generics directly linking arguments to types)*
+   - using the `matchTypeNames` option, *which creates a special type of relations.*
+- **branded types for unknown types** - in the case, when graphql server does not provide any data about type (`codegen` in this case simply substitutes `any` type for the fields (possible to changed via `defaultScalarType` option to another, like `unknown` or `Object`, for example, but no more)) **graphql-types-generator** generates appropriate human-readable branded types. A trifle, but nice.
 - **generates types directly from javascript code** - generates types directly from javascript code, which avoids code duplication, whereas **codegen** is designed for the `* format.graphql` files, for generating javascript code from which a separate package is needed.
 - **generate types for unknown types** - the possibility to define types, about which server dpusn't give any data. This is very rare case. Unlike the previous paragraphs, I do not attribute it to the advantages, rather to the specificity of the current package.
-
-## Frequently asked questions
-
-
-<details>
-   <summary>
-      <h3>Why not codegen/typescript-operations?</h3> - <h3>It's your choice</h3>
-   </summary>
-   `Codegen/typescript` does not know how out of the box, what it can do (generate types from queries) `graphql-types-generator`. The `codegen/typescript-operations` plugin does the most similar work in the `codegen` ecosystem. But how he does it is somewhat different: at the input, he expects the hard-boiled values of the query arguments, which may be a minor problem with simple queries, but very significant - with complex ones. `Graphql-types-generator` does not have this problem. 
-   
-And at the moment I also see the following advatages of the `graphql-types-generator` over the `codegen/typescript-operations`:
-- `codegen/typescript-operations` generates query types with fields linked to whole types of apropriate server types like this. 
-   #### Example: 
-   ```gql
-   We have:
-    mutation SettingsMutationPayload {
-        userSettingsMutation(birthday: $birthday){
-            profile{
-                id,
-                firstName
-            }
-        }
-    }   
-   ```
-   where type of `profile` is `UserType` with 20 fields and `codegen/typescript-operations` generates type with field linked to UserType having all 20 fields instead of 
-   just 2 we need:
-   ```ts
-   export type SettingsMutationPayload = {
-     __typename?: 'SettingsMutationPayload';
-     profile?: Maybe<UserType>;
-   };   
-   ```
-   Intead of that `codegen/typescript-operations` generates only required fields:
-   ```ts
-   export type SettingsMutationPayload = {
-       userSettingsMutation: {
-           profile: {
-               id: number,
-               username: string
-           }
-       }
-   }
-   ```
 - has possibility to specify more tiny type for types generation via specify naming rules or server type description (look up `typeFromDescMark` option). Its may be usefull for example for Unions of some fixed strings or numbers instead of base scalar types or using string template literal in the types. That maky possible use the types as generics for more typing covering
 - `codegen/typescript-operations` performs generation faster
 
-And the following disadvantages: 
-
-- `codegen/typescript-operations` outputs scalar types for fields more precisely now
-
-</details>
+## Frequently asked questions
 
 <details>
    <summary>
