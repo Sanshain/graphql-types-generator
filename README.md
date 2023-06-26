@@ -4,22 +4,15 @@ An Alternative type generator for graphql client
 
 ### Features: 
 
-A direct alternative to this package is only a combination of `@graphql-codegen/typescript` and `@graphql-codegen/typescript-operations`. So, if you want, you can consider it two in one. But not only that. This package can do a little more little more little joys:
+A direct alternative to this package is only a combination of `@graphql-codegen/typescript` and `@graphql-codegen/typescript-operations`. So, if you want, you can consider it two in one. But not only that. This package can do a little more little joys:
 
-- **binding graphql types and its input (variables) types** - `@graphql-codegen/typescript-operations` is able to generate types and incoming types based on graphql types. And it's actually very cool. But these remain two independent types, and some more work needs to be done to link them. This work can be done manually or with the help of an additional script that you will have to write. **graphql-types-generator** does this work for you in one of two ways: with the `declarateSource` option (allows you to create `.d.ts` file with generics directly linking arguments to types) or using the `matchTypeNames` option, which creates a special type of relations.
+- **binding output and input graphql types** - `@graphql-codegen/typescript-operations` is able to generate `output types` and `incoming types` based on graphql types. And it's actually very cool. But these remain for each separated cases two independent types, and some more work needs to be done to link them. This work can be done manually or with the help of an additional script that you will have to write. **graphql-types-generator** does this work for you in one of two ways: with the `declarateSource` option (allows you to create `.d.ts` file with generics directly linking arguments to types) or using the `matchTypeNames` option, which creates a special type of relations.
 - **branded types for unknown types** - in the case of undefined types, when the server does not provide any information about the type (codegen in this case simply substitutes `any` type for the fields by default (possible to changed via `defaultScalarType` option to another, type like `unknown` or `Object` for example, but no more)) **graphql-types-generator** generates appropriate human-readable branded types. A trifle, but nice.
 - **generates types directly from javascript code** - generates types directly from javascript code, which avoids code duplication, whereas **codegen** is designed for the `* format.graphql` files, for generating javascript code from which a separate package is needed.
 - **generate types for unknown types** - the possibility to define types, about which server dpusn't give any data. This is very rare case. Unlike the previous paragraphs, I do not attribute it to the advantages, rather to the specificity of the current package.
 
 ## Frequently asked questions
 
-
-<details>
-   <summary>
-      <h3>Does it generate based on server types?</h3> - <h3>Yes. It could do it</h3>
-   </summary>
-   Why not use server types? This is a good question. And the answer: **graphql-types-generator generates types based on server types whenever there is such a possibility.** (through `useServerTypes` option, by default always `true`) using a special `__schema` request to the server. But sometimes it happens (probably due to incomplete implementation) the server gives incomplete information and the developer has to put down the types manually, which does not go well with code generation. Thus, we have to fix different crutches to clarify the types and constantly edit them and or we leave part of the code uncovered by types. `graphql-types-generator` solves the problem.   
-</details>
 
 <details>
    <summary>
@@ -73,7 +66,7 @@ And the following disadvantages:
    <summary>
       <h3>Should I throw codegen in the trash?</h3> - <h3>No, I wouldn't do that</h3>
    </summary>
-   It has a rich ecosystem, community, a set of plugins and support. In addition, in some cases it does a better job of identifying types from the server. Therefore, I  think that this thing fully deserves a place among the developer's tools and it is not worth throwing it out. However, as my practice has shown, even he is not omnipotent when the server does not provide some types. And here the use of `graphql-types-generator` may be alternative solution
+   It has a rich ecosystem, a community, a set of plugins and support. Therefore, I think that in any case it is worth remembering about it and in some cases, maybe it may turn out to be a more suitable tool.
 </details>
 
 
