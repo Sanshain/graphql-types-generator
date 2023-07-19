@@ -45,10 +45,11 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
  #### Currently there is support: 
 - ✅ queries result typing 
 - ✅ mutation result typing **(new)**
-- ✅ queries and mutation arguments
+- ✅ queries and mutation arguments typing including:
   - ✅ nullable arguments
   - ✅ required arguments
   - ✅ complex arguments (required unique field names of each argument in once query)
+- ✅ supports of nested interfaces (like `relay`)
 
 #### Does not support:
 
