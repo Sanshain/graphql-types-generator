@@ -51,11 +51,11 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
   - ✅ complex arguments (required unique field names of each argument in once query)
 
 
-## Frequently asked questions
+### Frequently asked questions
 
 <details>
    <summary>
-      <h3>Should I throw codegen in the trash?</h3> - <h3>No, I wouldn't do that</h3>
+      <h4>Should I throw codegen in the trash?</h4> - <h3>No, I wouldn't do that</h3>
    </summary>
    It has a rich ecosystem, a community, a set of plugins and support. Therefore, I think that in any case it is worth remembering about it and in some cases, maybe it may turn out to be a more suitable tool.
 </details>
@@ -104,7 +104,9 @@ async function main() {
 main();
 ```
 
-# How it works by rules?
+## How it works by rules? 
+
+#### legacy feature
 
 By default (`useServerTypes` by default always is true) it expects server on `http://127.0.0.1:8000/graphql` and generates types based on types provided by this one. If some primitive type in not provided by server, it generates the type based on naming rule. If the server doesn't exists, it returns warning about an server unavailability and generates types purely based on naming rules. By default the rules look so:
 
