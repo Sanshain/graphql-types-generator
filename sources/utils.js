@@ -242,6 +242,9 @@ class TypesGenerator{
 		if (!selectionName) return ''
 
 		const serverType = (this.serverTypes || [])[selectionName] 
+		const baseServerType = this.serverSubTypes.find(el => el.name == selectionName)?.type;
+		const baseServerTypeFields = this.rawSchema?.find(tp => tp.name == baseServerType )?.fields || []
+
 		const isArrayType = Array.isArray(serverType);
 		const selectedFields = selection.selectionSet.selections.map(f => ({
 			name: f.name.value, 
@@ -275,6 +278,20 @@ class TypesGenerator{
 				_lines += baseIndent + `${field.name}: ${tsType},\n`;
 			}
 			else if (typeof fieldType === 'object'){		
+
+				if (field.selection.arguments.length){
+					let vars = field.selection.arguments.map(v => v.name.value);
+					const args = baseServerTypeFields?.find(tp => tp.name == field.name)?.args
+					if (args){
+						const typedArgs = args
+							.filter(tp => ~vars.indexOf(tp.name))
+							.map(o => `${o.name}: ${scalarTypes[o.type?.name]}`).join(',\n')
+						this.mutationArgs = this.mutationArgs.replace(
+							selectionName + 'Args = {', 
+							selectionName + 'Args = {\n    ' + typedArgs
+						)
+					}					
+				}
 
 				tsType = getSubType(field.selection, fieldType);			
 				

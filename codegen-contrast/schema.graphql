@@ -6,7 +6,7 @@ mutation Register {
 	}
 }
 
-query DialogInfo($id: Int) {
+query DialogInfo($id: Int, $first: String) {
 	dialog(id: $id){
 		id,
 		title,
@@ -18,7 +18,7 @@ query DialogInfo($id: Int) {
 			name,
 			image,     
 		},
-		messagesList{
+		messagesList(first: $first){
 			edges{
 				node{
 					id,

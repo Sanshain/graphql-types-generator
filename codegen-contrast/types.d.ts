@@ -5,6 +5,7 @@ export type RegisterMutation = { __typename?: 'Mutation', register?: { __typenam
 
 export type DialogInfoQueryVariables = Exact<{
   id?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 

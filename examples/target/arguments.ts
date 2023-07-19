@@ -13,6 +13,7 @@ export type userSettingsArgs = {
 }
 
 export type dialogArgs = {
+    first: number
     id: number
 }
 
