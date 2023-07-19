@@ -49,6 +49,7 @@ exports.schemaQuery = `
 						name,          
 						ofType {
 							name,
+							# kind ::: for relay may be more exact detecting list/object
 							ofType{
 								ofType{
 									name

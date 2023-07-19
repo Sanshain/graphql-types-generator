@@ -224,7 +224,6 @@ exports.extractType = function extractType(selections, deep, branchOfFields, par
 
 		if (_type) {
 
-
 			_lines = this.getServerType(selection, compositeType, _lines, deep + 4);
 
 			// здесь можно заполнить серверные строки

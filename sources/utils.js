@@ -275,9 +275,7 @@ class TypesGenerator{
 				_lines += baseIndent + `${field.name}: ${tsType},\n`;
 			}
 			else if (typeof fieldType === 'object'){		
-				if (fieldType.edges == 'MessagesTypeEdge')	{
-					debugger
-				}		
+
 				tsType = getSubType(field.selection, fieldType);			
 				
 				_lines += baseIndent + `${field.name}: {\n${toLines(tsType, offset + 4).join('\n')}\n${baseIndent}},\n`
@@ -383,7 +381,8 @@ class TypesGenerator{
 						? scalarTypes[fieldType]
 						: extractSubType(subField.selection, fieldType)
 				return acc;
-			}, {});
+			}, fieldType.endsWith('[]') ? [] : {});
+			
 			return _fields;
 		}		
 
@@ -398,8 +397,9 @@ class TypesGenerator{
 					return ' '.repeat(_offset) + `${key}: ${_tsType[key]},`;
 				}
 				else if(_tsType[key]){			
-					const indent = ' '.repeat(_offset)				
-					return `${indent}${key}: {\n${toLines(_tsType[key], _offset + 4).join('\n')}\n${indent}}`
+					const indent = ' '.repeat(_offset)		
+					const array = Array.isArray(_tsType[key])	? '[]' : ''
+					return `${indent}${key}: {\n${toLines(_tsType[key], _offset + 4).join('\n')}\n${indent}}` + array;					
 				}
 				else{
 					
@@ -475,9 +475,13 @@ class TypesGenerator{
 							tsType[field.name] = {}
 							for (const subField of subType.fields) {
 								tsType[field.name][subField.name] = subField.type.name || subField.type.ofType?.name;
+								// if (subField.name === 'messagesList'){
+								// 	debugger
+								// }
 								if (tsType[field.name][subField.name] === null){
 									// to relay support: 
 									tsType[field.name][subField.name] = subField.type.ofType?.ofType?.name;
+									tsType[field.name][subField.name] += '[]'
 									if (!tsType[field.name][subField.name]){
 										// debugger
 									}

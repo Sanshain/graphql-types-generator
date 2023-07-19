@@ -67,7 +67,7 @@ export type DialogInfo = {
                     likesCount: number,
                     rated: boolean,
                 }
-            }
+            }[]
         },
     },
 };

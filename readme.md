@@ -40,13 +40,26 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
 - **generates types directly from javascript code** - generates types directly from javascript code, which avoids code duplication, whereas **codegen** is designed for the `* format.graphql` files, for generating javascript code from which a separate package is needed.
 - **generate types for unknown types** - the possibility to define types, about which server dpusn't give any data. This is very rare case. Unlike the previous paragraphs, I do not attribute it to the advantages, rather to the specificity of the current package.
 - has possibility to specify more tiny type for types generation via specify naming rules or server type description (look up `typeFromDescMark` option). Its may be usefull for example for Unions of some fixed strings or numbers instead of base scalar types or using string template literal in the types. That maky possible use the types as generics for more typing covering
-- `codegen/typescript-operations` performs generation faster
+- Performs generation faster then `codegen/typescript-operations`
 
-## Frequently asked questions
+ #### Currently there is support: 
+- ✅ queries result typing 
+- ✅ mutation result typing **(new)**
+- ✅ queries and mutation arguments
+  - ✅ nullable arguments
+  - ✅ required arguments
+  - ✅ complex arguments (required unique field names of each argument in once query)
+
+#### Does not support:
+
+- ❌ `relay` - may be will be done in the near future
+- ❌ `subscriptions` - may be will be done in the distant future
+
+### Frequently asked questions
 
 <details>
    <summary>
-      <h3>Should I throw codegen in the trash?</h3> - <h3>No, I wouldn't do that</h3>
+      <h4>Should I throw codegen in the trash?</h4> - <h3>No, I wouldn't do that</h3>
    </summary>
    It has a rich ecosystem, a community, a set of plugins and support. Therefore, I think that in any case it is worth remembering about it and in some cases, maybe it may turn out to be a more suitable tool.
 </details>
@@ -95,7 +108,9 @@ async function main() {
 main();
 ```
 
-# How it works by rules?
+## How it works by rules? 
+
+#### legacy feature
 
 By default (`useServerTypes` by default always is true) it expects server on `http://127.0.0.1:8000/graphql` and generates types based on types provided by this one. If some primitive type in not provided by server, it generates the type based on naming rule. If the server doesn't exists, it returns warning about an server unavailability and generates types purely based on naming rules. By default the rules look so:
 
