@@ -5,9 +5,9 @@
 
 | Version | Feature | 
 | -       | -        |
-| **~1.7.15** | fixed bug for detecting types on nested fields 
-| **~1.7.04** | Separation of nullable and required fields for a complex type argument |
-| **~1.6.05**| Detect kinds of mutation response fields |
+| **^2.1.0** | fixed bug for detecting types on nested fields 
+| **~1.7.4** | Separation of nullable and required fields for a complex type argument |
+| **~1.6.5**| Detect kinds of mutation response fields |
 | **~1.6.\***| Typing of queries arguments |
 
   
