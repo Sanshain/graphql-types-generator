@@ -40,7 +40,16 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
 - **generates types directly from javascript code** - generates types directly from javascript code, which avoids code duplication, whereas **codegen** is designed for the `* format.graphql` files, for generating javascript code from which a separate package is needed.
 - **generate types for unknown types** - the possibility to define types, about which server dpusn't give any data. This is very rare case. Unlike the previous paragraphs, I do not attribute it to the advantages, rather to the specificity of the current package.
 - has possibility to specify more tiny type for types generation via specify naming rules or server type description (look up `typeFromDescMark` option). Its may be usefull for example for Unions of some fixed strings or numbers instead of base scalar types or using string template literal in the types. That maky possible use the types as generics for more typing covering
-- `codegen/typescript-operations` performs generation faster
+- Performs generation faster then `codegen/typescript-operations`
+
+ #### Currently there is support: 
+- queries result typing
+- mutation result typing **(new)**
+- queries and mutation arguments
+  - nullable arguments
+  - required arguments
+  - complex arguments (required unique field names of each argument in once query)
+
 
 ## Frequently asked questions
 
