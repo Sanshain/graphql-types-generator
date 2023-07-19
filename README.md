@@ -43,12 +43,12 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
 - Performs generation faster then `codegen/typescript-operations`
 
  #### Currently there is support: 
-- queries result typing
-- mutation result typing **(new)**
-- queries and mutation arguments
-  - nullable arguments
-  - required arguments
-  - complex arguments (required unique field names of each argument in once query)
+- ✅ queries result typing 
+- ✅ mutation result typing **(new)**
+- ✅ queries and mutation arguments
+  - ✅ nullable arguments
+  - ✅ required arguments
+  - ✅ complex arguments (required unique field names of each argument in once query)
 
 
 ## Frequently asked questions
