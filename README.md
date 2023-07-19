@@ -53,6 +53,7 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
 #### Does not support:
 
 - ❌ `relay` - may be will be done in the near future
+- ❌ `subscriptions` - may be will be done in the distant future
 
 ### Frequently asked questions
 
