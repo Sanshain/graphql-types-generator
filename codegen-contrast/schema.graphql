@@ -19,20 +19,24 @@ query DialogInfo($id: Int) {
 			image,     
 		},
 		messagesList{
-			id,
-			author,				
-			time,
-			value,
-			files,
-			replyTo{
-				id,
-				time,					
-				value,					
-				files,
-				author
-			},
-			likesCount,	
-			rated,
+			edges{
+				node{
+					id,
+					author,				
+					time,
+					value,
+					files,
+					replyTo{
+						id,
+						time,					
+						value,					
+						files,
+						author
+					},
+					likesCount,	
+					rated,
+				}
+			}
 		}
 	}
 }

@@ -10,10 +10,11 @@ import {
 	friendshipApplyArgs,
 	userSettingsMutationArgs,
 	userSettingsArgs,
+	dialogArgs,
+	messagesArgs,
 	userArgs,
 	paginatedUsersArgs,
-	postsArgs,
-	dialogArgs 
+	postsArgs 
 } from '../target/arguments'
 
 
@@ -51,4 +52,4 @@ export const getPaginatedUsers: QueryString<PaginatedUsers, paginatedUsersArgs>;
 export const userSettingsType: QueryString<UserSettingsType, userSettingsArgs>;
 
 
-export const getMessages: QueryString<uploadMessages>;
+export const getMessages: QueryString<uploadMessages, messagesArgs>;

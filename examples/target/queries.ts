@@ -50,21 +50,25 @@ export type DialogInfo = {
             image: string,
         }[],
         messagesList: {
-            id: number,
-            author: number,
-            time: string,
-            value: string,
-            files: string,
-            replyTo: {
-                id: number,
-                time: string,
-                value: string,
-                files: string,
-                author: number,
+            edges: {
+                node: {
+                    id: number,
+                    author: number,
+                    time: string,
+                    value: string,
+                    files: string,
+                    replyTo: {
+                        id: number,
+                        time: string,
+                        value: string,
+                        files: string,
+                        author: number,
+                    }
+                    likesCount: number,
+                    rated: boolean,
+                }
             }
-            likesCount: number,
-            rated: boolean,
-        }[],
+        },
     },
 };
 
@@ -95,6 +99,9 @@ export type UserSettingsType = {
 };
 
 export type uploadMessages = {
+
+    __typename: "uploadMessages",
+
     messages: {
         id: number,
         author: number,

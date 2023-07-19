@@ -10,10 +10,11 @@ import {
 	friendshipApplyArgs,
 	userSettingsMutationArgs,
 	userSettingsArgs,
+	dialogArgs,
+	messagesArgs,
 	userArgs,
 	paginatedUsersArgs,
-	postsArgs,
-	dialogArgs 
+	postsArgs 
 } from '../../target/arguments'
 
 

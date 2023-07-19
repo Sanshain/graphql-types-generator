@@ -9,7 +9,7 @@ const unknownTypes = {}
 exports.unknownTypes = unknownTypes;
 
 /**
- * genarate code from graphql node
+ * @description genarates code from graphql node
  * @this {import('../utils').TypesBuilder} 
  * @param {readonly [import("graphql").OperationDefinitionNode]} selections
  * @param {number} deep count

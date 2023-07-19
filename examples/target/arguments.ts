@@ -12,6 +12,14 @@ export type userSettingsArgs = {
     id: number
 }
 
+export type dialogArgs = {
+    id: number
+}
+
+export type messagesArgs = {
+    id: number
+}
+
 export type userArgs = {
     id: number
 }
@@ -22,10 +30,6 @@ export type paginatedUsersArgs = {
 
 export type postsArgs = {
     user: number
-}
-
-export type dialogArgs = {
-    id: number
 }
 
 export type registerArgs = {
@@ -51,8 +55,8 @@ export type updateAccountArgs = {
 }
 
 export type postCreateArgs = {
-    value: string,
-    files: JSONstring
+    files: JSONstring,
+    value: string
 }
 
 export type likeApplyArgs = {

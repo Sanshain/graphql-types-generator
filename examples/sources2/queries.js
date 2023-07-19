@@ -59,21 +59,25 @@ export const get_DialogInit = gql`
 				name,
 				image,     
 			},
-			messagesList{
-				id,
-				author,				
-				time,
-				value,
-				files,
-				replyTo{
-					id,
-					time,					
-					value,					
-					files,
-					author
-				},
-				likesCount,	
-				rated,
+			messagesList(first: $first){
+				edges{
+        			node{
+						id,
+						author,				
+						time,
+						value,
+						files,
+						replyTo{
+							id,
+							time,					
+							value,					
+							files,
+							author
+						},
+						likesCount,	
+						rated,
+					}
+				}
 			}
 		}
 	}

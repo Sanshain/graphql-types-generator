@@ -104,7 +104,7 @@ class TypesGenerator{
 
 		if (this.serverTypes === null) {
 			try{
-				await this.getSchemaTypes();		
+				this.serverTypes = await this.getSchemaTypes();		
 			}
 			catch(ex){
 				this.serverTypes = {}
@@ -228,31 +228,33 @@ class TypesGenerator{
 	}
 
 	/**
+	 * @description generate text representation of ts type and fill _gpaphType appropriate type fields
+	 * based on server query types and selection: extract from server types only types existsing in selection
+	 * 
 	 * @param {{selectionSet: {selections: readonly any[];};name?: {value: string | number;};}} selection
-	 * @param {{[x: string]: {[x: string]: any;};}} _gpaphType
-	 * @param {number} offset
+	 * @param {{[x: string]: {[x: string]: any;};}} _gpaphType - link to foreign object with type fields
+	 * @param {number} offset - offset for lines formatting
 	 * @param {string} _lines
 	 */
 	getServerType(selection, _gpaphType, _lines, offset) {
 
 		const selectionName = selection.name?.value;
-		if (!selectionName){
-			return ''
-		}
+		if (!selectionName) return ''
 
-		let fields = selection.selectionSet.selections.map(f => ({
+		const serverType = (this.serverTypes || [])[selectionName] 
+		const isArrayType = Array.isArray(serverType);
+		const selectedFields = selection.selectionSet.selections.map(f => ({
 			name: f.name.value, 
 			selection: f.selectionSet ? f: undefined
 		}));
-		let selectionType = (this.serverTypes || [])[selectionName] 
-		let isArray = Array.isArray(selectionType);
-		if (isArray) _gpaphType[selectionName] = [];
-
+				
+		
+		if (isArrayType) _gpaphType[selectionName] = [];
 		const self = this;
 
-		for (const field of fields) {
+		for (const field of selectedFields) {
 			
-			const fieldType = isArray ? selectionType[0][field.name] : selectionType[field.name];
+			const fieldType = isArrayType ? serverType[0][field.name] : serverType[field.name];
 			const baseIndent = ' '.repeat(offset)
 
 			if (!field.selection){											//  && typeof fieldType === 'string'				
@@ -272,7 +274,10 @@ class TypesGenerator{
 				}
 				_lines += baseIndent + `${field.name}: ${tsType},\n`;
 			}
-			else if (typeof fieldType === 'object'){				
+			else if (typeof fieldType === 'object'){		
+				if (fieldType.edges == 'MessagesTypeEdge')	{
+					debugger
+				}		
 				tsType = getSubType(field.selection, fieldType);			
 				
 				_lines += baseIndent + `${field.name}: {\n${toLines(tsType, offset + 4).join('\n')}\n${baseIndent}},\n`
@@ -292,7 +297,7 @@ class TypesGenerator{
 				debugger
 			}
 
-			if (isArray) _gpaphType[selectionName][field.name] = tsType;				
+			if (isArrayType) _gpaphType[selectionName][field.name] = tsType;				
 			else _gpaphType[field.name] = tsType;
 
 			// _lines += ' '.repeat(8) + `${field.name}: ${tsType},\n`;
@@ -300,6 +305,8 @@ class TypesGenerator{
 		}
 		return _lines;
 
+
+		/// @utility functions:
 
 
 		/**
@@ -322,6 +329,7 @@ class TypesGenerator{
 		
 		
 		/**
+		 * @description 
 		 * @param {{selectionSet: {selections: any[]}}} field
 		 * @param {{ [x: string]: string | object; }} fieldType
 		 * @returns {object}
@@ -332,8 +340,11 @@ class TypesGenerator{
 				selection: f.selectionSet ? f: undefined
 			}));
 			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
+				if (fieldType === null || subField.name == 'node'){
+					debugger
+				}
 				acc[subField.name] = typeof fieldType[subField.name] === 'string'
-						? scalarTypes[fieldType[subField.name]]
+						? (scalarTypes[fieldType[subField.name]] || extractSubType(subField.selection, fieldType[subField.name]))
 						: getSubType(subField.selection, fieldType[subField.name])
 				return acc;
 			}, {});
@@ -351,6 +362,7 @@ class TypesGenerator{
 
 			const graphType = self.rawSchema?.find(tp => tp.name == fieldTypeName)
 			const subFields = graphType?.fields?.reduce((acc, f) => {
+				let r = f.type.name || f.type.ofType?.name || f.type.ofType?.ofType?.ofType?.name;
 				return {
 					[f.name]: f.type.name || f.type.ofType?.name || f.type.ofType?.ofType?.ofType?.name,
 					...acc
@@ -387,16 +399,21 @@ class TypesGenerator{
 				}
 				else if(_tsType[key]){			
 					const indent = ' '.repeat(_offset)				
-					return `${indent}${key}: {\n${toLines(tsType[key], _offset + 4).join('\n')}\n${indent}}`
+					return `${indent}${key}: {\n${toLines(_tsType[key], _offset + 4).join('\n')}\n${indent}}`
 				}
 				else{
-					debugger
+					
 					return ' '.repeat(_offset) + `${key}: unexpected,`;
 				}
 			})
 		}		
 	}
 
+	/**
+	 * @description 
+	 * - extract query type names to array with appropriate attached native graphql type name (this.serverSubTypes)
+	 * - attach fields graphql kind types to query types (this.serverTypes) from the native graphql types
+	 */
 	async getSchemaTypes(){
 		
 		let serverTypes = {}		
@@ -448,7 +465,7 @@ class TypesGenerator{
 				for (const field of (typeFields || [])) {
 
 					tsType[field.name] = field.type.name || field.type.ofType?.name 
-					if (!tsType[field.name]){
+					if (!tsType[field.name]){						
 						// tsType[field.name] = field.type.ofType?.ofType?.ofType?.name 
 						// console.log(`**${field.name}`);
 					}
@@ -458,6 +475,13 @@ class TypesGenerator{
 							tsType[field.name] = {}
 							for (const subField of subType.fields) {
 								tsType[field.name][subField.name] = subField.type.name || subField.type.ofType?.name;
+								if (tsType[field.name][subField.name] === null){
+									// to relay support: 
+									tsType[field.name][subField.name] = subField.type.ofType?.ofType?.name;
+									if (!tsType[field.name][subField.name]){
+										// debugger
+									}
+								}
 							}
 						}
 					}
@@ -507,6 +531,8 @@ class TypesGenerator{
 		this.serverTypes = serverTypes;
 		//@ts-expect-error
 		this.serverSubTypes = this.rawQueries.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}))
+
+		return this.serverTypes
 	}
 
 
