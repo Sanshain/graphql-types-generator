@@ -58,5 +58,5 @@ exports.forceRequireTypes = baseGraphTypeKeys.slice(0, 3).concat('any')
 //@ts-ignore
 let scalarTypes = browserTypes;
 
-exports.scalarTypes = scalarTypes;
+exports.scalarTypes = scalarTypes
 

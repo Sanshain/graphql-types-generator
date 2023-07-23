@@ -350,14 +350,14 @@ class TypesGenerator{
 		 * @returns {object}
 		 */
 		function getSubType(field, fieldType) {
+			if (!field){
+				return 'never'
+			}
 			const declaredFields = field.selectionSet.selections.map(f => ({
 				name: f.name.value,
 				selection: f.selectionSet ? f: undefined
 			}));
-			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
-				if (fieldType === null || subField.name == 'node'){
-					debugger
-				}
+			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {		
 				acc[subField.name] = typeof fieldType[subField.name] === 'string'
 						? (scalarTypes[fieldType[subField.name]] || extractSubType(subField.selection, fieldType[subField.name]))
 						: getSubType(subField.selection, fieldType[subField.name])
@@ -393,10 +393,17 @@ class TypesGenerator{
 			}));
 			
 			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
-				const fieldType = subFields[subField.name]
-				acc[subField.name] = scalarTypes[fieldType] && !subField.selection
+				
+				if (self.options.overRules && self.options.overRules[subField.name]){
+					
+					acc[subField.name] = self.options.overRules[subField.name]
+				}	
+				else{
+					const fieldType = subFields[subField.name]
+					acc[subField.name] = scalarTypes[fieldType] && !subField.selection
 						? scalarTypes[fieldType]
 						: extractSubType(subField.selection, fieldType)
+				}					
 				return acc;
 			}, fieldType.endsWith('[]') ? [] : {});
 			

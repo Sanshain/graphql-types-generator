@@ -29,7 +29,10 @@ async function main() {
 			'./examples/sources2/autoqueries.js',
 		],
 		
-
+		overRules: {
+			'cursor': 'Base64String',
+			'...Cursor': 'Base64String',
+		},
 		declarateSource: sourceFiles,			// generates d.ts with QueryString declarations to the following files:
 		target: './examples/target/queries.ts',
 		separateFileForArgumentsTypes: './examples/target/arguments.ts',	// separate arguments types from response types

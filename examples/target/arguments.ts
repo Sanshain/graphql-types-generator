@@ -56,8 +56,8 @@ export type updateAccountArgs = {
 }
 
 export type postCreateArgs = {
-    files: JSONstring,
-    value: string
+    value: string,
+    files: JSONstring
 }
 
 export type likeApplyArgs = {

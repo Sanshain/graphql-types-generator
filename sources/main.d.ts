@@ -73,6 +73,7 @@ export type BaseOptions = {
 		port?: number,
 		host?: string
 	},
+	overRules: Record<string, string>,
 	rules?: {
 		string?: string[];
 		bool?: string[];

@@ -51,6 +51,7 @@ export type DialogInfo = {
         }[],
         messagesList: {
             edges: {
+                cursor: Base64String,
                 node: {
                     id: number,
                     author: number,
