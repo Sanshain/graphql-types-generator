@@ -109,6 +109,22 @@ async function main() {
 main();
 ```
 
+### Possible options:
+
+- `filename: string` - path to js file with graphql queries wrapped to tagged template `gql` (possible to use glob pattern) (required)
+- `files?: string[]` - as alternative `filename` option allowing multiple source files passing at same time
+- `declarateSource?: Array<string>` - list of files for generating declaration (`*.d.ts`) files (may match with `files` option. useful for covering query argument types).
+- `declTemplate?: string` - file name of template using for `*.d.ts` files generation (look up `examples` directory)
+- `target?: string` - target file name
+- `attachTypeName?: boolean` - attach `__typename` field for each query type
+- `matchTypeNames?: boolean` - attach 'QueryTypes' type
+- `useServerTypes?: boolean` - using server types for generation
+- `screentypes?: boolean` - set human understandable type names for specific graphql types (`JSONstring`, `Base64String` and `DateString` by default)
+- `rules?: object` - naming rules to generate types like `{number: ['count', 'amount']}` (applies if the server type is not found or disabled)
+- `overRules?: object` - rules over server types (override server types!). For example: `{cursor: 'Base64String'}`
+- `separateFileForArgumentsTypes?: boolean` - separate argument types and queries result types
+- `verbose?: boolean` - includes additional logs output to the console
+
 ## How it works by rules? 
 
 #### legacy feature
@@ -122,19 +138,6 @@ rules = {
    number: ['Id', 'Count', 'Sum']                // endsWith
 }	
 ```
-
-## Possible options:
-
-- `filename: string` - path to js file with graphql queries wrapped to tagged template `gql` (possible to use glob pattern) (required)
-- `files?: string[]` - as alternative `filename` option allowing multiple source files passing at same time
-- `declarateSource?: Array<string>` - list of files for generating declaration (`*.d.ts`) files (may match with `files` option. useful for covering query argument types).
-- `declTemplate?: string` - file name of template using for `*.d.ts` files generation (look up `examples` directory)
-- `target?: string` - target file name
-- `attachTypeName?: boolean` - attach `__typename` field for each query type
-- `matchTypeNames?: boolean` - attach 'QueryTypes' type
-- `useServerTypes?: boolean` - using server types for generation
-- `rules?: object` - advanced naming rules to generate types like `{number: ['count', 'amount']}`
-- `separateFileForArgumentsTypes?: boolean` - separate argument types and queries result types
 
 ### source: 
 
