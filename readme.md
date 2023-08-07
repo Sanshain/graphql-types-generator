@@ -41,19 +41,21 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
 - **generate types for unknown types** - the possibility to define types, about which server dpusn't give any data. This is very rare case. Unlike the previous paragraphs, I do not attribute it to the advantages, rather to the specificity of the current package.
 - has possibility to specify more tiny type for types generation via specify naming rules or server type description (look up `typeFromDescMark` option). Its may be usefull for example for Unions of some fixed strings or numbers instead of base scalar types or using string template literal in the types. That maky possible use the types as generics for more typing covering
 - Performs generation faster then `codegen/typescript-operations`
+- **supports watch mode** - these mode soesn't supplied in codegen out of the box - you need [install](https://the-guild.dev/graphql/codegen/docs/getting-started/development-workflow#watch-mode) special package called @parcel/watcher. The `graphql-types-generator` in opposite supports the feature out of the box
 
  #### Currently there is support: 
 - ✅ queries result typing 
-- ✅ mutation result typing **(new)**
-- ✅ queries and mutation arguments
+- ✅ mutation result typing 
+- ✅ supports of nested interfaces (like **relay**)
+- ✅ queries and mutation arguments typing including:
   - ✅ nullable arguments
   - ✅ required arguments
   - ✅ complex arguments (required unique field names of each argument in once query)
 
 #### Does not support:
 
-- ❌ `relay` - may be will be done in the near future
 - ❌ `subscriptions` - may be will be done in the distant future
+- ❌ `fragments` - unlike due to the lack of need for such entities in meta-development, which is implied by this package
 
 ### Frequently asked questions
 
@@ -88,6 +90,7 @@ npm graphql-types-generator -s "./examples/queries.js"
 - `-h` - graphql server host
 - `--ds` - generate `*.d.ts` file for source file with `QueryString` type declarations for each query
 - `--m` - attach 'QueryTypes' type listing all names of generated queries types with links to appropriate types
+- `--w` - watch mode
 
 ## Programmatic usage: 
 
@@ -108,6 +111,23 @@ async function main() {
 main();
 ```
 
+### Possible options:
+
+- `filename: string` - path to js file with graphql queries wrapped to tagged template `gql` (possible to use glob pattern) (required)
+- `files?: string[]` - as alternative `filename` option allowing multiple source files passing at same time
+- `declarateSource?: Array<string>` - list of files for generating declaration (`*.d.ts`) files (may match with `files` option. useful for covering query argument types).
+- `declTemplate?: string` - file name of template using for `*.d.ts` files generation (look up `examples` directory)
+- `target?: string` - target file name
+- `attachTypeName?: boolean` - attach `__typename` field for each query type
+- `matchTypeNames?: boolean` - attach 'QueryTypes' type
+- `useServerTypes?: boolean` - using server types for generation
+- `screentypes?: boolean` - set human understandable type names for specific graphql types (`JSONstring`, `Base64String` and `DateString` by default)
+- `rules?: object` - naming rules to generate types like `{number: ['count', 'amount']}` (applies if the server type is not found or disabled)
+- `overRules?: object` - rules over server types (override server types!). For example: `{cursor: 'Base64String'}`
+- `separateFileForArgumentsTypes?: boolean` - separate argument types and queries result types
+- `verbose?: boolean` - includes additional logs output to the console
+- `watch?: boolean | number` - watch mode (number by default is the delay between flogging the file (by default is 250 ms))
+
 ## How it works by rules? 
 
 #### legacy feature
@@ -121,19 +141,6 @@ rules = {
    number: ['Id', 'Count', 'Sum']                // endsWith
 }	
 ```
-
-## Possible options:
-
-- `filename: string` - path to js file with graphql queries wrapped to tagged template `gql` (possible to use glob pattern) (required)
-- `files?: string[]` - as alternative `filename` option allowing multiple source files passing at same time
-- `declarateSource?: Array<string>` - list of files for generating declaration (`*.d.ts`) files (may match with `files` option. useful for covering query argument types).
-- `declTemplate?: string` - file name of template using for `*.d.ts` files generation (look up `examples` directory)
-- `target?: string` - target file name
-- `attachTypeName?: boolean` - attach `__typename` field for each query type
-- `matchTypeNames?: boolean` - attach 'QueryTypes' type
-- `useServerTypes?: boolean` - using server types for generation
-- `rules?: object` - advanced naming rules to generate types like `{number: ['count', 'amount']}`
-- `separateFileForArgumentsTypes?: boolean` - separate argument types and queries result types
 
 ### source: 
 
