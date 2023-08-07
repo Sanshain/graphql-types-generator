@@ -41,6 +41,7 @@ A direct alternative to this package is only a combination of `@graphql-codegen/
 - **generate types for unknown types** - the possibility to define types, about which server dpusn't give any data. This is very rare case. Unlike the previous paragraphs, I do not attribute it to the advantages, rather to the specificity of the current package.
 - has possibility to specify more tiny type for types generation via specify naming rules or server type description (look up `typeFromDescMark` option). Its may be usefull for example for Unions of some fixed strings or numbers instead of base scalar types or using string template literal in the types. That maky possible use the types as generics for more typing covering
 - Performs generation faster then `codegen/typescript-operations`
+- **supports watch mode** - these mode soesn't supplied in codegen out of the box - you need [install](https://the-guild.dev/graphql/codegen/docs/getting-started/development-workflow#watch-mode) special package called @parcel/watcher. The `graphql-types-generator` in opposite supports the feature out of the box
 
  #### Currently there is support: 
 - ✅ queries result typing 
@@ -89,6 +90,7 @@ npm graphql-types-generator -s "./examples/queries.js"
 - `-h` - graphql server host
 - `--ds` - generate `*.d.ts` file for source file with `QueryString` type declarations for each query
 - `--m` - attach 'QueryTypes' type listing all names of generated queries types with links to appropriate types
+- `--w` - watch mode
 
 ## Programmatic usage: 
 
@@ -124,6 +126,7 @@ main();
 - `overRules?: object` - rules over server types (override server types!). For example: `{cursor: 'Base64String'}`
 - `separateFileForArgumentsTypes?: boolean` - separate argument types and queries result types
 - `verbose?: boolean` - includes additional logs output to the console
+- `watch?: boolean | number` - watch mode (number by default is the delay between flogging the file (by default is 250 ms))
 
 ## How it works by rules? 
 
