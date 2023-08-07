@@ -5,6 +5,7 @@
 
 | Version | Feature | 
 | -       | -        |
+| **^2.2.0** | feat: watch mode supports
 | **^2.1.3** | feat: supports nested fields arguments typing 
 | **^2.1.2** | fix: improved detecting of type kind in nested native graphql types 
 | **^2.1.1** | fix: applying nested native graphql types 
