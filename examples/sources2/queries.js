@@ -64,16 +64,23 @@ export const get_DialogInit = gql`
 					cursor,
         			node{
 						id,
-						author,				
+						author{
+							name,
+						},
+						authorId,
 						time,
 						value,
 						files,
 						replyTo{
 							id,
-							time,					
-							value,					
+							time,
+							value,
+							author{
+								name,
+								id
+							}
 							files,
-							author
+							# authorId
 						},
 						likesCount,	
 						rated,
@@ -119,10 +126,10 @@ export const userSettingsType = gql`
 
 
 export const getMessages = gql`
-	query uploadMessages{
+	query UploadMessages{
 		messages(id: $id, page: $page){
 			id,
-			author,				
+			authorId,				
 			time,
 			value,
 			files,
@@ -131,7 +138,7 @@ export const getMessages = gql`
 				time,					
 				value,					
 				files,
-				author
+				authorId
 			},
 			likesCount,	
 			rated,
@@ -182,3 +189,4 @@ export const getMessages = gql`
 // edges {
 // 	node {
 //       reply {
+

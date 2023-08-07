@@ -15,7 +15,7 @@ const sourceFiles = [
 
 async function main() {
 	await typesGenerate({
-		
+		watch: 250,
 		declTemplate: './examples/template.d.ts',	
 		matchTypeNames: false,
 		

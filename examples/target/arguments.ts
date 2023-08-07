@@ -1,9 +1,3 @@
-/* Screen types: */
-
-import "../../sources/templates/screentypes"
-
-type ExpectedErrorType = ScreenType<Object>
-
 
 
 /* Mutation Arguments types:*/
@@ -18,7 +12,8 @@ export type dialogArgs = {
 }
 
 export type messagesArgs = {
-    id: number
+    id: number,
+    to: number
 }
 
 export type userArgs = {
@@ -56,8 +51,8 @@ export type updateAccountArgs = {
 }
 
 export type postCreateArgs = {
-    value: string,
-    files: JSONstring
+    files: JSONstring,
+    value: string
 }
 
 export type likeApplyArgs = {

@@ -41,13 +41,17 @@ export type BaseOptions = {
 	filename: string,
 	/** or source file names */
 	files?: Array<string>,
-	/** create *.d.ts files for according sources with QueryString<`$TypeName`> for each query */
+	/** create *.d.ts files for according sources with 
+	 * QueryString<`${TypeName}`> 				- in case with enabled matchTypeNames option
+	 * QueryString<TypeName, ArgsTypeName>		- in case with disabled matchTypeNames option
+	 * for each query */
 	declarateSource?: Array<string>,		
 	/** file for target template */
 	declTemplate?: string,
 	dirname?: string, 		// ?
 	/** target file name */
 	target: string,
+	watch?: boolean | number
 
 
 	/// TYPES GENERATE OPTIONS:
@@ -73,7 +77,7 @@ export type BaseOptions = {
 		port?: number,
 		host?: string
 	},
-	overRules: Record<string, string>,
+	overRules?: Record<string, string>,
 	rules?: {
 		string?: string[];
 		bool?: string[];

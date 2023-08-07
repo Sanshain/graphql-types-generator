@@ -395,7 +395,7 @@ class TypesGenerator{
 			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
 				
 				if (self.options.overRules && self.options.overRules[subField.name]){
-					
+
 					acc[subField.name] = self.options.overRules[subField.name]
 				}	
 				else{
@@ -583,7 +583,7 @@ class TypesGenerator{
 		
 		// TODO logic: if a nested object...
 		let described = false;
-		 
+		
 		const isNestedType = (!this.options.preventOptionalParams && queryOrMutation.args?.length == 1) 
 			? !this.scalarTypes[queryOrMutation.args[0].type?.name || queryOrMutation.args[0].type?.ofType?.name || '']
 			: false

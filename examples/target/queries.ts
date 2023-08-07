@@ -54,7 +54,10 @@ export type DialogInfo = {
                 cursor: Base64String,
                 node: {
                     id: number,
-                    author: number,
+                    author: {
+                        name: string,
+                    }
+                    authorId: number,
                     time: string,
                     value: string,
                     files: string,
@@ -62,8 +65,11 @@ export type DialogInfo = {
                         id: number,
                         time: string,
                         value: string,
+                        author: {
+                            name: string,
+                            id: number,
+                        }
                         files: string,
-                        author: number,
                     }
                     likesCount: number,
                     rated: boolean,
@@ -99,13 +105,13 @@ export type UserSettingsType = {
     },
 };
 
-export type uploadMessages = {
+export type UploadMessages = {
 
-    __typename: "uploadMessages",
+    __typename: "UploadMessages",
 
     messages: {
         id: number,
-        author: number,
+        authorId: number,
         time: string,
         value: string,
         files: string,
@@ -114,7 +120,7 @@ export type uploadMessages = {
             time: string,
             value: string,
             files: string,
-            author: number,
+            authorId: number,
         },
         likesCount: number,
         rated: boolean,

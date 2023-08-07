@@ -7724,6 +7724,7 @@ var schemaQuery$1 = `
 						name,          
 						ofType {
 							name,
+							# kind ::: for relay may be more exact detecting list/object
 							ofType{
 								ofType{
 									name
@@ -11093,7 +11094,7 @@ const unknownTypes$1 = {};
 var unknownTypes_1 = unknownTypes$1;
 
 /**
- * genarate code from graphql node
+ * @description genarates code from graphql node
  * @this {import('../utils').TypesBuilder} 
  * @param {readonly [import("graphql").OperationDefinitionNode]} selections
  * @param {number} deep count
@@ -11302,7 +11303,6 @@ var extractType$1 = function extractType(selections, deep, branchOfFields, paren
 
 		if (_type) {
 
-
 			_lines = this.getServerType(selection, compositeType, _lines, deep + 4);
 
 			// здесь можно заполнить серверные строки
@@ -11490,7 +11490,7 @@ class TypesGenerator$1{
 
 		if (this.serverTypes === null) {
 			try{
-				await this.getSchemaTypes();		
+				this.serverTypes = await this.getSchemaTypes();		
 			}
 			catch(ex){
 				this.serverTypes = {};
@@ -11614,31 +11614,36 @@ class TypesGenerator$1{
 	}
 
 	/**
+	 * @description generate text representation of ts type and fill _gpaphType appropriate type fields
+	 * based on server query types and selection: extract from server types only types existsing in selection
+	 * 
 	 * @param {{selectionSet: {selections: readonly any[];};name?: {value: string | number;};}} selection
-	 * @param {{[x: string]: {[x: string]: any;};}} _gpaphType
-	 * @param {number} offset
+	 * @param {{[x: string]: {[x: string]: any;};}} _gpaphType - link to foreign object with type fields
+	 * @param {number} offset - offset for lines formatting
 	 * @param {string} _lines
 	 */
 	getServerType(selection, _gpaphType, _lines, offset) {
 
 		const selectionName = selection.name?.value;
-		if (!selectionName){
-			return ''
-		}
+		if (!selectionName) return ''
 
-		let fields = selection.selectionSet.selections.map(f => ({
+		const serverType = (this.serverTypes || [])[selectionName]; 
+		const baseServerType = this.serverSubTypes.find(el => el.name == selectionName)?.type;
+		const baseServerTypeFields = this.rawSchema?.find(tp => tp.name == baseServerType )?.fields || [];
+
+		const isArrayType = Array.isArray(serverType);
+		const selectedFields = selection.selectionSet.selections.map(f => ({
 			name: f.name.value, 
 			selection: f.selectionSet ? f: undefined
 		}));
-		let selectionType = (this.serverTypes || [])[selectionName]; 
-		let isArray = Array.isArray(selectionType);
-		if (isArray) _gpaphType[selectionName] = [];
-
+				
+		
+		if (isArrayType) _gpaphType[selectionName] = [];
 		const self = this;
 
-		for (const field of fields) {
+		for (const field of selectedFields) {
 			
-			const fieldType = isArray ? selectionType[0][field.name] : selectionType[field.name];
+			const fieldType = isArrayType ? serverType[0][field.name] : serverType[field.name];
 			const baseIndent = ' '.repeat(offset);
 
 			if (!field.selection){											//  && typeof fieldType === 'string'				
@@ -11658,7 +11663,22 @@ class TypesGenerator$1{
 				}
 				_lines += baseIndent + `${field.name}: ${tsType},\n`;
 			}
-			else if (typeof fieldType === 'object'){				
+			else if (typeof fieldType === 'object'){		
+
+				if (field.selection.arguments.length){
+					let vars = field.selection.arguments.map(v => v.name.value);
+					const args = baseServerTypeFields?.find(tp => tp.name == field.name)?.args;
+					if (args){
+						const typedArgs = args
+							.filter(tp => ~vars.indexOf(tp.name))
+							.map(o => `${o.name}: ${scalarTypes[o.type?.name]}`).join(',\n');
+						this.mutationArgs = this.mutationArgs.replace(
+							selectionName + 'Args = {', 
+							selectionName + 'Args = {\n    ' + typedArgs
+						);
+					}					
+				}
+
 				tsType = getSubType(field.selection, fieldType);			
 				
 				_lines += baseIndent + `${field.name}: {\n${toLines(tsType, offset + 4).join('\n')}\n${baseIndent}},\n`;
@@ -11678,7 +11698,7 @@ class TypesGenerator$1{
 				debugger
 			}
 
-			if (isArray) _gpaphType[selectionName][field.name] = tsType;				
+			if (isArrayType) _gpaphType[selectionName][field.name] = tsType;				
 			else _gpaphType[field.name] = tsType;
 
 			// _lines += ' '.repeat(8) + `${field.name}: ${tsType},\n`;
@@ -11686,6 +11706,8 @@ class TypesGenerator$1{
 		}
 		return _lines;
 
+
+		/// @utility functions:
 
 
 		/**
@@ -11708,18 +11730,22 @@ class TypesGenerator$1{
 		
 		
 		/**
+		 * @description 
 		 * @param {{selectionSet: {selections: any[]}}} field
 		 * @param {{ [x: string]: string | object; }} fieldType
 		 * @returns {object}
 		 */
 		function getSubType(field, fieldType) {
+			if (!field){
+				return 'never'
+			}
 			const declaredFields = field.selectionSet.selections.map(f => ({
 				name: f.name.value,
 				selection: f.selectionSet ? f: undefined
 			}));
-			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
+			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {		
 				acc[subField.name] = typeof fieldType[subField.name] === 'string'
-						? scalarTypes[fieldType[subField.name]]
+						? (scalarTypes[fieldType[subField.name]] || extractSubType(subField.selection, fieldType[subField.name]))
 						: getSubType(subField.selection, fieldType[subField.name]);
 				return acc;
 			}, {});
@@ -11737,6 +11763,7 @@ class TypesGenerator$1{
 
 			const graphType = self.rawSchema?.find(tp => tp.name == fieldTypeName);
 			const subFields = graphType?.fields?.reduce((acc, f) => {
+				f.type.name || f.type.ofType?.name || f.type.ofType?.ofType?.ofType?.name;
 				return {
 					[f.name]: f.type.name || f.type.ofType?.name || f.type.ofType?.ofType?.ofType?.name,
 					...acc
@@ -11752,12 +11779,20 @@ class TypesGenerator$1{
 			}));
 			
 			const _fields = declaredFields.reduce(function(/** @type {{ [x: string]: any; }} */ acc, subField) {
-				const fieldType = subFields[subField.name];
-				acc[subField.name] = scalarTypes[fieldType] && !subField.selection
+				
+				if (self.options.overRules && self.options.overRules[subField.name]){
+
+					acc[subField.name] = self.options.overRules[subField.name];
+				}	
+				else {
+					const fieldType = subFields[subField.name];
+					acc[subField.name] = scalarTypes[fieldType] && !subField.selection
 						? scalarTypes[fieldType]
 						: extractSubType(subField.selection, fieldType);
+				}					
 				return acc;
-			}, {});
+			}, fieldType.endsWith('[]') ? [] : {});
+			
 			return _fields;
 		}		
 
@@ -11772,17 +11807,23 @@ class TypesGenerator$1{
 					return ' '.repeat(_offset) + `${key}: ${_tsType[key]},`;
 				}
 				else if(_tsType[key]){			
-					const indent = ' '.repeat(_offset);				
-					return `${indent}${key}: {\n${toLines(tsType[key], _offset + 4).join('\n')}\n${indent}}`
+					const indent = ' '.repeat(_offset);		
+					const array = Array.isArray(_tsType[key])	? '[]' : '';
+					return `${indent}${key}: {\n${toLines(_tsType[key], _offset + 4).join('\n')}\n${indent}}` + array;					
 				}
 				else {
-					debugger
+					
 					return ' '.repeat(_offset) + `${key}: unexpected,`;
 				}
 			})
 		}		
 	}
 
+	/**
+	 * @description 
+	 * - extract query type names to array with appropriate attached native graphql type name (this.serverSubTypes)
+	 * - attach fields graphql kind types to query types (this.serverTypes) from the native graphql types
+	 */
 	async getSchemaTypes(){
 		
 		let serverTypes = {};		
@@ -11841,6 +11882,15 @@ class TypesGenerator$1{
 							tsType[field.name] = {};
 							for (const subField of subType.fields) {
 								tsType[field.name][subField.name] = subField.type.name || subField.type.ofType?.name;
+								// if (subField.name === 'messagesList'){
+								// 	debugger
+								// }
+								if (tsType[field.name][subField.name] === null){
+									// to relay support: 
+									tsType[field.name][subField.name] = subField.type.ofType?.ofType?.name;
+									tsType[field.name][subField.name] += '[]';
+									if (!tsType[field.name][subField.name]);
+								}
 							}
 						}
 					}
@@ -11890,6 +11940,8 @@ class TypesGenerator$1{
 		this.serverTypes = serverTypes;
 		//@ts-expect-error
 		this.serverSubTypes = this.rawQueries.map(r => ({name: r.name, type: (r.type.name || r.type.ofType?.name)}));
+
+		return this.serverTypes
 	}
 
 
@@ -11908,7 +11960,7 @@ class TypesGenerator$1{
 	 * @param {string} typeFromDescMark
 	 */
 	attachInputTypes(queryOrMutation, typeFromDescMark) {
-		 
+		
 		const isNestedType = (!this.options.preventOptionalParams && queryOrMutation.args?.length == 1) 
 			? !this.scalarTypes[queryOrMutation.args[0].type?.name || queryOrMutation.args[0].type?.ofType?.name || '']
 			: false;
@@ -12012,12 +12064,7 @@ const { unknownTypes } = extraction;
 
 /** @type {{ filename: string; files: any; target: string; }} */ 
 
-var main = async function typesGenerate(
-	/**
-	 * @type {import('./main').BaseOptions} 
-	 */ 
-	 options
-	) {
+var main = async function typesGenerate(/** @type {import('./main').BaseOptions} */ options) {
 		
 	// let typeConds = {
 	// 	string: ['Name', 'Title', 'Date', 'Time'],
@@ -12027,6 +12074,7 @@ var main = async function typesGenerate(
 
 	let graphTypes = {};
 	let codeTypes = '';	
+	
 	options = Object.assign(
 		{
 			filename: 'queries.js',
@@ -12096,23 +12144,138 @@ var main = async function typesGenerate(
 	for (const filename of filenames) {
 		
 		// codeTypes = generator.getTypes(options.dirname + '/' + filename, codeTypes, graTypes);
+		await getTypesFromFile(filename);
+
+		if (options.watch){
+			let inProcess = false;
+			fs__default['default'].watch(filename, async function(/** @type {string} */ event, /** @type {string} */ f_name) {
+				if (!inProcess){
+					inProcess = true;
+					setTimeout(() => inProcess = false, typeof options.watch == 'number' ? options.watch : 250);
+					if (event === 'change'){
+	
+						console.log(`\n\n${'\x1b[34m'}....................detected changes in \`${f_name}\``);
+						console.log(`....................Update types${resetColor}`);
+	
+						options.screentypes = false;
+	
+						await getTypesFromFile(filename);
+						resetColor = generateTypedFiles();
+					}
+				}
+			});
+		}
+	}
+	
+	let resetColor = generateTypedFiles();	
+
+	function generateTypedFiles() {
+		let target = options.target; //options.filename.split('.').shift() + '.d.ts';
+
+		let targetFile = path__default['default'].join(process.cwd(), target || ''); // path.resolve(path.dirname(''))
+
+		// generator.mutationArgs += 	"\n\nexport type QueryString<T extends string, Q extends string> = " +
+		// 									"`\n    ${'mutation'|'query'} ${T} {\n        ${Q}${string}\`"
+		// generator.mutationArgs += `\n\n\n${generator.argTypesCode}`
+		if (options.matchTypeNames) {
+			generator.mutationArgs += `\n\n${generator.getArgumentMatchesType()}`;
+		}
+
+		if (options.matchTypeNames) {
+			codeTypes += '\n\n/*\n* `QueryTypes` - may be need for more flexible types management on client side \n*' +
+				'\n* (optional: controlled by `matchTypeNames` option)\n*/\n';
+			codeTypes += `export type QueryTypes = {\n${Object.keys(graphTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`;
+		}
+
+		if (options.screentypes === true) {
+
+			options.screentypes = fs__default['default'].readFileSync(path__default['default'].join(__dirname, './templates/screentypes.ts')).toString() + '\n\n';
+
+			const installedLib = 'node_modules/graphql-types-generator';
+			if (fs__default['default'].existsSync(path__default['default'].join(process.cwd(), `${installedLib}/sources/templates/screentypes.ts`))) {
+				options.screentypes = `import "${installedLib}/sources/templates/screentypes"`;
+			}
+			else if (fs__default['default'].existsSync(path__default['default'].join(process.cwd(), `sources/templates/screentypes.ts`))) {
+				options.screentypes = `import "../../sources/templates/screentypes"`;
+			}
+
+			options.screentypes += '\n\n' + Object.values(unknownTypes).join('\n') + '\n\n';
+
+		}
+		else if (options.screentypes === false) {
+			options.screentypes = ''; // disable (look up TypesGen constructor)
+		}
+		else if (typeof options.screentypes === 'object') {
+			options.screentypes = ''; // the same as next if
+		}
+		else if (options.screentypes === '') ;
+
+		codeTypes = options.screentypes + codeTypes;
+
+		const foreColor = "\x1b[32m";
+		const resetColor = "\x1b[0m";
+
+		if (options.separateFileForArgumentsTypes) {
+
+			if (options.screentypes && options.verbose) {
+				console.warn('\x1b[35m' +
+					'with `separateFileForArgumentsTypes` and `options.screentypes` both we recommend set `options.screentypes` to ' +
+					'\'\' and redefine the appropriate branded types in global type space (or link include tsconfig option ' +
+					'to `node_modules/graphql-types-generator/sources/templates/screentypes.ts)`' + '\x1b[0m'
+				);
+				// or /// <reference lib="node_modules/graphql-types-generator/sources/templates/screentypes" />
+			}
+
+			fs__default['default'].writeFileSync(targetFile, codeTypes);
+
+			console.log(`\nQueries types generated to ${foreColor}${targetFile}${"\x1b[0m"}!`);
+
+
+			const argsTargetFile = path__default['default'].join(process.cwd(), options.separateFileForArgumentsTypes);
+			options.screentypes = options.screentypes ? ('/* Screen types: */\n\n' + options.screentypes) : '';
+
+			fs__default['default'].writeFileSync(
+				argsTargetFile,
+				options.screentypes + generator.mutationArgs
+			);
+
+			console.log(`Arguments types generated to ${foreColor}${argsTargetFile}${"\x1b[0m"}!`);
+		}
+		else
+			fs__default['default'].writeFile(
+				targetFile, codeTypes + generator.mutationArgs, () => {
+					console.log(`\n\nOutputs generated to ${foreColor}${targetFile}${"\x1b[0m"}!`);
+				}
+			);
+		return resetColor;
+	}
+
+
+
+
+	/**
+	 * @param {string} filename
+	 */
+	async function getTypesFromFile(filename) {
+		
 		let _graphTypesInfo = {};
+
 		let [declTypes, typesFromFile] = await generator.getTypes(
-			filename, codeTypes, _graphTypesInfo,
+			filename, codeTypes, _graphTypesInfo
 		);
-		
+
 		generator.existingTypes = [...generator.existingTypes, ...Object.keys(declTypes)];
-		
-		if (options.declarateSource?.includes(filename)){
-			const declFile = filename.split('.').slice(0, -1).join('.') + '.d.ts';			
+
+		if (options.declarateSource?.includes(filename)) {
+			const declFile = filename.split('.').slice(0, -1).join('.') + '.d.ts';
 
 			let declContent = '';
 			if (options.matchTypeNames) {
 				declContent = declTemplate + Object.entries(declTypes).map(
-					([k,v]) => `\n${v.comment || ''}\nexport const ${k}: QueryString<'${v.typeName}'>;\n`
-				).join('');				
+					([k, v]) => `\n${v.comment || ''}\nexport const ${k}: QueryString<'${v.typeName}'>;\n`
+				).join('');
 			}
-			else if (Array.isArray(generator.argTypes)){
+			else if (Array.isArray(generator.argTypes)) {
 				// generate imports
 				const typesWithArgs = Array.from(new Set(generator.argTypes.filter(Boolean))).map(a => a + 'Args');
 				const argsFile = path__default['default'].relative(path__default['default'].dirname(declFile), options.separateFileForArgumentsTypes || options.target)
@@ -12124,122 +12287,41 @@ var main = async function typesGenerate(
 				const typeNames = Object.values(declTypes).map(f => f.typeName);
 				const typesFile = path__default['default'].relative(path__default['default'].dirname(declFile), options.target)
 					.replace(/\\/g, '/')
-					.replace(/(.d)?.ts$/gm, '');												
-					
+					.replace(/(.d)?.ts$/gm, '');
+
 				const typesImports = `import { ${typeNames.join(', ')} } from '${typesFile}'`;
 
 				const uniqueKeyArgs = `export declare const queryArgs: unique symbol\n`;
 				const uniqueKeyType = `export declare const queryType: unique symbol\n`;
-				const queryTypeDecl = "type QueryString<T, A=never> = `\n    ${'mutation'|'query'} ${string}`" + 
+				const queryTypeDecl = "type QueryString<T, A=never> = `\n    ${'mutation'|'query'} ${string}`" +
 					" & {[queryArgs]?: A}" +
-					" & {[queryType]?: T}\n\n"; 		
-					
+					" & {[queryType]?: T}\n\n";
+
 				declTemplate = declContent || (uniqueKeyArgs + uniqueKeyType + queryTypeDecl);
-				
+
 				declContent = typesImports + '\n\n' + argsImports + '\n\n\n' + declTemplate;
 
 				declContent += Object.entries(declTypes).map(
-					([k,v]) => {
-						const args = generator.argMatches[v.typeName] ? `, ${generator.argMatches[v.typeName]}` : '';						
-						return `\n${v.comment || ''}\nexport const ${k}: QueryString<${v.typeName}${args}>;\n`
+					([k, v]) => {
+						const args = generator.argMatches[v.typeName] ? `, ${generator.argMatches[v.typeName]}` : '';
+						return `\n${v.comment || ''}\nexport const ${k}: QueryString<${v.typeName}${args}>;\n`;
 					}
 				).join('');
 			}
 			else {
-				debugger
+				debugger;
 			}
-			
+
 			fs__default['default'].writeFile(
 				declFile, declContent, () => console.log(
 					`>> Declaration success generated >> ${'\x1b[34m'}${declFile}${resetColor}`
 				)
 			);
 		}
-		
-		graphTypes = {...graphTypes, ..._graphTypesInfo};
+
+		graphTypes = { ...graphTypes, ..._graphTypesInfo };
 		codeTypes = typesFromFile;
 	}
-	
-	let target = options.target;  //options.filename.split('.').shift() + '.d.ts';
-
-	let targetFile = path__default['default'].join(process.cwd(), target || '');		// path.resolve(path.dirname(''))
-	
-
-	// generator.mutationArgs += 	"\n\nexport type QueryString<T extends string, Q extends string> = " +
-	// 									"`\n    ${'mutation'|'query'} ${T} {\n        ${Q}${string}\`"
-
-
-	// generator.mutationArgs += `\n\n\n${generator.argTypesCode}`
-
-	if (options.matchTypeNames){
-		generator.mutationArgs += `\n\n${generator.getArgumentMatchesType()}`;
-	}	
-
-	if (options.matchTypeNames){
-		codeTypes += '\n\n/*\n* `QueryTypes` - may be need for more flexible types management on client side \n*' +
-					'\n* (optional: controlled by `matchTypeNames` option)\n*/\n';		
-		codeTypes += `export type QueryTypes = {\n${Object.keys(graphTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`;
-	}
-
-	if (options.screentypes === true){
-
-		options.screentypes = fs__default['default'].readFileSync(path__default['default'].join(__dirname, './templates/screentypes.ts')).toString() + '\n\n';
-		
-		const installedLib = 'node_modules/graphql-types-generator';
-		if (fs__default['default'].existsSync(path__default['default'].join(process.cwd(), `${installedLib}/sources/templates/screentypes.ts`))){
-			options.screentypes = `import "${installedLib}/sources/templates/screentypes"`;
-		}
-		else if(fs__default['default'].existsSync(path__default['default'].join(process.cwd(), `sources/templates/screentypes.ts`))){
-			options.screentypes = `import "../../sources/templates/screentypes"`;
-		}
-		
-		options.screentypes += '\n\n' + Object.values(unknownTypes).join('\n') + '\n\n';
-
-	}
-	else if(options.screentypes === false){
-		options.screentypes = '';						// disable (look up TypesGen constructor)
-	}
-	else if (typeof options.screentypes === 'object'){
-		options.screentypes = '';						// the same as next
-	}
-	else if(options.screentypes === '');
-
-	codeTypes = options.screentypes + codeTypes;		
-
-	const foreColor = "\x1b[32m";
-	const resetColor = "\x1b[0m";
-
-	if (options.separateFileForArgumentsTypes){
-		
-		if (options.screentypes && options.verbose){
-			console.warn('\x1b[35m' +
-				'with `separateFileForArgumentsTypes` and `options.branded` both we recommend set `options.branded` to ' +
-				'\'\' and redefine the appropriate branded types in global type space (or link include tsconfig option ' +
-				'to `node_modules/graphql-types-generator/sources/templates/screentypes.ts)`' + '\x1b[0m'
-			);
-			// or /// <reference lib="node_modules/graphql-types-generator/sources/templates/screentypes" />
-		}
-
-		fs__default['default'].writeFileSync(targetFile, codeTypes);					
-
-		console.log(`\nQueries types generated to ${foreColor}${targetFile}${"\x1b[0m"}!`);
-
-
-		const argsTargetFile = path__default['default'].join(process.cwd(), options.separateFileForArgumentsTypes);		
-		options.screentypes = options.screentypes ? ('/* Screen types: */\n\n' + options.screentypes) : '';
-		
-		fs__default['default'].writeFileSync(
-			argsTargetFile,
-			options.screentypes + generator.mutationArgs
-		);		
-
-		console.log(`Arguments types generated to ${foreColor}${argsTargetFile}${"\x1b[0m"}!`);
-	}
-	else fs__default['default'].writeFile(
-		targetFile, codeTypes + generator.mutationArgs, () => {
-			console.log(`\n\nOutputs generated to ${foreColor}${targetFile}${"\x1b[0m"}!`);
-		}
-	);		
 };
 
 //@ts-check
@@ -12273,7 +12355,8 @@ params = {
 	'-h': 'useServerTypes.host',
 	'--ds': 'declarateSource',
 	'--m': 'matchTypeNames',
-	'--st': 'screentypes'
+	'--st': 'screentypes',
+	'-w': 'watch'
 };
 
 /*

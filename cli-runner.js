@@ -29,7 +29,8 @@ params = {
 	'-h': 'useServerTypes.host',
 	'--ds': 'declarateSource',
 	'--m': 'matchTypeNames',
-	'--st': 'screentypes'
+	'--b': 'screentypes',
+	'-w': 'watch'
 }
 
 /*
