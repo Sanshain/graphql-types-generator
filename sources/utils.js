@@ -201,7 +201,10 @@ class TypesGenerator{
 		return [declTypes, codeTypes];
 	}
 
-	getArgumentMatchesType() {
+	/**
+	 * @param {string} [argTypeName]
+	 */
+	getArgumentMatchesType(argTypeName) {
 
 		let splitted = false;
 		
@@ -214,7 +217,7 @@ class TypesGenerator{
 				}
 				return accType += (`    ${typeName}: ${argTypes},\n`)
 			}, 
-			'export type ArgTypes = {\n    undefined: never,\n\n'
+			`export type ${argTypeName || 'ArgTypes'} = {\n    undefined: never,\n\n`
 		) + '}'
 
 		return this.argTypesCode;

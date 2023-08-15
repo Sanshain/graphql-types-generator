@@ -17,7 +17,7 @@ async function main() {
 	await typesGenerate({
 		watch: 250,
 		declTemplate: './examples/template.d.ts',	
-		matchTypeNames: false,
+		matchTypeNames: true,		
 		
 		// filename: path.resolve(basePath, './sources1/queries.js'),		// the same as files
 

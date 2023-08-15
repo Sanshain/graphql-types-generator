@@ -72,3 +72,28 @@ export type userSettingsMutationArgs = {
     placeId: null | number,
     placeType: null | ID
 }
+
+
+export type ArgTypes = {
+    undefined: never,
+
+    DialogInfo: dialogArgs,
+    PaginatedUsers: paginatedUsersArgs,
+    
+    UserSettingsType: userSettingsArgs,
+    UploadMessages: messagesArgs,
+    
+    Register: registerArgs,
+    SignInfo: tokenAuthArgs,
+    
+    SignUpInfo: registerArgs,
+    AccountVerifyingInfo: verifyAccountArgs,
+    VerifyAccount: verifyAccountArgs,
+    PostMutation: postCreateArgs,
+    LikeMutation: likeApplyArgs,
+    FriendshipMutation: friendshipApplyArgs,
+    SettingsMutationPayload: userSettingsMutationArgs,
+    UserType: userArgs,
+    PostType: postsArgs,
+    DialogType: dialogArgs,
+}

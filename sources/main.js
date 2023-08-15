@@ -122,7 +122,7 @@ module.exports = async function typesGenerate(/** @type {import('./main').BaseOp
 						options.screentypes = false;
 	
 						await getTypesFromFile(filename);
-						resetColor = generateTypedFiles();
+						resetColor = generateTypedFiles(true);
 					}
 				}
 			})
@@ -131,7 +131,10 @@ module.exports = async function typesGenerate(/** @type {import('./main').BaseOp
 	
 	let resetColor = generateTypedFiles();	
 
-	function generateTypedFiles() {
+	/**
+	 * @param {boolean} [repeat]
+	 */
+	function generateTypedFiles(repeat) {
 		let target = options.target; //options.filename.split('.').shift() + '.d.ts';
 
 		let targetFile = path.join(process.cwd(), target || ''); // path.resolve(path.dirname(''))
@@ -140,13 +143,22 @@ module.exports = async function typesGenerate(/** @type {import('./main').BaseOp
 		// 									"`\n    ${'mutation'|'query'} ${T} {\n        ${Q}${string}\`"
 		// generator.mutationArgs += `\n\n\n${generator.argTypesCode}`
 		if (options.matchTypeNames) {
-			generator.mutationArgs += `\n\n${generator.getArgumentMatchesType()}`;
+			if (!repeat)	generator.mutationArgs += `\n\n${generator.getArgumentMatchesType()}`;
+			else {
+				generator.mutationArgs = generator.mutationArgs.replace(
+					/export type ArgTypes[\s\S]+/, generator.getArgumentMatchesType()
+				);
+			}
 		}
 
 		if (options.matchTypeNames) {
-			codeTypes += '\n\n/*\n* `QueryTypes` - may be need for more flexible types management on client side \n*' +
+			let queryTypes =  '\n\n/*\n* `QueryTypes` - may be need for more flexible types management on client side \n*' +
 				'\n* (optional: controlled by `matchTypeNames` option)\n*/\n';
-			codeTypes += `export type QueryTypes = {\n${Object.keys(graphTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`;
+			queryTypes += `export type QueryTypes = {\n${Object.keys(graphTypes).map(tn => `    ${tn}: ${tn}`).join('\n')}\n}\n`;
+			if (!repeat) codeTypes += queryTypes
+			else{
+				codeTypes = codeTypes.replace(/\/\*[\s\S]+export type QueryTypes = \{[\s\S]+/, queryTypes)				
+			}
 		}
 
 		if (options.screentypes === true) {

@@ -322,3 +322,35 @@ export type DialogType = {
         },
     },
 };
+
+
+
+
+
+/*
+* `QueryTypes` - may be need for more flexible types management on client side 
+*
+* (optional: controlled by `matchTypeNames` option)
+*/
+export type QueryTypes = {
+    ProfileInfo: ProfileInfo
+    DialogInfo: DialogInfo
+    PaginatedUsers: PaginatedUsers
+    UserSettingsType: UserSettingsType
+    UploadMessages: UploadMessages
+    Register: Register
+    SignInfo: SignInfo
+    SignUpInfo: SignUpInfo
+    PassResetInfo: PassResetInfo
+    AccountVerifyingInfo: AccountVerifyingInfo
+    SignOutInfo: SignOutInfo
+    VerifyAccount: VerifyAccount
+    PostMutation: PostMutation
+    LikeMutation: LikeMutation
+    FriendshipMutation: FriendshipMutation
+    SettingsMutationPayload: SettingsMutationPayload
+    UserNode: UserNode
+    UserType: UserType
+    PostType: PostType
+    DialogType: DialogType
+}

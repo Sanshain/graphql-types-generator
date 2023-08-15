@@ -75,7 +75,7 @@ export const get_DialogInit = gql`
 							id,
 							time,
 							value,
-							author{
+							author{	
 								name,
 								id
 							}
