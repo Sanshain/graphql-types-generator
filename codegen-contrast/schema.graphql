@@ -6,12 +6,13 @@ mutation Register {
 	}
 }
 
-query DialogInfo($id: Int, $first: String) {
+query DialogInfo($id: Int, $first: Int) {
 	dialog(id: $id){
 		id,
 		title,
 		founder {
-			id
+			id,
+			# name
 		},			
 		users{
 			id,			
@@ -22,7 +23,7 @@ query DialogInfo($id: Int, $first: String) {
 			edges{
 				node{
 					id,
-					author,				
+					# author,				
 					time,
 					value,
 					files,
@@ -31,7 +32,7 @@ query DialogInfo($id: Int, $first: String) {
 						time,					
 						value,					
 						files,
-						author
+						# author
 					},
 					likesCount,	
 					rated,

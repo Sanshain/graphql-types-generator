@@ -9,7 +9,7 @@ export type DialogInfoQueryVariables = Exact<{
 }>;
 
 
-export type DialogInfoQuery = { __typename?: 'Query', dialog?: { __typename?: 'DialogType', id: string, title: string, founder: { __typename?: 'UserType', id: string }, users: Array<{ __typename?: 'UserType', id: string, name?: string | null, image?: string | null }>, messagesList: { __typename?: 'MessagesTypeConnection', edges: Array<{ __typename?: 'MessagesTypeEdge', node?: { __typename?: 'MessagesType', id: string, author?: number | null, time: any, value: string, files: any, likesCount?: number | null, rated?: boolean | null, replyTo?: { __typename?: 'MessagesType', id: string, time: any, value: string, files: any, author?: number | null } | null } | null } | null> } } | null };
+export type DialogInfoQuery = { __typename?: 'Query', dialog?: { __typename?: 'DialogType', id: string, title: string, founder: { __typename?: 'UserType', id: string }, users: Array<{ __typename?: 'UserType', id: string, name?: string | null, image?: string | null }>, messagesList: { __typename?: 'MessagesTypeConnection', edges: Array<{ __typename?: 'MessagesTypeEdge', node?: { __typename?: 'MessagesType', id: string, time: any, value: string, files: any, likesCount?: number | null, rated?: boolean | null, replyTo?: { __typename?: 'MessagesType', id: string, time: any, value: string, files: any } | null } | null } | null> } } | null };
 
 export type SettingsMutationPayloadMutationVariables = Exact<{ [key: string]: never; }>;
 

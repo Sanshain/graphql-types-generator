@@ -1,6 +1,6 @@
 {
 	"name": "graphql-types-generator",
-	"version": "2.2.0",
+	"version": "2.2.2",
 	"description": "Generates typescript types from raw graphql queries, based on server types and the most common naming of variables of certain types",
 	"main": "./sources/main.js",
 	"types": "./sources/main.d.ts",
@@ -28,6 +28,7 @@
 	"devDependencies": {
 		"@graphql-codegen/cli": "^4.0.1",
 		"@graphql-codegen/typescript-operations": "^4.0.1",
+		"@parcel/watcher": "^2.2.0",
 		"rollup": "^2.53.2",
 		"rollup-plugin-commonjs": "^10.1.0",
 		"rollup-plugin-node-resolve": "^5.2.0"

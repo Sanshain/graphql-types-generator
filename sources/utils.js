@@ -121,7 +121,7 @@ class TypesGenerator{
 				 * @type {import('graphql').OperationDefinitionNode} [DefinitionNode as OperationDefinitionNode]
 				 */
 				//@ts-expect-error
-				var definition = gql.gql(query).definitions.pop()
+				var definition = gql.gql(query).definitions.pop() || gql.gql(query.replace(/\$/g, '')).definitions.pop()
 				// var definition = gql.gql(query).definitions.slice(-1)[0]
 			}
 			catch(ex){

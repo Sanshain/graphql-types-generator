@@ -65,6 +65,7 @@ export const get_DialogInit = gql`
         			node{
 						id,
 						author{
+							id,
 							name,
 						},
 						authorId,

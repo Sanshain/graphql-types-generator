@@ -8,6 +8,7 @@ export type userSettingsArgs = {
 
 export type dialogArgs = {
     first: number
+    first: number
     id: number
 }
 
@@ -51,8 +52,8 @@ export type updateAccountArgs = {
 }
 
 export type postCreateArgs = {
-    files: JSONstring,
-    value: string
+    value: string,
+    files: JSONstring
 }
 
 export type likeApplyArgs = {
