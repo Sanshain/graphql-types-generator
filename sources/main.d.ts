@@ -52,6 +52,7 @@ export type BaseOptions = {
 	/** target file name */
 	target: string,
 	watch?: boolean | number
+	templatePrefix?: 'gql' | string
 
 
 	/// TYPES GENERATE OPTIONS:

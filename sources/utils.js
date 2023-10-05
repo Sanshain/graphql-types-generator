@@ -91,9 +91,20 @@ class TypesGenerator{
 
 		let gqlDefs = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
 		// let gqls = Array.from(gqlDe.matchAll(/gql`([^`]*?)`/g), m => m[1]);
+
+		// if not gql
+		const serachRegex = this.options.templatePrefix
+			? new RegExp(
+				'(\\/\*[\s\S]*?\*\\/\r?\n)?^export (?:const|let) ([\w_\d]+)\s?= ' + 
+				this.options.templatePrefix + 
+				'` ([^`]*?)', 'gm'
+			)
+			: /(\/\*[\s\S]*?\*\/\r?\n)?^export (?:const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/gm;
+
 		let gqls = Array.from(
 			// gqlDe.matchAll(/(\/\*[\s\S]+?\*\/)?\n?export (const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/g),
-			gqlDefs.matchAll(/(\/\*[\s\S]*?\*\/\r?\n)?^export (?:const|let) ([\w_\d]+)\s?= gql`([^`]*?)`/gm),
+
+			gqlDefs.matchAll(serachRegex),
 			// gqlDe.matchAll(
 			// 	/(\/\*[\s\S]*?\*\/\r?\n)?export (?:const|let) ([\w_\d]+)\s?= gql`(\s*(?:query|mutation)\s*\w+\s*\{\s*(\w+)[^`]*?)`/gi
 			// ),
