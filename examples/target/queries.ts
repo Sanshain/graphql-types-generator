@@ -128,6 +128,34 @@ export type UploadMessages = {
     }[],
 };
 
+export type MessagesInfo = {
+
+    __typename: "MessagesInfo",
+
+    messages: {
+        id: number,
+        authorId: number,
+        author: {
+            name: string,
+        },
+        time: string,
+        value: string,
+        files: string,
+        replyTo: {
+            id: number,
+            time: string,
+            value: string,
+            files: string,
+            authorId: number,
+            author: {
+                name: string,
+            }
+        },
+        likesCount: number,
+        rated: boolean,
+    }[],
+};
+
 export type Register = {
 
     __typename: "Register",
@@ -458,8 +486,6 @@ export type DialogType = {
     },
 };
 
-
-
 /*
 * `QueryTypes` - may be need for more flexible types management on client side 
 *
@@ -471,6 +497,7 @@ export type QueryTypes = {
     PaginatedUsers: PaginatedUsers
     UserSettingsType: UserSettingsType
     UploadMessages: UploadMessages
+    MessagesInfo: MessagesInfo
     Register: Register
     SignInfo: SignInfo
     SignUpInfo: SignUpInfo

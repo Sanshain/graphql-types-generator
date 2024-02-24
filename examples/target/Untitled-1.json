@@ -1,0 +1,8141 @@
+{
+	"data": {
+	  "__schema": {
+		 "types": [
+			{
+			  "name": "Query",
+			  "fields": [
+				 {
+					"name": "userSettings",
+					"args": [
+					  {
+						 "name": "id",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "username",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "firstName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "birthday",
+							"type": {
+							  "ofType": null,
+							  "name": "Date",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "placeId",
+							"type": {
+							  "ofType": {
+								 "name": "Int",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "sex",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "country",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "city",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UserSettingsType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "dialog",
+					"args": [
+					  {
+						 "name": "id",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "founder",
+							"type": {
+							  "ofType": {
+								 "name": "UserType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "title",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "users",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "messagesList",
+							"type": {
+							  "ofType": {
+								 "name": "MessagesTypeConnection",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "talkersAmount",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "unreadMessages",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastMessage",
+							"type": {
+							  "ofType": null,
+							  "name": "MessageSubType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "author",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "DialogType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "dialogs",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "DialogType"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "messages",
+					"args": [
+					  {
+						 "name": "id",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "up",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "by",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "down",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "withtext",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "MessageType"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "me",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastLogin",
+							"type": {
+							  "ofType": null,
+							  "name": "DateTime",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "username",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "firstName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "email",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "isStaff",
+							"type": {
+							  "ofType": {
+								 "name": "Boolean",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "isActive",
+							"type": {
+							  "ofType": {
+								 "name": "Boolean",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dateJoined",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friends",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "sex",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "birthday",
+							"type": {
+							  "ofType": null,
+							  "name": "Date",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "placeId",
+							"type": {
+							  "ofType": {
+								 "name": "Int",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "startedDialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "PostType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likeSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "LikeType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "profileSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "pk",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "archived",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "verified",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "secondaryEmail",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UserNode",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "user",
+					"args": [
+					  {
+						 "name": "id",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastLogin",
+							"type": {
+							  "ofType": null,
+							  "name": "DateTime",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "username",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "firstName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dateJoined",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friends",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "sex",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "birthday",
+							"type": {
+							  "ofType": null,
+							  "name": "Date",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "placeId",
+							"type": {
+							  "ofType": {
+								 "name": "Int",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "startedDialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "PostType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likeSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "LikeType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "profileSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "name",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "image",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friendshipState",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UserType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "users",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "UserType"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "paginatedUsers",
+					"args": [
+					  {
+						 "name": "filter",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "UserType"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "friends",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": "UserType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "posts",
+					"args": [
+					  {
+						 "name": "user",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": "PostType",
+						 "ofType": null
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "UserSettingsType",
+			  "fields": [
+				 {
+					"name": "username",
+					"args": [],
+					"description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "firstName",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "lastName",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "birthday",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Date",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "placeId",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Int",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "sex",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "country",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "city",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "String",
+			  "fields": null
+			},
+			{
+			  "name": "Date",
+			  "fields": null
+			},
+			{
+			  "name": "Int",
+			  "fields": null
+			},
+			{
+			  "name": "DialogType",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "founder",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "UserType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "avatar",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "title",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "users",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "UserType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "messagesList",
+					"args": [
+					  {
+						 "name": "offset",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "before",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "after",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "first",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "last",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "MessagesTypeConnection",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "talkersAmount",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "unreadMessages",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "lastMessage",
+					"args": [],
+					"description": "nested",
+					"type": {
+					  "fields": [
+						 {
+							"name": "author",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "value",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "MessageSubType",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "ID",
+			  "fields": null
+			},
+			{
+			  "name": "UserType",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "lastLogin",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "DateTime",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "username",
+					"args": [],
+					"description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "firstName",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "lastName",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "dateJoined",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "DateTime",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "avatar",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "friends",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "UserType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "sex",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "birthday",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Date",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "placeId",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Int",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "startedDialogs",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "DialogType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "dialogs",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "DialogType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "postSet",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "PostType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "likeSet",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "LikeType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "profileSet",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "UserType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "name",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "image",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "friendshipState",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "DateTime",
+			  "fields": null
+			},
+			{
+			  "name": "Boolean",
+			  "fields": null
+			},
+			{
+			  "name": "PostType",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "by",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "UserType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "time",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "DateTime",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "value",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "files",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "JSONString",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "message",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "by",
+							"type": {
+							  "ofType": {
+								 "name": "UserType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "time",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "value",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "files",
+							"type": {
+							  "ofType": {
+								 "name": "JSONString",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postPtr",
+							"type": {
+							  "ofType": {
+								 "name": "PostType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "toDialog",
+							"type": {
+							  "ofType": null,
+							  "name": "DialogType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "founder",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "title",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "users",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "messagesList",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "talkersAmount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "unreadMessages",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "lastMessage",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "replyTo",
+							"type": {
+							  "ofType": null,
+							  "name": "MessagesType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "by",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "time",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "files",
+									"type": {
+									  "ofType": {
+										 "name": "JSONString"
+									  }
+									}
+								 },
+								 {
+									"name": "postPtr",
+									"type": {
+									  "ofType": {
+										 "name": "PostType"
+									  }
+									}
+								 },
+								 {
+									"name": "toDialog",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "replyTo",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "messageSet",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "likesCount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "rated",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "author",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "authorId",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "messageSet",
+							"type": {
+							  "ofType": {
+								 "name": "MessagesTypeConnection",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likesCount",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "rated",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "author",
+							"type": {
+							  "ofType": null,
+							  "name": "UserType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "lastLogin",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "username",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "firstName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "lastName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "dateJoined",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friends",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "sex",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "birthday",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "placeId",
+									"type": {
+									  "ofType": {
+										 "name": "Int"
+									  }
+									}
+								 },
+								 {
+									"name": "startedDialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "dialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "postSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "likeSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "profileSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "name",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "image",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friendshipState",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "authorId",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "MessagesType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "likes",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "LikeType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "likesCount",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "rated",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "JSONString",
+			  "fields": null
+			},
+			{
+			  "name": "MessagesType",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "The ID of the object.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "by",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "UserType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "time",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "DateTime",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "value",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "files",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "JSONString",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "postPtr",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "PostType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "toDialog",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "founder",
+							"type": {
+							  "ofType": {
+								 "name": "UserType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "title",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "users",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "messagesList",
+							"type": {
+							  "ofType": {
+								 "name": "MessagesTypeConnection",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "talkersAmount",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "unreadMessages",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastMessage",
+							"type": {
+							  "ofType": null,
+							  "name": "MessageSubType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "author",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "DialogType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "replyTo",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "by",
+							"type": {
+							  "ofType": {
+								 "name": "UserType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "time",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "value",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "files",
+							"type": {
+							  "ofType": {
+								 "name": "JSONString",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postPtr",
+							"type": {
+							  "ofType": {
+								 "name": "PostType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "toDialog",
+							"type": {
+							  "ofType": null,
+							  "name": "DialogType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "founder",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "title",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "users",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "messagesList",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "talkersAmount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "unreadMessages",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "lastMessage",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "replyTo",
+							"type": {
+							  "ofType": null,
+							  "name": "MessagesType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "by",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "time",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "files",
+									"type": {
+									  "ofType": {
+										 "name": "JSONString"
+									  }
+									}
+								 },
+								 {
+									"name": "postPtr",
+									"type": {
+									  "ofType": {
+										 "name": "PostType"
+									  }
+									}
+								 },
+								 {
+									"name": "toDialog",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "replyTo",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "messageSet",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "likesCount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "rated",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "author",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "authorId",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "messageSet",
+							"type": {
+							  "ofType": {
+								 "name": "MessagesTypeConnection",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likesCount",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "rated",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "author",
+							"type": {
+							  "ofType": null,
+							  "name": "UserType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "lastLogin",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "username",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "firstName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "lastName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "dateJoined",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friends",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "sex",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "birthday",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "placeId",
+									"type": {
+									  "ofType": {
+										 "name": "Int"
+									  }
+									}
+								 },
+								 {
+									"name": "startedDialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "dialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "postSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "likeSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "profileSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "name",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "image",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friendshipState",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "authorId",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "MessagesType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "messageSet",
+					"args": [
+					  {
+						 "name": "offset",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "before",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "after",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "first",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "last",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "MessagesTypeConnection",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "likesCount",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "rated",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "author",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastLogin",
+							"type": {
+							  "ofType": null,
+							  "name": "DateTime",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "username",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "firstName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dateJoined",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friends",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "sex",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "birthday",
+							"type": {
+							  "ofType": null,
+							  "name": "Date",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "placeId",
+							"type": {
+							  "ofType": {
+								 "name": "Int",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "startedDialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "PostType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likeSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "LikeType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "profileSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "name",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "image",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friendshipState",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UserType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "authorId",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "PlainNode",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "The ID of the object.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "MessagesTypeConnection",
+			  "fields": [
+				 {
+					"name": "pageInfo",
+					"args": [],
+					"description": "Pagination data for this connection.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "PageInfo",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "edges",
+					"args": [],
+					"description": "Contains the nodes in this connection.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "MessagesTypeEdge"
+						 }
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "PageInfo",
+			  "fields": [
+				 {
+					"name": "hasNextPage",
+					"args": [],
+					"description": "When paginating forwards, are there more items?",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Boolean",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "hasPreviousPage",
+					"args": [],
+					"description": "When paginating backwards, are there more items?",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Boolean",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "startCursor",
+					"args": [],
+					"description": "When paginating backwards, the cursor to continue.",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "endCursor",
+					"args": [],
+					"description": "When paginating forwards, the cursor to continue.",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "MessagesTypeEdge",
+			  "fields": [
+				 {
+					"name": "node",
+					"args": [],
+					"description": "The item at the end of the edge",
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "by",
+							"type": {
+							  "ofType": {
+								 "name": "UserType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "time",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "value",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "files",
+							"type": {
+							  "ofType": {
+								 "name": "JSONString",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postPtr",
+							"type": {
+							  "ofType": {
+								 "name": "PostType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "toDialog",
+							"type": {
+							  "ofType": null,
+							  "name": "DialogType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "founder",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "title",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "users",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "messagesList",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "talkersAmount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "unreadMessages",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "lastMessage",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "replyTo",
+							"type": {
+							  "ofType": null,
+							  "name": "MessagesType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "by",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "time",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "files",
+									"type": {
+									  "ofType": {
+										 "name": "JSONString"
+									  }
+									}
+								 },
+								 {
+									"name": "postPtr",
+									"type": {
+									  "ofType": {
+										 "name": "PostType"
+									  }
+									}
+								 },
+								 {
+									"name": "toDialog",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "replyTo",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "messageSet",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "likesCount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "rated",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "author",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "authorId",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "messageSet",
+							"type": {
+							  "ofType": {
+								 "name": "MessagesTypeConnection",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likesCount",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "rated",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "author",
+							"type": {
+							  "ofType": null,
+							  "name": "UserType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "lastLogin",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "username",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "firstName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "lastName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "dateJoined",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friends",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "sex",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "birthday",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "placeId",
+									"type": {
+									  "ofType": {
+										 "name": "Int"
+									  }
+									}
+								 },
+								 {
+									"name": "startedDialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "dialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "postSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "likeSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "profileSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "name",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "image",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friendshipState",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "authorId",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "MessagesType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "cursor",
+					"args": [],
+					"description": "A cursor for use in pagination",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "LikeType",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "target",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "PostType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "author",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "UserType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "value",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Int",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "feeling",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "LikeFeeling",
+						 "ofType": null
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "LikeFeeling",
+			  "fields": null
+			},
+			{
+			  "name": "MessageSubType",
+			  "fields": [
+				 {
+					"name": "author",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "value",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "MessageType",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "by",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "UserType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "time",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "DateTime",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "value",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "files",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "JSONString",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "postPtr",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "PostType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "toDialog",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "founder",
+							"type": {
+							  "ofType": {
+								 "name": "UserType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "title",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "users",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "messagesList",
+							"type": {
+							  "ofType": {
+								 "name": "MessagesTypeConnection",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "talkersAmount",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "unreadMessages",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastMessage",
+							"type": {
+							  "ofType": null,
+							  "name": "MessageSubType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "author",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "DialogType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "replyTo",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "by",
+							"type": {
+							  "ofType": {
+								 "name": "UserType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "time",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "value",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "files",
+							"type": {
+							  "ofType": {
+								 "name": "JSONString",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postPtr",
+							"type": {
+							  "ofType": {
+								 "name": "PostType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "toDialog",
+							"type": {
+							  "ofType": null,
+							  "name": "DialogType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "founder",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "title",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "users",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "messagesList",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "talkersAmount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "unreadMessages",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "lastMessage",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "replyTo",
+							"type": {
+							  "ofType": null,
+							  "name": "MessagesType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "by",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "time",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "files",
+									"type": {
+									  "ofType": {
+										 "name": "JSONString"
+									  }
+									}
+								 },
+								 {
+									"name": "postPtr",
+									"type": {
+									  "ofType": {
+										 "name": "PostType"
+									  }
+									}
+								 },
+								 {
+									"name": "toDialog",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "replyTo",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "messageSet",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "likesCount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "rated",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "author",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "authorId",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "messageSet",
+							"type": {
+							  "ofType": {
+								 "name": "MessagesTypeConnection",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likesCount",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "rated",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "author",
+							"type": {
+							  "ofType": null,
+							  "name": "UserType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "lastLogin",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "username",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "firstName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "lastName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "dateJoined",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friends",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "sex",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "birthday",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "placeId",
+									"type": {
+									  "ofType": {
+										 "name": "Int"
+									  }
+									}
+								 },
+								 {
+									"name": "startedDialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "dialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "postSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "likeSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "profileSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "name",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "image",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friendshipState",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "authorId",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "MessagesType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "messageSet",
+					"args": [
+					  {
+						 "name": "offset",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "before",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "after",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "first",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "last",
+						 "type": {
+							"name": "Int",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "MessagesTypeConnection",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "likesCount",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "rated",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "author",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastLogin",
+							"type": {
+							  "ofType": null,
+							  "name": "DateTime",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "username",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "firstName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dateJoined",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friends",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "sex",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "birthday",
+							"type": {
+							  "ofType": null,
+							  "name": "Date",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "placeId",
+							"type": {
+							  "ofType": {
+								 "name": "Int",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "startedDialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "PostType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likeSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "LikeType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "profileSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "name",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "image",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friendshipState",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UserType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "authorId",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "UserNode",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "The ID of the object.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "lastLogin",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "DateTime",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "username",
+					"args": [],
+					"description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "firstName",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "lastName",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "email",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "isStaff",
+					"args": [],
+					"description": "Designates whether the user can log into this admin site.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Boolean",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "isActive",
+					"args": [],
+					"description": "Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Boolean",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "dateJoined",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "DateTime",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "avatar",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "friends",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "UserType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "sex",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "birthday",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Date",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "placeId",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Int",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "startedDialogs",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "DialogType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "dialogs",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "DialogType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "postSet",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "PostType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "likeSet",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "LikeType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "profileSet",
+					"args": [],
+					"description": "",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "UserType"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "pk",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Int",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "archived",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "verified",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "secondaryEmail",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "Node",
+			  "fields": [
+				 {
+					"name": "id",
+					"args": [],
+					"description": "The ID of the object.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "ID",
+						 "ofType": null
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "Mutation",
+			  "fields": [
+				 {
+					"name": "register",
+					"args": [
+					  {
+						 "name": "email",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "String"
+							}
+						 }
+					  },
+					  {
+						 "name": "username",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "String"
+							}
+						 }
+					  },
+					  {
+						 "name": "password1",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "String"
+							}
+						 }
+					  },
+					  {
+						 "name": "password2",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "String"
+							}
+						 }
+					  }
+					],
+					"description": "Register user with fields defined in the settings.\n\nIf the email field of the user model is part of the\nregistration fields (default), check if there is\nno user with that email or as a secondary email.\n\nIf it exists, it does not register the user,\neven if the email field is not defined as unique\n(default of the default django user model).\n\nWhen creating the user, it also creates a `UserStatus`\nrelated to that user, making it possible to track\nif the user is archived, verified and has a secondary\nemail.\n\nSend account verification email.\n\nIf allowed to not verified users login, return token.",
+					"type": {
+					  "fields": [
+						 {
+							"name": "success",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "errors",
+							"type": {
+							  "ofType": null,
+							  "name": "ExpectedErrorType",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "token",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "Register",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "verifyAccount",
+					"args": [
+					  {
+						 "name": "token",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "String"
+							}
+						 }
+					  }
+					],
+					"description": "Verify user account.\n\nReceive the token that was sent by email.\nIf the token is valid, make the user verified\nby making the `user.status.verified` field true.",
+					"type": {
+					  "fields": [
+						 {
+							"name": "success",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "errors",
+							"type": {
+							  "ofType": null,
+							  "name": "ExpectedErrorType",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "VerifyAccount",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "tokenAuth",
+					"args": [
+					  {
+						 "name": "password",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "String"
+							}
+						 }
+					  },
+					  {
+						 "name": "email",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "username",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": "Obtain JSON web token for given user.\n\nAllow to perform login with different fields,\nand secondary email if set. The fields are\ndefined on settings.\n\nNot verified users can login by default. This\ncan be changes on settings.\n\nIf user is archived, make it unarchive and\nreturn `unarchiving=True` on output.",
+					"type": {
+					  "fields": [
+						 {
+							"name": "token",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "success",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "errors",
+							"type": {
+							  "ofType": null,
+							  "name": "ExpectedErrorType",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "user",
+							"type": {
+							  "ofType": null,
+							  "name": "UserNode",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "lastLogin",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "username",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "firstName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "lastName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "email",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "isStaff",
+									"type": {
+									  "ofType": {
+										 "name": "Boolean"
+									  }
+									}
+								 },
+								 {
+									"name": "isActive",
+									"type": {
+									  "ofType": {
+										 "name": "Boolean"
+									  }
+									}
+								 },
+								 {
+									"name": "dateJoined",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friends",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "sex",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "birthday",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "placeId",
+									"type": {
+									  "ofType": {
+										 "name": "Int"
+									  }
+									}
+								 },
+								 {
+									"name": "startedDialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "dialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "postSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "likeSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "profileSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "pk",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "archived",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "verified",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "secondaryEmail",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "unarchiving",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "ObtainJSONWebToken",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "updateAccount",
+					"args": [
+					  {
+						 "name": "firstName",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "lastName",
+						 "type": {
+							"name": "String",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": "Update user model fields, defined on settings.\n\nUser must be verified.",
+					"type": {
+					  "fields": [
+						 {
+							"name": "success",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "errors",
+							"type": {
+							  "ofType": null,
+							  "name": "ExpectedErrorType",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UpdateAccount",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "postCreate",
+					"args": [
+					  {
+						 "name": "files",
+						 "type": {
+							"name": "JSONString",
+							"ofType": null
+						 }
+					  },
+					  {
+						 "name": "value",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "String"
+							}
+						 }
+					  }
+					],
+					"description": ":::\nvalue:String\nfiles:JSONString",
+					"type": {
+					  "fields": [
+						 {
+							"name": "post",
+							"type": {
+							  "ofType": null,
+							  "name": "PostType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "by",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "time",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "files",
+									"type": {
+									  "ofType": {
+										 "name": "JSONString"
+									  }
+									}
+								 },
+								 {
+									"name": "message",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "likes",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "likesCount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "rated",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "PostMutation",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "likeApply",
+					"args": [
+					  {
+						 "name": "postId",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "ID"
+							}
+						 }
+					  }
+					],
+					"description": ":::\npostId: number",
+					"type": {
+					  "fields": [
+						 {
+							"name": "increased",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "LikeMutation",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "friendshipApply",
+					"args": [
+					  {
+						 "name": "userId",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "ID"
+							}
+						 }
+					  }
+					],
+					"description": ":::\nuserId: number",
+					"type": {
+					  "fields": [
+						 {
+							"name": "added",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "FriendshipMutation",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "userSettingsMutation",
+					"args": [
+					  {
+						 "name": "input",
+						 "type": {
+							"name": null,
+							"ofType": {
+							  "name": "SettingsMutationInput"
+							}
+						 }
+					  }
+					],
+					"description": ":::\nid: ID\nfirstName: String!\nlastName: String\nbirthday: Date\nsex: Boolean\nplaceId: Int\nplaceType: ID",
+					"type": {
+					  "fields": [
+						 {
+							"name": "profile",
+							"type": {
+							  "ofType": null,
+							  "name": "UserType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "lastLogin",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "username",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "firstName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "lastName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "dateJoined",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "avatar",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friends",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "sex",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "birthday",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "placeId",
+									"type": {
+									  "ofType": {
+										 "name": "Int"
+									  }
+									}
+								 },
+								 {
+									"name": "startedDialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "dialogs",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "postSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "likeSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "profileSet",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "name",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "image",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "friendshipState",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "errors",
+							"type": {
+							  "ofType": {
+								 "name": "ErrorType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "settings",
+							"type": {
+							  "ofType": null,
+							  "name": "UserSettingsType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "username",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "firstName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "lastName",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "birthday",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "placeId",
+									"type": {
+									  "ofType": {
+										 "name": "Int"
+									  }
+									}
+								 },
+								 {
+									"name": "sex",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "country",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "city",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "clientMutationId",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "SettingsMutationPayload",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "Register",
+			  "fields": [
+				 {
+					"name": "success",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "errors",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "ExpectedErrorType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "token",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "ExpectedErrorType",
+			  "fields": null
+			},
+			{
+			  "name": "VerifyAccount",
+			  "fields": [
+				 {
+					"name": "success",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "errors",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "ExpectedErrorType",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "ObtainJSONWebToken",
+			  "fields": [
+				 {
+					"name": "token",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "success",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "errors",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "ExpectedErrorType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "user",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastLogin",
+							"type": {
+							  "ofType": null,
+							  "name": "DateTime",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "username",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "firstName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "email",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "isStaff",
+							"type": {
+							  "ofType": {
+								 "name": "Boolean",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "isActive",
+							"type": {
+							  "ofType": {
+								 "name": "Boolean",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dateJoined",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friends",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "sex",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "birthday",
+							"type": {
+							  "ofType": null,
+							  "name": "Date",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "placeId",
+							"type": {
+							  "ofType": {
+								 "name": "Int",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "startedDialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "PostType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likeSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "LikeType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "profileSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "pk",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "archived",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "verified",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "secondaryEmail",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UserNode",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "unarchiving",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "UpdateAccount",
+			  "fields": [
+				 {
+					"name": "success",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "errors",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "ExpectedErrorType",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "PostMutation",
+			  "fields": [
+				 {
+					"name": "post",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "by",
+							"type": {
+							  "ofType": {
+								 "name": "UserType",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "time",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "value",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "files",
+							"type": {
+							  "ofType": {
+								 "name": "JSONString",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "message",
+							"type": {
+							  "ofType": null,
+							  "name": "MessagesType",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "id",
+									"type": {
+									  "ofType": {
+										 "name": "ID"
+									  }
+									}
+								 },
+								 {
+									"name": "by",
+									"type": {
+									  "ofType": {
+										 "name": "UserType"
+									  }
+									}
+								 },
+								 {
+									"name": "time",
+									"type": {
+									  "ofType": {
+										 "name": "DateTime"
+									  }
+									}
+								 },
+								 {
+									"name": "value",
+									"type": {
+									  "ofType": {
+										 "name": "String"
+									  }
+									}
+								 },
+								 {
+									"name": "files",
+									"type": {
+									  "ofType": {
+										 "name": "JSONString"
+									  }
+									}
+								 },
+								 {
+									"name": "postPtr",
+									"type": {
+									  "ofType": {
+										 "name": "PostType"
+									  }
+									}
+								 },
+								 {
+									"name": "toDialog",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "replyTo",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "messageSet",
+									"type": {
+									  "ofType": {
+										 "name": "MessagesTypeConnection"
+									  }
+									}
+								 },
+								 {
+									"name": "likesCount",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "rated",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "author",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "authorId",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 },
+						 {
+							"name": "likes",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "LikeType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likesCount",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "rated",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "PostType",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "LikeMutation",
+			  "fields": [
+				 {
+					"name": "increased",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "FriendshipMutation",
+			  "fields": [
+				 {
+					"name": "added",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "Boolean",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "SettingsMutationPayload",
+			  "fields": [
+				 {
+					"name": "profile",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "id",
+							"type": {
+							  "ofType": {
+								 "name": "ID",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastLogin",
+							"type": {
+							  "ofType": null,
+							  "name": "DateTime",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "username",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "firstName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dateJoined",
+							"type": {
+							  "ofType": {
+								 "name": "DateTime",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "avatar",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friends",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "sex",
+							"type": {
+							  "ofType": null,
+							  "name": "Boolean",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "birthday",
+							"type": {
+							  "ofType": null,
+							  "name": "Date",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "placeId",
+							"type": {
+							  "ofType": {
+								 "name": "Int",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "startedDialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "dialogs",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "DialogType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "postSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "PostType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "likeSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "LikeType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "profileSet",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": null,
+									"ofType": {
+									  "name": "UserType"
+									}
+								 }
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "name",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "image",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "friendshipState",
+							"type": {
+							  "ofType": null,
+							  "name": "Int",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UserType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "errors",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": "ErrorType",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "settings",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "username",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "firstName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "lastName",
+							"type": {
+							  "ofType": {
+								 "name": "String",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "birthday",
+							"type": {
+							  "ofType": null,
+							  "name": "Date",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "placeId",
+							"type": {
+							  "ofType": {
+								 "name": "Int",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "sex",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "country",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "city",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "UserSettingsType",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "clientMutationId",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "ErrorType",
+			  "fields": [
+				 {
+					"name": "field",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "messages",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "String"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "SettingsMutationInput",
+			  "fields": null
+			},
+			{
+			  "name": "__Schema",
+			  "fields": [
+				 {
+					"name": "types",
+					"args": [],
+					"description": "A list of all types supported by this server.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "__Type"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "queryType",
+					"args": [],
+					"description": "The type that query operations will be rooted at.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "__Type",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "mutationType",
+					"args": [],
+					"description": "If this server supports mutation, the type that mutation operations will be rooted at.",
+					"type": {
+					  "fields": [
+						 {
+							"name": "kind",
+							"type": {
+							  "ofType": {
+								 "name": "__TypeKind",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "name",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "description",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "fields",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Field",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "interfaces",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Type",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "possibleTypes",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Type",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "enumValues",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__EnumValue",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "inputFields",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__InputValue",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "ofType",
+							"type": {
+							  "ofType": null,
+							  "name": "__Type",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "kind",
+									"type": {
+									  "ofType": {
+										 "name": "__TypeKind"
+									  }
+									}
+								 },
+								 {
+									"name": "name",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "description",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "fields",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "interfaces",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "possibleTypes",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "enumValues",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "inputFields",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "ofType",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "__Type",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "subscriptionType",
+					"args": [],
+					"description": "If this server support subscription, the type that subscription operations will be rooted at.",
+					"type": {
+					  "fields": [
+						 {
+							"name": "kind",
+							"type": {
+							  "ofType": {
+								 "name": "__TypeKind",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "name",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "description",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "fields",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Field",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "interfaces",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Type",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "possibleTypes",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Type",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "enumValues",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__EnumValue",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "inputFields",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__InputValue",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "ofType",
+							"type": {
+							  "ofType": null,
+							  "name": "__Type",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "kind",
+									"type": {
+									  "ofType": {
+										 "name": "__TypeKind"
+									  }
+									}
+								 },
+								 {
+									"name": "name",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "description",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "fields",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "interfaces",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "possibleTypes",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "enumValues",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "inputFields",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "ofType",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "__Type",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "directives",
+					"args": [],
+					"description": "A list of all directives supported by this server.",
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "__Directive"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "__Type",
+			  "fields": [
+				 {
+					"name": "kind",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "__TypeKind",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "name",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "description",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "fields",
+					"args": [
+					  {
+						 "name": "includeDeprecated",
+						 "type": {
+							"name": "Boolean",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "__Field"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "interfaces",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "__Type"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "possibleTypes",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "__Type"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "enumValues",
+					"args": [
+					  {
+						 "name": "includeDeprecated",
+						 "type": {
+							"name": "Boolean",
+							"ofType": null
+						 }
+					  }
+					],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "__EnumValue"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "inputFields",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "LIST",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": null,
+							"name": "__InputValue"
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "ofType",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": [
+						 {
+							"name": "kind",
+							"type": {
+							  "ofType": {
+								 "name": "__TypeKind",
+								 "ofType": null
+							  },
+							  "name": null,
+							  "kind": "NON_NULL",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "name",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "description",
+							"type": {
+							  "ofType": null,
+							  "name": "String",
+							  "kind": "SCALAR",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "fields",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Field",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "interfaces",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Type",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "possibleTypes",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__Type",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "enumValues",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__EnumValue",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "inputFields",
+							"type": {
+							  "ofType": {
+								 "name": null,
+								 "ofType": {
+									"name": "__InputValue",
+									"ofType": null
+								 }
+							  },
+							  "name": null,
+							  "kind": "LIST",
+							  "fields": null
+							}
+						 },
+						 {
+							"name": "ofType",
+							"type": {
+							  "ofType": null,
+							  "name": "__Type",
+							  "kind": "OBJECT",
+							  "fields": [
+								 {
+									"name": "kind",
+									"type": {
+									  "ofType": {
+										 "name": "__TypeKind"
+									  }
+									}
+								 },
+								 {
+									"name": "name",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "description",
+									"type": {
+									  "ofType": null
+									}
+								 },
+								 {
+									"name": "fields",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "interfaces",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "possibleTypes",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "enumValues",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "inputFields",
+									"type": {
+									  "ofType": {
+										 "name": null
+									  }
+									}
+								 },
+								 {
+									"name": "ofType",
+									"type": {
+									  "ofType": null
+									}
+								 }
+							  ]
+							}
+						 }
+					  ],
+					  "kind": "OBJECT",
+					  "name": "__Type",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "__TypeKind",
+			  "fields": null
+			},
+			{
+			  "name": "__Field",
+			  "fields": [
+				 {
+					"name": "name",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "description",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "args",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "__InputValue"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "type",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "__Type",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "isDeprecated",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Boolean",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "deprecationReason",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "__InputValue",
+			  "fields": [
+				 {
+					"name": "name",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "description",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "type",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "__Type",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "defaultValue",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "__EnumValue",
+			  "fields": [
+				 {
+					"name": "name",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "description",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "isDeprecated",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "Boolean",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "deprecationReason",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "__Directive",
+			  "fields": [
+				 {
+					"name": "name",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": "String",
+						 "ofType": null
+					  }
+					}
+				 },
+				 {
+					"name": "description",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "SCALAR",
+					  "name": "String",
+					  "ofType": null
+					}
+				 },
+				 {
+					"name": "locations",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "__DirectiveLocation"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 },
+				 {
+					"name": "args",
+					"args": [],
+					"description": null,
+					"type": {
+					  "fields": null,
+					  "kind": "NON_NULL",
+					  "name": null,
+					  "ofType": {
+						 "name": null,
+						 "ofType": {
+							"ofType": {
+							  "name": "__InputValue"
+							},
+							"name": null
+						 }
+					  }
+					}
+				 }
+			  ]
+			},
+			{
+			  "name": "__DirectiveLocation",
+			  "fields": null
+			}
+		 ]
+	  }
+	}
+ }

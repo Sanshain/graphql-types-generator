@@ -148,6 +148,36 @@ export const getMessages = gql`
 `;
 
 
+
+export const uploadMessages = gql`
+	query MessagesInfo{
+		messages(id: $id, up: $up, by: $by){
+			id,
+			authorId,
+			author{
+				name
+			}
+			time,
+			value,
+			files,
+			replyTo{
+				id,
+				time,
+				value,
+				files,
+				authorId,
+				author{
+					name
+				}				
+			},
+			likesCount,	
+			rated,
+		}	
+	}
+`;
+
+
+
 /**
  * via relay variation:
  */

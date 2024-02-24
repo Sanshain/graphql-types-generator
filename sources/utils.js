@@ -625,10 +625,20 @@ class TypesGenerator{
 				// const optional = (!~typeName.indexOf('!') && !~forceRequireTypes.indexOf(typeName)) ? '?' : ''
 				// const optional = (described && !~typeName.indexOf('!') ) ? '?' : ''
 				// const optional = (isNestedType && !~typeName.indexOf('!') && !~forced.indexOf(typeName)) ? '?' : ''
+				if (~typeName.indexOf('!')){
+					// debugger
+					// catch it
+				}
 				const optional = (isNestedType && i && !~typeName.indexOf('!')) ? 'null | ' : ''
 				if (optional){
 					// console.log('ok');
+					// TO_DO something?
 				}
+
+				if (k && ~k?.indexOf('_')){
+					k = k.replace(/_\w/, w => w[1].toUpperCase())
+				}
+
 				return `${k}: ${optional}${self.scalarTypes[typeName] || (typeName || 'unknown').trim()}`
 			})
 			.join(',\n    ') + '\n}';

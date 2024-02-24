@@ -3,6 +3,14 @@ type QueryString<T extends string> = `
 
 
 /**
+ * dialog list initialization
+ * 
+ * =- firstName,
+ */
+
+export const GetProfileInfo: QueryString<'ProfileInfo'>;
+
+/**
  * just one dialog initial
  */
 
@@ -23,3 +31,6 @@ export const userSettingsType: QueryString<'UserSettingsType'>;
 
 
 export const getMessages: QueryString<'UploadMessages'>;
+
+
+export const uploadMessages: QueryString<'MessagesInfo'>;
